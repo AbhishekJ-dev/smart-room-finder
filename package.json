@@ -1,0 +1,18 @@
+{
+  "name": "smart-room-finder",
+  "version": "1.0.0",
+  "description": "Smart Room Finder platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && node server.js",
+    "client": "cd frontend-app && npm run dev",
+    "install-all": "cd backend && npm install && cd ../frontend-app && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
