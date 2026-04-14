@@ -23,10 +23,19 @@ CREATE TABLE IF NOT EXISTS rooms (
     location VARCHAR(255) NOT NULL,
     contact VARCHAR(20) NOT NULL,
     description TEXT,
-    photos JSON,
+    tenant_type ENUM('Boys', 'Girls', 'Anyone') DEFAULT 'Anyone',
     is_booked BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS room_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_id INT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    is_primary BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions (

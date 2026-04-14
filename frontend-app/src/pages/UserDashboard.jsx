@@ -1,157 +1,440 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, MapPin, Phone, CreditCard, LogOut, User as UserIcon, Home, Zap, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Search, Filter, MapPin, Phone, Home, CalendarCheck,
+  User as UserIcon, Camera, Heart, SlidersHorizontal, Lock, Smartphone
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { DashboardLayout } from '../components/layouts/DashboardLayout';
+import { FilterDropdown } from '../components/ui/FilterDropdown';
+import { Lightbox } from '../components/ui/Lightbox';
+import { BookingModal } from '../components/ui/BookingModal';
+import Profile from '../components/dashboard/Profile';
+import MyBookings from '../components/dashboard/MyBookings';
+import StatusModal from '../components/ui/StatusModal';
+import RatingModal from '../components/ui/RatingModal';
 import axios from 'axios';
 
 const API = 'http://localhost:5000/api';
 
+const TENANT_BADGE = {
+  Boys:   { label: 'Boys Only', color: 'badge-blue' },
+  Girls:  { label: 'Girls Only', color: 'badge-purple' },
+  Anyone: { label: 'For Everyone', color: 'badge-green' },
+};
+
 const UserDashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('All');
-  const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const res = await axios.get(`${API}/rooms`);
-        setRooms(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRooms();
-  }, []);
+  const [activeTab, setActiveTab] = useState('rooms');
 
-  const filteredRooms = rooms.filter(r => {
-    const matchSearch = r.area?.toLowerCase().includes(search.toLowerCase()) || r.type?.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === 'All' || r.type === filter;
-    return matchSearch && matchFilter;
-  });
+  const [search, setSearch]             = useState('');
+  const [typeFilter, setTypeFilter]     = useState('All');
+  const [tenantFilter, setTenantFilter] = useState('All');
+  const [minPrice, setMinPrice]         = useState(1000);
+  const [maxPrice, setMaxPrice]         = useState(50000);
+  const [showFilters, setShowFilters]   = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/', { replace: true });
+  const [rooms, setRooms]               = useState([]);
+  const [userBookings, setUserBookings] = useState([]);
+  const [loading, setLoading]           = useState(true);
+  const [bookingLoading, setBookingLoading] = useState(false);
+
+  const [lightboxImages, setLightboxImages] = useState([]);
+  const [lightboxIndex, setLightboxIndex]   = useState(0);
+  const [lightboxOpen, setLightboxOpen]     = useState(false);
+
+  const [bookingRoom, setBookingRoom]         = useState(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [lastBookingId, setLastBookingId] = useState(null);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+
+  const [modal, setModal] = useState({ show: false, title: '', message: '', type: 'info' });
+  const showAlert = (title, message, type = 'info') => setModal({ show: true, title, message, type });
+
+  const filterRef = useRef(null);
+
+  useEffect(() => { fetchData(); }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      const [rRes, bRes] = await Promise.all([
+        axios.get(`${API}/rooms`, { headers }),
+        axios.get(`${API}/bookings/my-bookings`, { headers })
+      ]);
+      setRooms(rRes.data);
+      setUserBookings(bRes.data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const openBookingModal = room => { setBookingRoom(room); setShowBookingModal(true); };
+
+  const handleBookingConfirm = async ({ duration, total_price, start_date, end_date }) => {
+    if (!bookingRoom) return;
+    setBookingLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post(`${API}/bookings`,
+        { room_id: bookingRoom.id, duration, total_price, start_date, end_date },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setLastBookingId(res.data.bookingId);
+      setShowBookingModal(false);
+      setBookingRoom(null);
+      fetchData();
+      showAlert('Request Sent', 'Your booking request has been submitted. Please wait for the owner to approve it.', 'success');
+      setActiveTab('bookings');
+      // Show rating modal after a small delay
+      setTimeout(() => setShowRatingModal(true), 1500);
+    } catch (err) {
+      showAlert('Booking Failed', err.response?.data?.message || 'We could not process your booking at this time.', 'error');
+    } finally {
+      setBookingLoading(false);
+    }
+  };
+
+  const openLightbox = (photos, startIdx = 0) => {
+    setLightboxImages(photos.map(p => `http://localhost:5000${p}`));
+    setLightboxIndex(startIdx);
+    setLightboxOpen(true);
+  };
+
+  const normalize = val => val?.toLowerCase().replace(/\s/g, '') || '';
+
+  const filteredRooms = rooms.filter(r => {
+    const s = search.toLowerCase().trim();
+    const matchSearch = !s ||
+      normalize(r.area).includes(normalize(s)) ||
+      normalize(r.type).includes(normalize(s)) ||
+      normalize(r.location).includes(normalize(s)) ||
+      normalize(r.city).includes(normalize(s));
+    const matchType   = typeFilter === 'All' || normalize(r.type) === normalize(typeFilter);
+    const matchTenant = tenantFilter === 'All' ||
+      normalize(r.tenant_type) === normalize(tenantFilter) ||
+      normalize(r.tenant_type) === 'anyone';
+    const matchPrice  = (r.price_monthly || 0) >= minPrice && (r.price_monthly || 0) <= maxPrice;
+    return matchSearch && matchType && matchTenant && matchPrice;
+  });
+
+  const hasFilters = typeFilter !== 'All' || tenantFilter !== 'All' || minPrice !== 1000 || maxPrice !== 50000;
+
+  const navItems = [
+    { id: 'rooms',    icon: <Home size={16} />,       label: 'Search Rooms' },
+    { id: 'bookings', icon: <CalendarCheck size={16} />, label: 'My Bookings' },
+  ];
+
+  const pageTitles = {
+    rooms:    { title: 'Find Your Room', subtitle: 'Browse verified listings from trusted owners.' },
+    bookings: { title: 'My Bookings',    subtitle: 'Track your current and past booking requests.' },
+    profile:  { title: 'My Profile',     subtitle: 'Manage your personal details and preferences.' },
+  };
+
+  const current = pageTitles[activeTab] || pageTitles.rooms;
+
   return (
-    <div className="min-h-screen bg-transparent text-white flex">
-      {/* Sidebar */}
-      <div className="w-64 glass border-r border-white/10 p-6 flex flex-col gap-8 shrink-0">
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">SmartFinder</h2>
-        <nav className="flex flex-col gap-4">
-          <NavItem icon={<Home size={20} />} label="Search Rooms" active />
-          <NavItem icon={<Zap size={20} />} label="My Bookings" />
-          <NavItem icon={<CreditCard size={20} />} label="Subscription" />
-          <NavItem icon={<UserIcon size={20} />} label="Profile" />
-        </nav>
-        <div className="mt-auto">
-          <button onClick={handleLogout} className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-all cursor-pointer">
-            <LogOut size={20} /> Logout
-          </button>
-        </div>
-      </div>
+    <DashboardLayout
+      title={current.title}
+      subtitle={current.subtitle}
+      navItems={navItems}
+      activeNav={activeTab}
+      onNavClick={setActiveTab}
+    >
+      {activeTab === 'rooms' ? (
+        <div className="max-w-[1400px] mx-auto">
+          {/* Search + Filter Bar */}
+          <div className="flex gap-3 mb-6 relative z-20">
+            <div className="relative flex-1 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8] group-focus-within:text-[#2563EB] transition-colors" size={17} />
+              <input
+                type="text"
+                placeholder="Search by area, city, or room type..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="w-full bg-white border border-[#E2E8F0] rounded-xl py-3 pl-11 pr-4 text-sm text-[#1E293B] placeholder-[#94A3B8] outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition-all shadow-soft"
+              />
+            </div>
 
-      {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto">
-        <header className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Welcome, {user?.name}!</h1>
-            <p className="text-slate-400">Find your perfect stay today.</p>
-          </div>
-          {!isSubscribed && (
-            <motion.button whileHover={{ scale: 1.02 }} className="bg-gradient-to-r from-yellow-500 to-orange-600 px-4 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-2 cursor-pointer">
-              <CreditCard size={16} /> Get Subscription
-            </motion.button>
-          )}
-        </header>
-
-        {/* Search + Filter */}
-        <div className="flex gap-4 mb-6">
-          <div className="relative flex-grow">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-            <input type="text" placeholder="Search by area or room type..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 focus:outline-none focus:border-blue-500 transition-all" />
-          </div>
-          <button onClick={() => setShowFilters(!showFilters)} className="glass px-6 py-3 rounded-2xl flex items-center gap-2 hover:bg-white/10 transition-all cursor-pointer">
-            <Filter size={20} /> Filter
-          </button>
-        </div>
-
-        {/* Filter chips */}
-        {showFilters && (
-          <div className="flex gap-3 mb-6 flex-wrap">
-            {['All', '1BHK', '2BHK', 'PG', 'Room'].map(f => (
-              <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer ${filter === f ? 'bg-blue-600 text-white' : 'bg-white/5 text-slate-400 hover:bg-white/10'}`}>
-                {f}
+            <div className="relative shrink-0" ref={filterRef}>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border shadow-soft cursor-pointer ${
+                  showFilters || hasFilters
+                    ? 'bg-[#EFF6FF] border-[#2563EB] text-[#2563EB]'
+                    : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
+                }`}
+              >
+                <SlidersHorizontal size={16} />
+                <span className="hidden sm:inline">Filters</span>
+                {hasFilters && (
+                  <span className="w-4 h-4 bg-[#2563EB] text-white rounded-full text-[9px] flex items-center justify-center font-bold">!</span>
+                )}
               </button>
-            ))}
+              <FilterDropdown
+                isOpen={showFilters}
+                onClose={() => setShowFilters(false)}
+                filters={{ typeFilter, tenantFilter, minPrice, maxPrice }}
+                setters={{ setTypeFilter, setTenantFilter, setMinPrice, setMaxPrice }}
+              />
+            </div>
           </div>
-        )}
 
-        {/* Results count */}
-        <p className="text-slate-500 text-sm mb-4">{filteredRooms.length} room{filteredRooms.length !== 1 ? 's' : ''} found</p>
+          {/* Results count */}
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-sm text-[#64748B] font-medium">
+              <span className="text-[#1E293B] font-semibold">{filteredRooms.length}</span> properties found
+            </p>
+            {hasFilters && (
+              <button
+                onClick={() => { setTypeFilter('All'); setTenantFilter('All'); setMinPrice(1000); setMaxPrice(50000); }}
+                className="text-xs text-[#DC2626] hover:underline font-medium cursor-pointer"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
 
-        {/* Room Grid */}
-        {loading ? (
-          <p className="text-slate-400">Loading rooms...</p>
-        ) : filteredRooms.length === 0 ? (
-          <div className="glass-card p-12 text-center">
-            <Search size={48} className="mx-auto text-slate-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">No Rooms Found</h3>
-            <p className="text-slate-400">Try adjusting your search or filters.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredRooms.map(room => (
-              <RoomCard key={room.id} room={room} isSubscribed={isSubscribed} />
-            ))}
-          </div>
+          {/* Grid */}
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-soft">
+                  <div className="skeleton h-52 w-full" />
+                  <div className="p-4 space-y-3">
+                    <div className="skeleton h-4 w-3/4 rounded-lg" />
+                    <div className="skeleton h-3 w-1/2 rounded-lg" />
+                    <div className="skeleton h-10 w-full rounded-xl" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredRooms.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-white border border-[#E2E8F0] rounded-2xl text-center shadow-soft">
+              <div className="w-16 h-16 bg-[#F1F5F9] rounded-2xl flex items-center justify-center mb-5">
+                <Search size={28} className="text-[#CBD5E1]" />
+              </div>
+              <h3 className="text-lg font-semibold text-[#1E293B] mb-2">No rooms found</h3>
+              <p className="text-[#64748B] text-sm max-w-xs mb-5">Try adjusting your search or clearing filters.</p>
+              <button
+                onClick={() => { setSearch(''); setTypeFilter('All'); setTenantFilter('All'); setMinPrice(1000); setMaxPrice(50000); }}
+                className="px-5 py-2.5 bg-[#F1F5F9] text-[#64748B] text-sm font-semibold rounded-xl hover:bg-[#E2E8F0] transition-all cursor-pointer"
+              >
+                Clear all filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredRooms.map((room, idx) => (
+                <UserRoomCard
+                  key={room.id}
+                  room={room}
+                  delay={idx * 0.04}
+                  onBook={() => openBookingModal(room)}
+                  onViewPhotos={openLightbox}
+                  userBookings={userBookings}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ) : activeTab === 'bookings' ? (
+        <MyBookings userId={user?.id} onExploreRooms={() => setActiveTab('rooms')} />
+      ) : (
+        <Profile userId={user?.id} />
+      )}
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <Lightbox
+            images={lightboxImages}
+            startIndex={lightboxIndex}
+            onClose={() => setLightboxOpen(false)}
+          />
         )}
-      </div>
-    </div>
+      </AnimatePresence>
+
+      {/* Booking Modal */}
+      <AnimatePresence>
+        {showBookingModal && (
+          <BookingModal
+            isOpen={showBookingModal}
+            onClose={() => { setShowBookingModal(false); setBookingRoom(null); }}
+            room={bookingRoom}
+            onConfirm={handleBookingConfirm}
+            loading={bookingLoading}
+            showAlert={showAlert}
+          />
+        )}
+      </AnimatePresence>
+
+      <StatusModal
+        isOpen={modal.show}
+        onClose={() => setModal({ ...modal, show: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
+
+      <RatingModal
+        isOpen={showRatingModal}
+        bookingId={lastBookingId}
+        onClose={() => setShowRatingModal(false)}
+      />
+    </DashboardLayout>
   );
 };
 
-const NavItem = ({ icon, label, active }) => (
-  <button className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer ${active ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
-    {icon} <span>{label}</span>
-  </button>
-);
+/* ── User Room Card ── */
+const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) => {
+  const navigate = useNavigate();
+  let photos = [];
+  try {
+    photos = typeof room.photos === 'string' ? JSON.parse(room.photos) : (room.photos || []);
+    photos = photos.filter(Boolean);
+  } catch { photos = []; }
 
-const RoomCard = ({ room, isSubscribed }) => {
-  const imgSrc = room.photos?.[0] ? `http://localhost:5000${room.photos[0]}` : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400';
+  const imgSrc = photos.length > 0
+    ? `http://localhost:5000${photos[0]}`
+    : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+
+  const badge = TENANT_BADGE[room.tenant_type] || TENANT_BADGE['Anyone'];
+  const isMyBooking = userBookings.some(b => b.room_id === room.id && b.status === 'confirmed');
 
   return (
-    <motion.div whileHover={{ y: -5 }} className="glass-card overflow-hidden group border border-white/5 hover:border-white/20 transition-all">
-      <div className="h-48 overflow-hidden relative">
-        <img src={imgSrc} alt={room.type} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" />
-        <div className="absolute top-4 right-4 bg-blue-600 px-3 py-1 rounded-full text-xs font-bold uppercase">{room.type}</div>
-        {room.is_booked && <div className="absolute top-4 left-4 bg-red-600 px-3 py-1 rounded-full text-xs font-bold">Booked</div>}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.4 }}
+      whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
+      whileTap={{ scale: 0.98 }}
+      className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#BFDBFE] transition-all duration-300 cursor-pointer"
+    >
+      {/* Image */}
+      <div className="relative h-52 overflow-hidden bg-[#F1F5F9]">
+        <img
+          src={imgSrc}
+          alt={room.area}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 cursor-pointer"
+          onClick={() => photos.length > 0 && onViewPhotos(photos, 0)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
+        <div className="absolute top-3 left-3 flex gap-2">
+          <span className="badge badge-blue text-[11px]">{room.type}</span>
+          {isMyBooking && <span className="badge badge-green text-[11px]">✓ Booked</span>}
+          {!isMyBooking && room.is_booked && <span className="badge badge-red text-[11px]">Booked</span>}
+          {!isMyBooking && room.has_pending && <span className="badge badge-amber text-[11px]">Pending</span>}
+        </div>
+
+        {photos.length > 0 && (
+          <button
+            onClick={() => onViewPhotos(photos, 0)}
+            className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg text-[11px] font-medium hover:bg-black/70 transition-colors cursor-pointer"
+          >
+            <Camera size={11} />
+            {photos.length} photo{photos.length !== 1 ? 's' : ''}
+          </button>
+        )}
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-1">{room.area}</h3>
-        <p className="text-blue-400 font-semibold mb-4 text-lg">₹{room.price_monthly}/mo</p>
-        <div className="space-y-3 mb-6">
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
-            <MapPin size={16} />
-            {isSubscribed ? room.location : <span className="blur-sm select-none">Subscribe to see location</span>}
-          </div>
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
-            <Phone size={16} />
-            {isSubscribed ? room.contact : <span className="blur-sm select-none">Subscribe to see contact</span>}
+
+      {/* Content */}
+      <div className="p-5 flex-1 flex flex-col">
+        {/* Title + Price */}
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <h3 className="font-semibold text-[#1E293B] text-base leading-snug flex-1 min-w-0 truncate">
+            {room.city ? `${room.city}, ` : ''}{room.area}
+          </h3>
+          <div className="text-right shrink-0">
+            <p className="text-[#2563EB] font-bold text-lg leading-tight">₹{room.price_monthly?.toLocaleString()}</p>
+            <p className="text-[#94A3B8] text-[10px] font-medium">/month</p>
+            {(room.annual_rent > 0 || room.price_yearly > 0) && (
+              <p className="text-[#22C55E] font-semibold text-xs mt-0.5">₹{(room.annual_rent || room.price_yearly)?.toLocaleString()}/yr</p>
+            )}
           </div>
         </div>
-        <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-blue-600 hover:border-blue-600 transition-all cursor-pointer">
-          {isSubscribed ? (room.is_booked ? 'Room Booked' : 'Book Now') : 'Unlock Details'}
-        </button>
+
+        {/* Info rows */}
+        <div className="space-y-2 mb-4">
+          <div className="flex items-start gap-2 text-sm text-[#64748B]">
+            <MapPin size={13} className="text-[#2563EB] mt-0.5 shrink-0" />
+            {room.is_locked ? (
+              <span className="italic flex items-center gap-1.5 opacity-60">
+                <Lock size={12} /> Exact location locked
+              </span>
+            ) : (
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(room.location)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#2563EB] transition-colors truncate font-medium"
+                onClick={e => e.stopPropagation()}
+              >
+                {room.location}
+              </a>
+            )}
+          </div>
+          <div className="flex items-center gap-2 text-sm text-[#64748B]">
+            <Phone size={13} className="text-[#2563EB] shrink-0" />
+            {room.is_locked ? (
+              <span className="italic flex items-center gap-1.5 opacity-60">
+                <Lock size={12} /> Contact hidden
+              </span>
+            ) : (
+              <a
+                href={`tel:${room.contact}`}
+                className="hover:text-[#2563EB] transition-colors font-medium"
+                onClick={e => e.stopPropagation()}
+              >
+                {room.contact}
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Badge */}
+        <div className="mb-4">
+          <span className={`badge ${badge.color} text-[11px]`}>{badge.label}</span>
+        </div>
+
+        {/* CTA Button */}
+        <div className="mt-auto">
+          {isMyBooking ? (
+            <div className="w-full py-3 bg-[#F0FDF4] border border-[#BBF7D0] text-[#16A34A] rounded-xl text-sm font-semibold text-center">
+              ✓ Your Booking Confirmed
+            </div>
+          ) : room.is_booked ? (
+            <div className="w-full py-3 bg-[#F8FAFC] border border-[#E2E8F0] text-[#94A3B8] rounded-xl text-sm font-semibold text-center cursor-not-allowed">
+              Already Booked
+            </div>
+          ) : room.is_locked ? (
+            <button
+              onClick={() => navigate('/subscribe')}
+              className="w-full py-3 bg-[#1E293B] hover:bg-[#0F172A] text-white rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] cursor-pointer"
+            >
+              <Lock size={14} /> Subscribe to Unlock Details
+            </button>
+          ) : room.has_pending ? (
+            <div className="w-full py-3 bg-[#FFFBEB] border border-[#FDE68A] text-[#D97706] rounded-xl text-sm font-semibold text-center cursor-not-allowed">
+              Pending Approval
+            </div>
+          ) : (
+            <button
+              onClick={onBook}
+              className="w-full py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-sm font-semibold transition-all shadow-blue hover:shadow-lg active:scale-[0.98] cursor-pointer"
+            >
+              Book Now
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );

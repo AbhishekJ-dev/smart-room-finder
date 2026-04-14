@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd backend && node server.js",
+    "server": "cd backend && npx nodemon server.js",
     "client": "cd frontend-app && npm run dev",
     "install-all": "cd backend && npm install && cd ../frontend-app && npm install"
   },
@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "sib-api-v3-sdk": "^8.5.0"
   }
 }

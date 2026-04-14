@@ -1,6 +1,76 @@
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { generateOTP, sendOTP } = require('../utils/otpService');
+
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) return res.status(400).json({ message: 'Email is required' });
+
+        const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        if (users.length === 0) return res.status(404).json({ message: 'User with this email does not exist' });
+
+        const otp = generateOTP();
+        const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+        await db.execute(
+            'UPDATE users SET reset_otp = ?, otp_expiry = ? WHERE email = ?',
+            [otp, expiry, email]
+        );
+
+        const emailSent = await sendOTP(email, otp, 'reset');
+        if (!emailSent) return res.status(500).json({ message: 'Failed to send OTP email' });
+
+        res.json({ message: 'OTP sent successfully' });
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.verifyResetOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        if (!email || !otp) return res.status(400).json({ message: 'Email and OTP are required' });
+
+        const [users] = await db.execute(
+            'SELECT * FROM users WHERE email = ? AND reset_otp = ?',
+            [email, otp]
+        );
+
+        if (users.length === 0) return res.status(400).json({ message: 'Invalid OTP' });
+
+        const user = users[0];
+        if (new Date() > new Date(user.otp_expiry)) {
+            return res.status(400).json({ message: 'OTP expired, resend' });
+        }
+
+        res.json({ message: 'OTP verified' });
+    } catch (error) {
+        console.error('Verify reset OTP error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        if (!email || !newPassword) return res.status(400).json({ message: 'Email and new password are required' });
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await db.execute(
+            'UPDATE users SET password = ?, reset_otp = NULL, otp_expiry = NULL WHERE email = ?',
+            [hashedPassword, email]
+        );
+
+        res.json({ message: 'Password reset successful' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
 
 exports.register = async (req, res) => {
     try {
@@ -11,17 +81,47 @@ exports.register = async (req, res) => {
         }
 
         // Check if user exists
-        const existing = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-        if (existing) return res.status(400).json({ message: 'User already exists with this email' });
+        const [existing] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        if (existing.length > 0) {
+            const existingUser = existing[0];
+            if (existingUser.role !== role) {
+                return res.status(400).json({ message: `This email address is already registered as a ${existingUser.role}. Please log in with the correct role.` });
+            } else {
+                return res.status(400).json({ message: 'This email address is already in use. Please try a different email address.' });
+            }
+        }
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert user
-        const stmt = db.prepare('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)');
-        const result = stmt.run(name, email, hashedPassword, role);
+        // Insert user using transaction to ensure data integrity
+        const connection = await db.getConnection();
+        await connection.beginTransaction();
 
-        res.status(201).json({ message: 'Registration successful! Please login.' });
+        try {
+            const [result] = await connection.execute(
+                'INSERT INTO users (name, email, password, role, is_verified) VALUES (?, ?, ?, ?, 0)',
+                [name, email, hashedPassword, role]
+            );
+
+            const newUserId = result.insertId;
+
+            // Link generic profiles based on role
+            if (role === 'owner') {
+                await connection.execute('INSERT INTO owners (user_id) VALUES (?)', [newUserId]);
+            } else if (role === 'admin') {
+                await connection.execute('INSERT INTO admins (user_id) VALUES (?)', [newUserId]);
+            }
+
+            await connection.commit();
+            res.status(201).json({ message: 'Registration successful! Please login.' });
+        } catch (err) {
+            await connection.rollback();
+            throw err;
+        } finally {
+            connection.release();
+        }
+
     } catch (error) {
         console.error('Registration error:', error);
         res.status(500).json({ message: error.message });
@@ -36,12 +136,15 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
-        const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-        if (!user) return res.status(400).json({ message: 'Invalid email or password' });
+        const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        if (users.length === 0) return res.status(404).json({ message: 'User not found' });
+
+        const user = users[0];
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
 
+        // Generate JWT token
         const token = jwt.sign(
             { id: user.id, role: user.role },
             process.env.JWT_SECRET || 'smart_room_finder_secret',
@@ -50,10 +153,98 @@ exports.login = async (req, res) => {
 
         res.json({
             token,
-            user: { id: user.id, name: user.name, email: user.email, role: user.role }
+            user: { 
+                id: user.id, 
+                name: user.name, 
+                email: user.email, 
+                role: user.role,
+                is_verified: !!user.is_verified 
+            }
         });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.completeGoogleRegistration = async (req, res) => {
+    const connection = await db.getConnection();
+    try {
+        const { name, email, role, googleId } = req.body;
+
+        if (!name || !email || !role || !googleId) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        // Check if user exists (fail-safe)
+        const [existing] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        if (existing.length > 0) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        await connection.beginTransaction();
+
+        // 1. Insert user
+        const [result] = await connection.execute(
+            'INSERT INTO users (google_id, name, email, password, role, is_verified) VALUES (?, ?, ?, ?, ?, 1)',
+            [googleId, name, email, '', role]
+        );
+
+        const newUserId = result.insertId;
+
+        // 2. Link generic profiles based on role
+        if (role === 'owner') {
+            await connection.execute('INSERT INTO owners (user_id) VALUES (?)', [newUserId]);
+        } else if (role === 'admin') {
+            await connection.execute('INSERT INTO admins (user_id) VALUES (?)', [newUserId]);
+        }
+
+        await connection.commit();
+
+        // 3. Generate token
+        const token = jwt.sign(
+            { id: newUserId, role: role },
+            process.env.JWT_SECRET || 'smart_room_finder_secret',
+            { expiresIn: '7d' }
+        );
+
+        res.status(201).json({
+            token,
+            user: {
+                id: newUserId,
+                name,
+                email,
+                role,
+                is_verified: true
+            }
+        });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error('Complete Google registration error:', error);
+        res.status(500).json({ message: error.message });
+    } finally {
+        connection.release();
+    }
+};
+
+exports.getProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [users] = await db.execute('SELECT id, name, email, role, is_verified FROM users WHERE id = ?', [id]);
+        
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = users[0];
+        res.json({
+            ...user,
+            is_verified: !!user.is_verified
+        });
+    } catch (error) {
+        console.error('Get profile error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+

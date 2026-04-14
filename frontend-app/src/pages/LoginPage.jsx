@@ -1,101 +1,128 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2 } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { AuthLayout } from '../components/layouts/AuthLayout';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const errParam = params.get('error');
+    if (errParam) {
+      if (errParam === 'google_failed') {
+        setError('Google Sign-In failed. Please try again.');
+      } else if (errParam === 'server_error') {
+        setError('Server error during Google Sign-In. Please try again later.');
+      } else {
+        setError(errParam);
+      }
+      window.history.replaceState({}, document.title, '/login');
+    }
+  }, [location]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setError('Please fill in all details correctly.');
+      return;
+    }
+    
     setLoading(true);
     setError('');
     try {
       const user = await login(formData.email, formData.password);
-      if (user.role === 'user') {
-        navigate('/user-dashboard');
-      } else {
-        navigate('/owner-dashboard');
-      }
+      if (user.role === 'admin') navigate('/admin-dashboard');
+      else if (user.role === 'owner') navigate('/owner-dashboard');
+      else navigate('/user-dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-6 bg-transparent text-white">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="glass-card p-8 w-full max-w-md backdrop-blur-xl border border-white/10 shadow-2xl"
-      >
-        <h2 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-          Welcome Back
-        </h2>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to continue finding your perfect room."
+    >
+      {/* Error Banner */}
+      {error && (
+        <div className="mb-5 p-3.5 bg-[#FFF1F2] border border-[#FECDD3] text-[#DC2626] text-sm rounded-xl font-medium flex items-center gap-2.5 animate-shake">
+          <span className="shrink-0">⚠️</span> {error}
+        </div>
+      )}
 
-        {error && <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 text-red-400 text-sm rounded-xl">{error}</div>}
+      <form onSubmit={handleLogin} className="space-y-4" noValidate>
+        <Input
+          label="Email Address"
+          type="email"
+          value={formData.email}
+          onChange={e => {
+            setFormData({ ...formData, email: e.target.value });
+            if (error === 'Please fill in all details correctly.') setError('');
+          }}
+          prefix={<Mail size={16} />}
+          error={error === 'Please fill in all details correctly.' && !formData.email.trim() ? true : undefined}
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={formData.password}
+          onChange={e => {
+            setFormData({ ...formData, password: e.target.value });
+            if (error === 'Please fill in all details correctly.') setError('');
+          }}
+          prefix={<Lock size={16} />}
+          error={error === 'Please fill in all details correctly.' && !formData.password.trim() ? true : undefined}
+        />
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="email" 
-              placeholder="Email Address" 
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-blue-500 transition-all font-light"
-            />
-          </div>
-
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              required
-              value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-blue-500 transition-all font-light"
-            />
-          </div>
-
-          <div className="flex justify-end">
-            <button type="button" className="text-sm text-blue-400 hover:underline">Forgot Password?</button>
-          </div>
-
-          <button 
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
-          >
-            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Login'}
-          </button>
-        </form>
-
-        <div className="flex items-center my-6">
-          <div className="flex-grow border-t border-white/10"></div>
-          <span className="mx-4 text-slate-500 text-sm">OR</span>
-          <div className="flex-grow border-t border-white/10"></div>
+        <div className="flex justify-end mt-[-8px]">
+          <Link to="/forgot-password" size="sm" className="text-[#2563EB] text-[13px] font-semibold hover:underline">
+            Forgot Password?
+          </Link>
         </div>
 
-        <button className="w-full py-3 bg-white/5 border border-white/10 rounded-xl font-semibold flex items-center justify-center gap-3 hover:bg-white/10 transition-all cursor-pointer">
-          <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-          Sign In with Google
-        </button>
+        <Button type="submit" loading={loading} className="w-full py-3 rounded-xl mt-1">
+          Sign In <ArrowRight size={16} />
+        </Button>
+      </form>
 
-        <p className="text-center text-slate-400 text-sm mt-6">
-          Don't have an account? <Link to="/register" className="text-blue-400 hover:underline">Sign Up</Link>
-        </p>
-      </motion.div>
-    </div>
+      {/* Divider */}
+      <div className="flex items-center gap-4 my-5">
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#E2E8F0]" />
+        <span className="text-[11px] text-[#94A3B8] font-bold uppercase tracking-widest">or continue with</span>
+        <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#E2E8F0]" />
+      </div>
+
+      {/* Google Sign In */}
+      <button
+        type="button"
+        onClick={() => {
+          window.top.location.href = 'http://localhost:5000/auth/google';
+        }}
+        className="w-full py-3.5 bg-white border border-[#E2E8F0] shadow-sm rounded-xl font-bold text-[#1E293B] flex items-center justify-center gap-3 hover:bg-[#F8FAFC] hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
+      >
+        <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+        Continue with Google
+      </button>
+
+      <p className="text-center text-sm text-[#64748B] mt-5">
+        Don't have an account?{' '}
+        <Link to="/register" className="text-[#2563EB] font-semibold hover:underline">
+          Create one free
+        </Link>
+      </p>
+    </AuthLayout>
   );
 };
 

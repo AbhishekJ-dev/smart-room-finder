@@ -1,77 +1,101 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage';
+import SplashScreen from './pages/SplashScreen';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import ForgotPassword from './pages/ForgotPassword';
+import LoginSuccess from './pages/LoginSuccess';
+import CompleteRegistration from './pages/CompleteRegistration';
 import UserDashboard from './pages/UserDashboard';
 import OwnerDashboard from './pages/OwnerDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminProperties from './pages/admin/AdminProperties';
+import AdminBookings from './pages/admin/AdminBookings';
+import AdminSubscriptions from './pages/admin/AdminSubscriptions';
+import AdminPlans from './pages/admin/AdminPlans';
+import SubscriptionPage from './pages/SubscriptionPage';
 import { useAuth } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
-/* ─── Page Jailing: Disable browser back/forward on protected pages ─── */
+/* ── Page Jailing: Disable browser back/forward on protected pages ── */
 function PageJail() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
-    const protectedPaths = ['/user-dashboard', '/owner-dashboard'];
-    const authPaths = ['/login', '/register'];
+    const protectedPaths = ['/user-dashboard', '/owner-dashboard', '/admin'];
 
-    const handlePopState = (e) => {
-      // If user is logged in and on a dashboard, prevent going back to login/register
+    const handlePopState = () => {
       if (user && protectedPaths.some(p => location.pathname.startsWith(p))) {
         window.history.pushState(null, '', location.pathname);
       }
-      // If user is on login/register, prevent going forward to dashboard without auth
       if (!user && protectedPaths.some(p => window.location.pathname.startsWith(p))) {
         navigate('/login', { replace: true });
       }
     };
 
-    // Push a dummy state so back button triggers popstate instead of leaving
     window.history.pushState(null, '', location.pathname);
     window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
+    return () => window.removeEventListener('popstate', handlePopState);
   }, [location.pathname, user, navigate]);
 
   return null;
 }
 
-/* ─── Protected Route ─── */
+/* ── Protected Route ── */
 function ProtectedRoute({ children, allowedRole }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login', { replace: true });
-    }
+    if (!loading && !user) navigate('/login', { replace: true });
     if (!loading && user && allowedRole && user.role !== allowedRole) {
-      navigate(user.role === 'user' ? '/user-dashboard' : '/owner-dashboard', { replace: true });
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard', { replace: true });
+      } else if (user.role === 'owner') {
+        navigate('/owner-dashboard', { replace: true });
+      } else {
+        navigate('/user-dashboard', { replace: true });
+      }
     }
   }, [user, loading, navigate, allowedRole]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#0f172a] text-white">Loading...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F9FAFB]">
+      <div className="w-10 h-10 border-[3px] border-[#E2E8F0] border-t-[#2563EB] rounded-full animate-spin mb-4" />
+      <p className="text-xs font-semibold text-[#94A3B8] tracking-widest uppercase">Loading…</p>
+    </div>
+  );
   if (!user) return null;
 
   return children;
 }
 
-/* ─── Redirect if already logged in ─── */
+/* ── Redirect if already logged in ── */
 function AuthRedirect({ children }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(user.role === 'user' ? '/user-dashboard' : '/owner-dashboard', { replace: true });
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard', { replace: true });
+      } else if (user.role === 'owner') {
+        navigate('/owner-dashboard', { replace: true });
+      } else {
+        navigate('/user-dashboard', { replace: true });
+      }
     }
   }, [user, loading, navigate]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#0f172a] text-white">Loading...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="w-12 h-12 border-[4px] border-[#2563eb]/10 border-t-[#2563eb] rounded-full animate-spin" />
+    </div>
+  );
 
   return children;
 }
@@ -79,14 +103,36 @@ function AuthRedirect({ children }) {
 function App() {
   return (
     <Router>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{
+        className: '',
+        style: {
+          marginTop: '20px',
+          padding: '16px',
+          color: '#1E293B',
+          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        },
+      }} />
       <PageJail />
       <div className="min-h-screen">
         <Routes>
-          <Route path="/" element={<WelcomePage />} />
+          <Route path="/" element={<SplashScreen />} />
+          <Route path="/home" element={<WelcomePage />} />
           <Route path="/register" element={<AuthRedirect><RegisterPage /></AuthRedirect>} />
           <Route path="/login" element={<AuthRedirect><LoginPage /></AuthRedirect>} />
+          <Route path="/forgot-password" element={<AuthRedirect><ForgotPassword /></AuthRedirect>} />
+          <Route path="/login-success" element={<LoginSuccess />} />
+          <Route path="/complete-registration" element={<CompleteRegistration />} />
           <Route path="/user-dashboard" element={<ProtectedRoute allowedRole="user"><UserDashboard /></ProtectedRoute>} />
+          <Route path="/subscribe" element={<ProtectedRoute allowedRole="user"><SubscriptionPage /></ProtectedRoute>} />
           <Route path="/owner-dashboard" element={<ProtectedRoute allowedRole="owner"><OwnerDashboard /></ProtectedRoute>} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin-dashboard" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute allowedRole="admin"><AdminUsers /></ProtectedRoute>} />
+          <Route path="/admin/properties" element={<ProtectedRoute allowedRole="admin"><AdminProperties /></ProtectedRoute>} />
+          <Route path="/admin/bookings" element={<ProtectedRoute allowedRole="admin"><AdminBookings /></ProtectedRoute>} />
+          <Route path="/admin/subscriptions" element={<ProtectedRoute allowedRole="admin"><AdminSubscriptions /></ProtectedRoute>} />
+          <Route path="/admin/plans" element={<ProtectedRoute allowedRole="admin"><AdminPlans /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>
