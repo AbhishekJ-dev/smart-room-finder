@@ -18,11 +18,12 @@ router.get(
   '/google/callback',
   (req, res, next) => {
     passport.authenticate('google', { session: false }, (err, user, info) => {
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
       if (err) {
-        return res.redirect(`http://localhost:5173/login?error=${encodeURIComponent(err.message)}`);
+        return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(err.message)}`);
       }
       if (!user) {
-        return res.redirect(`http://localhost:5173/login?error=google_failed`);
+        return res.redirect(`${frontendUrl}/login?error=google_failed`);
       }
       req.user = user;
       next();
