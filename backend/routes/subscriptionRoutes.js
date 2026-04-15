@@ -3,6 +3,7 @@ const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const notificationService = require('../utils/notificationService');
 const router = express.Router();
 
 // Initialize Razorpay
@@ -114,6 +115,14 @@ router.post('/verify-payment', auth, async (req, res) => {
              WHERE razorpay_order_id = ?`,
             [razorpay_payment_id, startDate, endDate, razorpay_order_id]
         );
+
+        // Fetch user and plan details for email notification
+        const [[user]] = await db.execute('SELECT id, name, email FROM users WHERE id = ?', [req.user.id]);
+        const [[plan]] = await db.execute('SELECT name FROM subscription_plans WHERE id = ?', [sub.plan_id]);
+
+        if (user && plan) {
+            notificationService.sendSubscriptionConfirmation(user, plan.name, endDate).catch(err => console.error('Subscription email error:', err));
+        }
 
         res.json({ message: 'Subscription activated successfully!', endDate });
     } catch (error) {

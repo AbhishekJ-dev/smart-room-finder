@@ -13,6 +13,7 @@ const ownerRoutes = require('./routes/ownerRoutes');
 const googleRoutes = require('./routes/googleRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/owner', ownerRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // ── Google OAuth Routes ───────────────────────────────────────────────────────
 app.use('/auth', googleRoutes);

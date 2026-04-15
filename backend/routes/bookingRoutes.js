@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const requireOwnerVerification = require('../middleware/requireOwnerVerification');
+const notificationService = require('../utils/notificationService');
 const router = express.Router();
 
 // Auth middleware (can be extracted to middleware folder later)
@@ -78,6 +79,22 @@ router.post('/', auth, async (req, res) => {
         );
 
         await connection.commit();
+
+        // ─── SEND NOTIFICATION TO OWNER ───
+        try {
+            const [[owner]] = await db.execute(
+                'SELECT u.id, u.email FROM users u JOIN rooms r ON r.owner_id = u.id WHERE r.id = ?', 
+                [room_id]
+            );
+            const [[tenant]] = await db.execute('SELECT name, email FROM users WHERE id = ?', [req.user.id]);
+            
+            if (owner && tenant) {
+                notificationService.sendBookingAlertToOwner(owner.id, owner.email, tenant.email, tenant.name, room);
+            }
+        } catch (mailError) {
+            console.error('Owner notification error:', mailError);
+        }
+
         res.status(201).json({ message: 'Booking request successful! Status: Pending Approval', bookingId: result.insertId });
     } catch (error) {
         await connection.rollback();
@@ -169,6 +186,18 @@ router.put('/:id/confirm', adminAuth, async (req, res) => {
         );
 
         await connection.commit();
+
+        // ─── SEND NOTIFICATION TO TENANT ───
+        try {
+            const [[tenant]] = await db.execute('SELECT name, email FROM users WHERE id = ?', [booking.user_id]);
+            const [[room]] = await db.execute('SELECT type, area, city FROM rooms WHERE id = ?', [booking.room_id]);
+            if (tenant && room) {
+                notificationService.sendBookingStatusUpdateToTenant(booking.user_id, tenant.email, tenant.name, room, 'confirmed');
+            }
+        } catch (mailError) {
+            console.error('Tenant notification error:', mailError);
+        }
+
         res.json({ message: 'Booking confirmed and commission generated successfully' });
     } catch (error) {
         await connection.rollback();
@@ -230,6 +259,21 @@ router.put('/:id/status', ownerOrAdminAuth, requireOwnerVerification, async (req
         }
 
         await connection.commit();
+
+        // ─── SEND NOTIFICATION TO TENANT ───
+        try {
+            if (status === 'confirmed' || status === 'rejected') {
+                const [[tenant]] = await db.execute('SELECT name, email FROM users WHERE id = ?', [booking.user_id]);
+                const [[room]] = await db.execute('SELECT type, area, city FROM rooms WHERE id = ?', [booking.room_id]);
+                
+                if (tenant && room) {
+                    notificationService.sendBookingStatusUpdateToTenant(booking.user_id, tenant.email, tenant.name, room, status);
+                }
+            }
+        } catch (mailError) {
+            console.error('Tenant notification error:', mailError);
+        }
+
         res.json({ message: `Booking status updated to ${status}` });
     } catch (error) {
         await connection.rollback();

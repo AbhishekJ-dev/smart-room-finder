@@ -16,6 +16,7 @@ import AdminBookings from './pages/admin/AdminBookings';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminPlans from './pages/admin/AdminPlans';
 import SubscriptionPage from './pages/SubscriptionPage';
+import NotificationsPage from './pages/NotificationsPage';
 import { useAuth } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 
@@ -125,6 +126,7 @@ function App() {
           <Route path="/user-dashboard" element={<ProtectedRoute allowedRole="user"><UserDashboard /></ProtectedRoute>} />
           <Route path="/subscribe" element={<ProtectedRoute allowedRole="user"><SubscriptionPage /></ProtectedRoute>} />
           <Route path="/owner-dashboard" element={<ProtectedRoute allowedRole="owner"><OwnerDashboard /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
           
           {/* Admin Routes */}
           <Route path="/admin-dashboard" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />

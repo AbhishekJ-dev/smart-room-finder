@@ -2,6 +2,7 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { generateOTP, sendOTP } = require('../utils/otpService');
+const notificationService = require('../utils/notificationService');
 
 exports.forgotPassword = async (req, res) => {
     try {
@@ -161,6 +162,9 @@ exports.login = async (req, res) => {
                 is_verified: !!user.is_verified 
             }
         });
+
+        // Trigger login notification asynchronously
+        notificationService.sendLoginNotification(user).catch(err => console.error('Login email error:', err));
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: error.message });
@@ -218,6 +222,9 @@ exports.completeGoogleRegistration = async (req, res) => {
                 is_verified: true
             }
         });
+
+        // Trigger login notification for Google users
+        notificationService.sendLoginNotification({ name, email }).catch(err => console.error('Login email error:', err));
 
     } catch (error) {
         await connection.rollback();

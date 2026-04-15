@@ -5,6 +5,7 @@ import logo from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Profile from '../dashboard/Profile';
+import NotificationBell from '../dashboard/NotificationBell';
 
 export function DashboardLayout({ children, title, subtitle, navItems = [], activeNav, onNavClick, headerActions }) {
   const { user, logout } = useAuth();
@@ -163,10 +164,11 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
             </button>
             <div>
               <h1 className="text-lg font-bold text-[#1E293B] leading-tight">{title}</h1>
-              {subtitle && <p className="text-xs text-[#94A3B8] font-medium leading-tight mt-0.5">{subtitle}</p>}
+              {subtitle && <div className="text-xs text-[#94A3B8] font-medium leading-tight mt-0.5">{subtitle}</div>}
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <NotificationBell />
             {headerActions}
           </div>
         </header>

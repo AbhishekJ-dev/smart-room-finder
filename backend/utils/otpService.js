@@ -21,29 +21,36 @@ const sendOTP = async (email, otp, type = 'verification') => {
                   'Login Verification';
     
     const htmlContent = `
-        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; padding: 40px; border-radius: 16px; background-color: #ffffff;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #2563eb; margin: 0; font-size: 28px;">Smart Room Finder</h1>
-                <p style="color: #64748b; font-size: 14px; margin-top: 5px;">Secure Property Search</p>
-            </div>
-            
-            <div style="background: #f8fafc; padding: 30px; border-radius: 12px; border: 1px solid #f1f5f9; text-align: center;">
-                <h3 style="margin-top: 0; color: #1e293b; font-size: 18px;">${title}</h3>
-                <p style="color: #475569; font-size: 16px; margin-bottom: 25px;">Please use the following One-Time Password (OTP) to complete your action:</p>
-                
-                <div style="background: #ffffff; display: inline-block; padding: 15px 40px; border-radius: 10px; border: 2px solid #2563eb; margin-bottom: 20px;">
-                    <span style="font-size: 32px; font-weight: 800; color: #1e3a8a; letter-spacing: 5px;">${otp}</span>
+        <div style="background-color: #f4f7f9; padding: 50px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center;">
+                <!-- Header -->
+                <div style="background-color: #2196F3; padding: 30px;">
+                    <h2 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;">Verify Your Email 🔐</h2>
                 </div>
                 
-                <p style="color: #ef4444; font-size: 13px; font-weight: 600; margin-top: 10px;">(This code is valid for 5 minutes only)</p>
-            </div>
-            
-            <div style="margin-top: 30px; border-top: 1px solid #f1f5f9; pt-20">
-                <p style="font-size: 12px; color: #94a3b8; text-align: center; line-height: 1.6;">
-                    If you did not request this verification, you can safely ignore this email.
-                    <br>
-                    © 2026 Smart Room Finder. All rights reserved.
-                </p>
+                <!-- Body -->
+                <div style="padding: 40px 30px;">
+                    <p style="color: #546e7a; font-size: 16px; margin-bottom: 25px;">Hello,</p>
+                    <p style="color: #546e7a; font-size: 16px; margin-bottom: 25px;">Your OTP for verification is:</p>
+                    
+                    <div style="background-color: #e3f2fd; padding: 25px; border-radius: 12px; margin: 20px 0; border: 2px solid #bbdefb;">
+                        <span style="font-size: 38px; font-weight: 800; color: #1565c0; letter-spacing: 8px;">${otp}</span>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 15px; background-color: #fff9c4; border-radius: 8px; border: 1px solid #fff176;">
+                        <p style="color: #f57f17; font-size: 13px; font-weight: 600; margin: 0;">⚠️ Security Notice</p>
+                        <p style="color: #f57f17; font-size: 13px; margin: 5px 0 0 0;">OTP valid for 5 minutes. Do not share this OTP with anyone.</p>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div style="padding: 25px; background-color: #fafafa; border-top: 1px solid #eeeeee;">
+                    <p style="color: #90a4ae; font-size: 12px; line-height: 1.5; margin: 0;">
+                        If you didn't request this, you can safely ignore this email.
+                        <br>
+                        © 2026 Smart Room Finder. Modern Living, Simplified.
+                    </p>
+                </div>
             </div>
         </div>
     `;
