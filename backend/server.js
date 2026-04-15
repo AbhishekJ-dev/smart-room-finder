@@ -22,23 +22,33 @@ const allowedOrigins = [
   'http://localhost:5173', 
   'http://localhost:3000', 
   'http://127.0.0.1:5174', 
-  'http://localhost:5174'
+  'http://localhost:5174',
+  'https://smart-room-finder.vercel.app'
 ];
 
 if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
+  // Add env-defined URL after removing any trailing slash for consistency
+  const formattedUrl = process.env.FRONTEND_URL.replace(/\/$/, '');
+  if (!allowedOrigins.includes(formattedUrl)) {
+    allowedOrigins.push(formattedUrl);
+  }
 }
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) === -1) {
+    // Check if origin matches any allowed origin (ignoring trailing slashes)
+    const sanitizedOrigin = origin.replace(/\/$/, '');
+    const isAllowed = allowedOrigins.some(o => o.replace(/\/$/, '') === sanitizedOrigin);
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked for origin:', origin);
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+      callback(new Error(msg), false);
     }
-    return callback(null, true);
   },
   credentials: true,
 }));
