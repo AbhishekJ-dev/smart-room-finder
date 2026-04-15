@@ -5,7 +5,7 @@ import { Building2, MapPin, Star, Shield, Zap, Home, CheckCircle } from 'lucide-
 import axios from 'axios';
 import logo from '../../assets/logo.png';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
 
 export function AuthLayout({ children, title, subtitle }) {
   const [stats, setStats] = React.useState({

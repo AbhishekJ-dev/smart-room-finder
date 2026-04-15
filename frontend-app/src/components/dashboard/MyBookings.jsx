@@ -4,7 +4,7 @@ import { Home, MapPin, CreditCard, Search, Calendar, ChevronRight } from 'lucide
 import axios from 'axios';
 import { Badge } from '../ui/Badge';
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`;
 
 const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
     const [bookings, setBookings] = useState([]);
@@ -85,7 +85,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                     {/* Room Image */}
                     <div className="w-full sm:w-40 h-40 shrink-0 relative overflow-hidden">
                         <img 
-                            src={booking.image ? `http://localhost:5000${booking.image}` : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400'} 
+                            src={booking.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${booking.image}` : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400'} 
                             alt={booking.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />

@@ -108,7 +108,7 @@ const LoginPage = () => {
       <button
         type="button"
         onClick={() => {
-          window.top.location.href = 'http://localhost:5000/auth/google';
+          window.top.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/google`;
         }}
         className="w-full py-3.5 bg-white border border-[#E2E8F0] shadow-sm rounded-xl font-bold text-[#1E293B] flex items-center justify-center gap-3 hover:bg-[#F8FAFC] hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
       >

@@ -12,7 +12,7 @@ const AdminBookings = () => {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/admin/bookings', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(res.data);
@@ -28,7 +28,7 @@ const AdminBookings = () => {
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`http://localhost:5000/api/admin/bookings/${id}/status`, { status }, {
+      await axios.patch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/bookings/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBookings();

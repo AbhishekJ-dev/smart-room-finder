@@ -8,7 +8,7 @@ import { AdminLayout } from '../../components/layouts/AdminLayout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const API = 'http://localhost:5000/api/admin';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin`;
 
 const timeAgo = (dateStr) => {
   if (!dateStr) return '—';

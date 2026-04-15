@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 
-const API = 'http://localhost:5000/api/admin';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin`;
 
 const AdminProperties = () => {
   const [view, setView] = useState('owners'); // 'owners' | 'detail'
@@ -91,7 +91,7 @@ const AdminProperties = () => {
       const photos = typeof property.photos === 'string'
         ? JSON.parse(property.photos) : (property.photos || []);
       const filtered = photos.filter(Boolean);
-      return filtered.length > 0 ? `http://localhost:5000${filtered[0]}` : null;
+      return filtered.length > 0 ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${filtered[0]}` : null;
     } catch { return null; }
   };
 

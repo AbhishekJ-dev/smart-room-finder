@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 
-const API = 'http://localhost:5000/api/admin/plans';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/plans`;
 
 const AdminPlans = () => {
   const [plans, setPlans] = useState([]);

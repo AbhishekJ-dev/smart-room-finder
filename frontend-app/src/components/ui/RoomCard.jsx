@@ -16,7 +16,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
   } catch { photos = []; }
 
   const imgSrc = photos.length > 0
-    ? `http://localhost:5000${photos[0]}`
+    ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${photos[0]}`
     : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
 
   const badge = TENANT_BADGE[room.tenant_type] || TENANT_BADGE['Anyone'];

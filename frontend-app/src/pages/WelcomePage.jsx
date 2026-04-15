@@ -10,7 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import { LandingLayout } from '../components/layouts/LandingLayout';
 import axios from 'axios';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
 
 const CATEGORIES = [
   { label: '1 BHK', emoji: '🏠', desc: 'Perfect for singles' },
@@ -523,7 +523,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
   } catch { photos = []; }
 
   const imgSrc = photos.length > 0
-    ? `http://localhost:5000${photos[0]}`
+    ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${photos[0]}`
     : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
 
   const [isLiked, setIsLiked] = useState(false);

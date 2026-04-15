@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { DashboardLayout } from '../components/layouts/DashboardLayout';
 
-const API_URL = 'http://localhost:5000/api/notifications';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/notifications`;
 
 const NotificationsPage = () => {
     const { token } = useAuth();
