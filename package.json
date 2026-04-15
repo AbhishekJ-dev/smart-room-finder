@@ -7,8 +7,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npx nodemon server.js",
     "client": "cd frontend-app && npm run dev",
-    "install-all": "cd backend && npm install && cd ../frontend-app && npm install",
-    "build": "cd frontend-app && npm install && npm run build && mv dist ../dist"
+    "install-all": "cd backend && npm install && cd ../frontend-app && npm install"
   },
   "keywords": [],
   "author": "",
