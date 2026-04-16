@@ -153,16 +153,16 @@ const WelcomePage = () => {
               transition={{ duration: 0.5, delay: 0.35 }}
               className="max-w-2xl mx-auto mb-10"
             >
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2 flex flex-col sm:flex-row gap-2 shadow-2xl">
-                <div className="flex items-center gap-3 flex-1 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all">
-                  <MapPin size={17} className="text-[#60A5FA] shrink-0" />
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2.5 flex flex-col sm:flex-row gap-3 shadow-2xl">
+                <div className="flex items-center gap-3 flex-1 px-4 py-4 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all">
+                  <MapPin size={18} className="text-[#60A5FA] shrink-0" />
                   <input
                     type="text"
                     placeholder="Location, area, city..."
                     value={locationSearch}
                     onChange={e => setLocationSearch(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                    className="bg-transparent outline-none text-sm text-white placeholder-[#64748B] font-medium w-full"
+                    className="bg-transparent outline-none text-base text-white placeholder-[#64748B] font-medium w-full"
                   />
                 </div>
                 <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">

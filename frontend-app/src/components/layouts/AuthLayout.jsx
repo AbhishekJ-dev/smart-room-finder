@@ -130,7 +130,7 @@ export function AuthLayout({ children, title, subtitle }) {
           initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full max-w-[480px] px-6 relative z-10"
+          className="w-full sm:max-w-[480px] px-4 sm:px-6 relative z-10"
         >
           {/* Header */}
           <div className="text-center mb-6">

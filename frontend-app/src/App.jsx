@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage';
 import SplashScreen from './pages/SplashScreen';
 import RegisterPage from './pages/RegisterPage';
@@ -135,7 +135,9 @@ function App() {
           <Route path="/admin/bookings" element={<ProtectedRoute allowedRole="admin"><AdminBookings /></ProtectedRoute>} />
           <Route path="/admin/subscriptions" element={<ProtectedRoute allowedRole="admin"><AdminSubscriptions /></ProtectedRoute>} />
           <Route path="/admin/plans" element={<ProtectedRoute allowedRole="admin"><AdminPlans /></ProtectedRoute>} />
-        </Routes>
+          {/* Fallback for manually typed routes that do not exist */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
       </div>
     </Router>
   );

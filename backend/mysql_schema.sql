@@ -1,8 +1,6 @@
--- MySQL Schema Creation Script for Smart Room Finder
--- Generated for MySQL Workbench
 
-CREATE DATABASE IF NOT EXISTS smart_room_finder;
-USE smart_room_finder;
+-- Schema for Smart Room Finder
+
 
 -- 1. Users Table (Core Auth)
 CREATE TABLE IF NOT EXISTS users (
@@ -17,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     otp_expiry DATETIME,
     temp_email VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL,
     INDEX idx_user_email (email)
 );
 
@@ -37,7 +35,7 @@ CREATE TABLE IF NOT EXISTS owners (
 CREATE TABLE IF NOT EXISTS admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL UNIQUE,
-    permissions JSON,
+    permissions TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -58,7 +56,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     description TEXT,
     is_booked TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL,
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_room_location (location),
     INDEX idx_room_type (type)
