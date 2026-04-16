@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 const requireOwnerVerification = require('../middleware/requireOwnerVerification');
 const router = express.Router();
@@ -19,9 +20,15 @@ const auth = (req, res, next) => {
     }
 };
 
+// Ensure uploads directory exists for Multer
+const uploadDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Multer config for photo uploads
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, path.join(__dirname, '..', 'uploads')),
+    destination: (req, file, cb) => cb(null, uploadDir),
     filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
@@ -101,8 +108,8 @@ router.get('/', async (req, res) => {
         const [rooms] = await db.execute(`
             SELECT r.*, u.name as owner_name, 
                    IFNULL(
-                       (SELECT JSON_ARRAYAGG(image_url) FROM room_images WHERE room_id = r.id),
-                       '[]'
+                       (SELECT GROUP_CONCAT(image_url) FROM room_images WHERE room_id = r.id),
+                       ''
                    ) as photos,
                    EXISTS (SELECT 1 FROM bookings b WHERE b.room_id = r.id AND b.status = 'pending') as has_pending
             FROM rooms r 
@@ -115,7 +122,15 @@ router.get('/', async (req, res) => {
         // 2. Hide for authenticated users WITHOUT an active subscription
         const processedRooms = await Promise.all(rooms.map(async (r) => {
             let photos = r.photos;
-            try { if (typeof photos === 'string') photos = JSON.parse(photos); } catch (e) { photos = []; }
+            if (typeof photos === 'string') {
+                if (photos.startsWith('[')) {
+                    try { photos = JSON.parse(photos); } catch (e) { photos = []; }
+                } else {
+                    photos = photos ? photos.split(',') : [];
+                }
+            } else if (!Array.isArray(photos)) {
+                photos = [];
+            }
             
             const roomData = { ...r, photos: photos || [], is_booked: !!r.is_booked, has_pending: !!r.has_pending };
             
@@ -154,8 +169,8 @@ router.get('/my-rooms', auth, async (req, res) => {
         const [rooms] = await db.execute(`
             SELECT r.*, 
                    IFNULL(
-                       (SELECT JSON_ARRAYAGG(image_url) FROM room_images WHERE room_id = r.id),
-                       '[]'
+                       (SELECT GROUP_CONCAT(image_url) FROM room_images WHERE room_id = r.id),
+                       ''
                    ) as photos,
                    EXISTS (SELECT 1 FROM bookings b WHERE b.room_id = r.id AND b.status = 'pending') as has_pending
             FROM rooms r
@@ -165,7 +180,15 @@ router.get('/my-rooms', auth, async (req, res) => {
         
         res.json(rooms.map(r => {
             let photos = r.photos;
-            try { if (typeof photos === 'string') photos = JSON.parse(photos); } catch (e) { photos = []; }
+            if (typeof photos === 'string') {
+                if (photos.startsWith('[')) {
+                    try { photos = JSON.parse(photos); } catch (e) { photos = []; }
+                } else {
+                    photos = photos ? photos.split(',') : [];
+                }
+            } else if (!Array.isArray(photos)) {
+                photos = [];
+            }
             return { ...r, photos: photos || [], is_booked: !!r.is_booked, has_pending: !!r.has_pending };
         }));
     } catch (error) {
