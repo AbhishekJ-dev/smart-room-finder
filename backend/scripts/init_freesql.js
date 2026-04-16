@@ -37,7 +37,9 @@ async function initDatabase() {
             { table: 'rooms', column: 'tenant_type', definition: 'VARCHAR(50) DEFAULT "Anyone"' },
             { table: 'bookings', column: 'rating', definition: 'INT DEFAULT 0' },
             { table: 'users', column: 'is_deleted', definition: 'TINYINT(1) DEFAULT 0' },
-            { table: 'subscriptions', column: 'is_active', definition: 'TINYINT(1) DEFAULT 1' }
+            { table: 'subscriptions', column: 'is_active', definition: 'TINYINT(1) DEFAULT 1' },
+            { table: 'users', column: 'google_id', definition: 'VARCHAR(255) UNIQUE DEFAULT NULL' },
+            { table: 'users', column: 'profile_pic', definition: 'VARCHAR(500) DEFAULT NULL' }
         ];
 
         for (const m of migrations) {
