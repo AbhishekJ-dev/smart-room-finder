@@ -85,7 +85,12 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                     {/* Room Image */}
                     <div className="w-full sm:w-40 h-40 shrink-0 relative overflow-hidden">
                         <img 
-                            src={booking.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${booking.image}` : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400'} 
+                            src={(() => {
+                                const path = booking.image;
+                                if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400';
+                                if (path.startsWith('http')) return path;
+                                return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+                            })()} 
                             alt={booking.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />

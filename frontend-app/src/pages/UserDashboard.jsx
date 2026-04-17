@@ -102,8 +102,14 @@ const UserDashboard = () => {
     }
   };
 
+  const getImgSrc = (path) => {
+    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+  };
+
   const openLightbox = (photos, startIdx = 0) => {
-    setLightboxImages(photos.map(p => `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${p}`));
+    setLightboxImages(photos.map(p => getImgSrc(p)));
     setLightboxIndex(startIdx);
     setLightboxOpen(true);
   };
@@ -302,9 +308,13 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
     photos = photos.filter(Boolean);
   } catch { photos = []; }
 
-  const imgSrc = photos.length > 0
-    ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${photos[0]}`
-    : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+  const getImgSrc = (path) => {
+    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+  };
+
+  const imgSrc = getImgSrc(photos[0]);
 
   const badge = TENANT_BADGE[room.tenant_type] || TENANT_BADGE['Anyone'];
   const isMyBooking = userBookings.some(b => b.room_id === room.id && b.status === 'confirmed');

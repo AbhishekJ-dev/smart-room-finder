@@ -91,7 +91,11 @@ const AdminProperties = () => {
       const photos = typeof property.photos === 'string'
         ? JSON.parse(property.photos) : (property.photos || []);
       const filtered = photos.filter(Boolean);
-      return filtered.length > 0 ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${filtered[0]}` : null;
+      if (filtered.length === 0) return null;
+      
+      const path = filtered[0];
+      if (path.startsWith('http')) return path;
+      return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
     } catch { return null; }
   };
 

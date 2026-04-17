@@ -1,9 +1,7 @@
 const express = require('express');
 const db = require('../config/db');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const { upload } = require('../config/cloudinaryConfig');
 const requireOwnerVerification = require('../middleware/requireOwnerVerification');
 const router = express.Router();
 
@@ -19,19 +17,6 @@ const auth = (req, res, next) => {
         res.status(401).json({ message: 'Invalid token' });
     }
 };
-
-// Ensure uploads directory exists for Multer
-const uploadDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Multer config for photo uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadDir),
-    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
 
 // ─── ADD ROOM (Owner only, minimum 5 photos) ───
 router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), async (req, res) => {
@@ -73,7 +58,8 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
         for (let i = 0; i < req.files.length; i++) {
             const file = req.files[i];
             const isPrimary = i === 0 ? 1 : 0;
-            const imageUrl = `/uploads/${file.filename}`;
+            // Cloudinary storage provides the URL in file.path (or file.secure_url depending on multer-storage-cloudinary version)
+            const imageUrl = file.path; 
             await connection.execute(
                 'INSERT INTO room_images (room_id, image_url, is_primary) VALUES (?, ?, ?)',
                 [roomId, imageUrl, isPrimary]

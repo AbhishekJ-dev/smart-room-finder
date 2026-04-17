@@ -106,8 +106,14 @@ const OwnerDashboard = () => {
     }
   };
 
+  const getImgSrc = (path) => {
+    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+  };
+
   const openLightbox = (photos, startIdx = 0) => {
-    setLightboxImages(photos.map(p => `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${p}`));
+    setLightboxImages(photos.map(p => getImgSrc(p)));
     setLightboxIndex(startIdx);
     setLightboxOpen(true);
   };
@@ -456,9 +462,13 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
     photos = photos.filter(Boolean);
   } catch { photos = []; }
 
-  const imgSrc = photos.length > 0
-    ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${photos[currentImg] || photos[0]}`
-    : 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600';
+  const getImgSrc = (path) => {
+    if (!path) return 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+  };
+
+  const imgSrc = getImgSrc(photos[currentImg] || photos[0]);
 
   return (
     <motion.div

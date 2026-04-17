@@ -27,7 +27,7 @@ router.get('/dashboard', adminAuth, async (req, res) => {
             db.execute('SELECT COUNT(*) as count FROM rooms'),
             db.execute('SELECT COUNT(*) as count FROM bookings'),
             db.execute('SELECT COUNT(*) as count FROM subscriptions WHERE is_active = 1 AND end_date >= NOW()'),
-            db.execute('SELECT COALESCE(SUM(price), 0) as total FROM subscriptions WHERE payment_status = "paid"')
+            db.execute('SELECT COALESCE(SUM(price), 0) as total FROM subscriptions WHERE payment_status = "completed"')
         ]);
 
         res.json({

@@ -522,9 +522,13 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
     photos = photos.filter(Boolean);
   } catch { photos = []; }
 
-  const imgSrc = photos.length > 0
-    ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${photos[0]}`
-    : 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+  const getImgSrc = (path) => {
+    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+  };
+
+  const imgSrc = getImgSrc(photos[0]);
 
   const [isLiked, setIsLiked] = useState(false);
 
