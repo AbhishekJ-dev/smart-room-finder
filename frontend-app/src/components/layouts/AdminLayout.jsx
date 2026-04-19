@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import {
   BarChart3, Users, ShieldCheck, Home, CalendarCheck,
-  LogOut, User as UserIcon, Search, Menu, X, Building2, ChevronRight, Linkedin
+  LogOut, User as UserIcon, Search, Menu, X, Building2, ChevronRight
 } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
@@ -148,7 +148,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
         {/* Footer */}
         <footer className="border-t border-[#E2E8F0] bg-white px-8 py-4 flex items-center justify-between mt-auto">
           <span className="text-xs font-semibold text-[#2563EB]">SmartRoom Finder Admin</span>
-          <span className="text-[10px] text-[#94A3B8] flex items-center">© 2026 <a href="https://www.linkedin.com/in/abhishek-j-5ab635391" target="_blank" rel="noopener noreferrer" className="ml-1 text-[#60A5FA] font-medium hover:text-[#2563EB] transition-colors inline-flex items-center gap-1">Abhishek J <Linkedin size={10} /></a></span>
+          <span className="text-[10px] text-[#94A3B8] flex items-center">© 2026 <a href="https://www.linkedin.com/in/abhishek-j-5ab635391" target="_blank" rel="noopener noreferrer" className="ml-1 text-[#60A5FA] font-medium hover:text-[#2563EB] transition-colors inline-flex items-center gap-1">Abhishek J <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></span>
         </footer>
       </main>
     </div>
