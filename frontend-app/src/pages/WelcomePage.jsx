@@ -310,17 +310,35 @@ const WelcomePage = () => {
               <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10"
                 style={{ background: 'radial-gradient(circle, #34D399, transparent)', transform: 'translate(-30%, 30%)' }} />
               <div className="relative z-10">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">See All Listings for Free</h3>
+                {/* Badge */}
+                <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase"
+                  style={{ background: 'rgba(96,165,250,0.15)', color: '#60A5FA', border: '1px solid rgba(96,165,250,0.3)' }}>
+                  Free to Join · Plans from ₹99
+                </span>
+
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
+                  Browse Listings Free. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
+                </h3>
                 <p className="text-[#94A3B8] mb-8 text-sm max-w-md mx-auto leading-relaxed">
-                  Register free to unlock owner contacts, full photo galleries, exact addresses, and instant booking.
+                  Create a free account to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
                 </p>
-                <button
-                  onClick={() => navigate('/register')}
-                  className="inline-flex items-center gap-2 bg-white text-[#1E293B] font-bold px-8 py-3.5 rounded-xl hover:bg-[#F1F5F9] transition-all cursor-pointer active:scale-[0.97] text-sm"
-                  style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}
-                >
-                  Create Free Account <ArrowRight size={16} />
-                </button>
+
+                {/* Two CTAs */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    onClick={() => navigate('/register')}
+                    className="inline-flex items-center gap-2 bg-white text-[#1E293B] font-bold px-8 py-3.5 rounded-xl hover:bg-[#F1F5F9] transition-all cursor-pointer active:scale-[0.97] text-sm"
+                    style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}
+                  >
+                    Create Account <ArrowRight size={16} />
+                  </button>
+                  <button
+                    onClick={() => navigate('/register')}
+                    className="inline-flex items-center gap-2 font-semibold px-8 py-3.5 rounded-xl transition-all cursor-pointer active:scale-[0.97] text-sm border border-white/20 text-white/80 hover:bg-white/10"
+                  >
+                    See Plans →
+                  </button>
+                </div>
               </div>
             </motion.div>
           )}
