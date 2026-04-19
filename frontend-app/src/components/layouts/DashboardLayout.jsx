@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, Menu, X, Building2, ChevronRight, User, Settings } from 'lucide-react';
+import { LogOut, Menu, X, Building2, ChevronRight, User, Settings, Linkedin } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -186,7 +186,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         {/* Footer */}
         <footer className="border-t border-[#E2E8F0] bg-white px-8 py-4 flex items-center justify-between shrink-0">
           <span className="text-xs font-semibold text-[#2563EB]">SmartRoom Finder</span>
-          <span className="text-[10px] text-[#94A3B8]">© 2026 Abhishek J</span>
+          <span className="text-[10px] text-[#94A3B8] flex items-center">© 2026 <a href="https://www.linkedin.com/in/abhishek-j-5ab635391" target="_blank" rel="noopener noreferrer" className="ml-1 text-[#60A5FA] font-medium hover:text-[#2563EB] transition-colors inline-flex items-center gap-1">Abhishek J <Linkedin size={10} /></a></span>
         </footer>
       </div>
 

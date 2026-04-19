@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Home, Search, CalendarCheck, UserCircle, LogOut, Menu, X, ChevronRight, Building2 } from 'lucide-react';
+import { Home, Search, CalendarCheck, UserCircle, LogOut, Menu, X, ChevronRight, Building2, Linkedin } from 'lucide-react';
 import logo from '../../assets/logo.png';
 
 export function LandingLayout({ children }) {
@@ -210,7 +210,7 @@ export function LandingLayout({ children }) {
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-[#64748B] text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
-            <p className="text-[#64748B] text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
+            <p className="text-[#64748B] text-sm flex items-center">Designed & Built by <a href="https://www.linkedin.com/in/abhishek-j-5ab635391" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium ml-1 flex items-center gap-1.5 hover:text-white transition-colors">Abhishek J <Linkedin size={14} /></a></p>
           </div>
         </div>
       </footer>
