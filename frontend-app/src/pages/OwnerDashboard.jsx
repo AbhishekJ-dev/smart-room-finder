@@ -463,12 +463,16 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
   } catch { photos = []; }
 
   const getImgSrc = (path) => {
-    if (!path) return 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=600';
+    if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const imgSrc = getImgSrc(photos[currentImg] || photos[0]);
+  
+  // Combine City and Area for a more descriptive location
+  const displayLocation = room.city ? `${room.city}, ${room.area}` : room.area;
 
   return (
     <motion.div
@@ -524,7 +528,7 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col">
         <h3 className="font-semibold text-[#1E293B] text-base mb-3 truncate">
-          {room.city ? `${room.city}, ` : ''}{room.area}
+          {displayLocation}
         </h3>
 
         <div className="space-y-2 mb-4 text-sm">
@@ -628,8 +632,8 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
   };
 
   const validateStep1 = () => {
-    if (!formData.area.trim() || !formData.location.trim() || !formData.contact.trim()) {
-      setError('Please fill Area, Location, and Contact fields.');
+    if (!formData.city.trim() || !formData.area.trim() || !formData.location.trim() || !formData.contact.trim()) {
+      setError('Please fill City, Area, Location, and Contact fields.');
       return false;
     }
     if (!formData.price_monthly && !formData.price_daily) {
@@ -643,7 +647,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (photos.length < 5) { setError(`Minimum 5 photos required. You have ${photos.length}.`); return; }
+    if (photos.length < 1) { setError('At least 1 property photo is required.'); return; }
     setLoading(true);
     try {
       const data = new FormData();
@@ -655,7 +659,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
       });
       onSuccess();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to add property. Please try again.');
+      setError(err.response?.data?.message || 'Failed to add property. The image upload might have failed.');
     } finally {
       setLoading(false);
     }
@@ -752,11 +756,11 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
           </div>
         )}
 
-        {step === 2 && (
+      {step === 2 && (
           <div className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-[#64748B] mb-3">
-                Property Photos <span className="text-[#DC2626]">(minimum 5 required)</span>
+                Property Photos <span className="text-[#DC2626]">(minimum 1 required)</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {previews.map((p, i) => (
@@ -777,7 +781,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                   <input type="file" accept="image/*" multiple onChange={handlePhotoSelect} className="hidden" />
                 </label>
               </div>
-              <p className="text-xs text-[#94A3B8] mt-2">{previews.length}/5+ photos added</p>
+              <p className="text-xs text-[#94A3B8] mt-2">{previews.length}/1+ photos added</p>
             </div>
 
             <div>

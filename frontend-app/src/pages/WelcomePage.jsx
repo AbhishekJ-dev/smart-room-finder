@@ -523,12 +523,16 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
   } catch { photos = []; }
 
   const getImgSrc = (path) => {
-    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const imgSrc = getImgSrc(photos[0]);
+  
+  // Combined location for better display
+  const displayLocation = room.city ? `${room.city}, ${room.area}` : room.area;
 
   const [isLiked, setIsLiked] = useState(false);
 
@@ -579,7 +583,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-[#1E293B] text-base leading-tight truncate mb-2">{room.area}</h3>
+        <h3 className="font-semibold text-[#1E293B] text-base leading-tight truncate mb-2">{displayLocation}</h3>
 
         <div className="flex items-center gap-1.5 text-[#64748B] text-xs mb-4">
           <MapPin size={12} className="text-[#2563EB] shrink-0" />

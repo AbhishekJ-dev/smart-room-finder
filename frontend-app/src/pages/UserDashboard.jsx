@@ -309,12 +309,16 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
   } catch { photos = []; }
 
   const getImgSrc = (path) => {
-    if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
+    if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const imgSrc = getImgSrc(photos[0]);
+  
+  // Combine City and Area for a more descriptive location
+  const displayLocation = room.city ? `${room.city}, ${room.area}` : room.area;
 
   const badge = TENANT_BADGE[room.tenant_type] || TENANT_BADGE['Anyone'];
   const isMyBooking = userBookings.some(b => b.room_id === room.id && b.status === 'confirmed');
@@ -361,7 +365,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
         {/* Title + Price */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <h3 className="font-semibold text-[#1E293B] text-base leading-snug flex-1 min-w-0 truncate">
-            {room.city ? `${room.city}, ` : ''}{room.area}
+            {displayLocation}
           </h3>
           <div className="text-right shrink-0">
             <p className="text-[#2563EB] font-bold text-lg leading-tight">₹{room.price_monthly?.toLocaleString()}</p>

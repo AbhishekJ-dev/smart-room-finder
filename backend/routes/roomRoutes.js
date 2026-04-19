@@ -23,15 +23,19 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
     const connection = await db.getConnection();
     try {
 
-        if (!req.files || req.files.length < 5) {
-            console.warn('Add room failed: Less than 5 photos');
-            return res.status(400).json({ message: 'Minimum 5 photos are required' });
-        }
-
-        let { type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, area, location, city, contact, description, tenant_type, annualRent } = req.body;
+        let { type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, area, city, location, contact, description, tenant_type, annualRent } = req.body;
 
         if (!annualRent || String(annualRent).trim() === '') {
             annualRent = (parseFloat(price_monthly) || 0) * 12;
+        }
+
+        // Validation
+        if (!city || city.trim() === '') {
+            return res.status(400).json({ message: 'Validation Error: City is required.' });
+        }
+
+        if (!req.files || req.files.length < 1) {
+            return res.status(400).json({ message: 'Validation Error: At least 1 photo is required.' });
         }
 
         if (parseFloat(annualRent) < 0) {
@@ -43,36 +47,50 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
             return res.status(400).json({ message: 'Room type, area, location, and contact are required' });
         }
 
+        connection = await db.getConnection();
         await connection.beginTransaction();
 
+        // 1. Insert room
         const [result] = await connection.execute(
-            `INSERT INTO rooms (owner_id, type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, annual_rent, area, location, city, contact, description, tenant_type) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [req.user.id, type, price_daily || 0, price_weekly || 0, price_monthly || 0, price_quarterly || 0, price_yearly || 0, annualRent || 0, area, location, city || '', contact, description || '', tenant_type || 'Anyone']
+            `INSERT INTO rooms (
+                owner_id, type, price_daily, price_weekly, price_monthly, 
+                price_quarterly, price_yearly, area, city, location, 
+                contact, description, annual_rent, tenant_type
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                req.user.id, type, price_daily || 0, price_weekly || 0, price_monthly || 0,
+                price_quarterly || 0, price_yearly || 0, area, city, location,
+                contact, description, annualRent || 0, tenant_type || 'Anyone'
+            ]
         );
-
         const roomId = result.insertId;
-        console.log('Room inserted with ID:', roomId);
 
-        // Insert photos into room_images
-        for (let i = 0; i < req.files.length; i++) {
-            const file = req.files[i];
-            const isPrimary = i === 0 ? 1 : 0;
-            // Cloudinary storage provides the URL in file.path (or file.secure_url depending on multer-storage-cloudinary version)
-            const imageUrl = file.path; 
+        // 2. Insert photos
+        for (const file of req.files) {
+            // Cloudinary storage provides the URL in file.path or file.secure_url
+            const imageUrl = file.path || file.secure_url;
+            
+            if (!imageUrl) {
+                console.error('[UPLOAD ERROR] File object missing path/url:', file);
+                throw new Error('Cloudinary failed to provide a URL for the uploaded image.');
+            }
+
             await connection.execute(
-                'INSERT INTO room_images (room_id, image_url, is_primary) VALUES (?, ?, ?)',
-                [roomId, imageUrl, isPrimary]
+                'INSERT INTO room_images (room_id, image_url) VALUES (?, ?)',
+                [roomId, imageUrl]
             );
         }
 
         await connection.commit();
-        console.log('Successfully added room and images');
-        res.status(201).json({ message: 'Room added successfully', roomId });
+        res.status(201).json({ message: 'Property added successfully with Cloudinary storage!', roomId });
     } catch (error) {
         if (connection) await connection.rollback();
         console.error('CRITICAL: Add room error:', error);
-        res.status(500).json({ message: error.message || 'Failed to add room.' });
+        res.status(500).json({ 
+            message: 'Server Error while adding property.', 
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     } finally {
         if (connection) connection.release();
     }
