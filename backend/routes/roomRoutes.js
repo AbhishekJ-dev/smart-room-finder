@@ -20,8 +20,9 @@ const auth = (req, res, next) => {
 
 // ─── ADD ROOM (Owner only, minimum 5 photos) ───
 router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), async (req, res) => {
-    const connection = await db.getConnection();
+    let connection;
     try {
+        connection = await db.getConnection();
 
         let { type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, area, city, location, contact, description, tenant_type, annualRent } = req.body;
 
@@ -34,8 +35,8 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
             return res.status(400).json({ message: 'Validation Error: City is required.' });
         }
 
-        if (!req.files || req.files.length < 1) {
-            return res.status(400).json({ message: 'Validation Error: At least 1 photo is required.' });
+        if (!req.files || req.files.length < 5) {
+            return res.status(400).json({ message: 'Validation Error: At least 5 photos are required.' });
         }
 
         if (parseFloat(annualRent) < 0) {
@@ -47,7 +48,6 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
             return res.status(400).json({ message: 'Room type, area, location, and contact are required' });
         }
 
-        connection = await db.getConnection();
         await connection.beginTransaction();
 
         // 1. Insert room
@@ -60,7 +60,7 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
             [
                 req.user.id, type, price_daily || 0, price_weekly || 0, price_monthly || 0,
                 price_quarterly || 0, price_yearly || 0, area, city, location,
-                contact, description, annualRent || 0, tenant_type || 'Anyone'
+                contact, description || '', annualRent || 0, tenant_type || 'Anyone'
             ]
         );
         const roomId = result.insertId;
@@ -68,11 +68,17 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
         // 2. Insert photos
         for (const file of req.files) {
             // Cloudinary storage provides the URL in file.path or file.secure_url
-            const imageUrl = file.path || file.secure_url;
+            let imageUrl = file.path || file.secure_url;
             
+            // Handle local fallback dynamically if Cloudinary isn't configured
+            if (imageUrl && !imageUrl.startsWith('http')) {
+                // multer diskStorage assigns file.filename
+                imageUrl = `/uploads/${file.filename}`;
+            }
+
             if (!imageUrl) {
                 console.error('[UPLOAD ERROR] File object missing path/url:', file);
-                throw new Error('Cloudinary failed to provide a URL for the uploaded image.');
+                throw new Error('Upload failed to construct a valid image URL.');
             }
 
             await connection.execute(

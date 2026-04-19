@@ -1,168 +1,94 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Building2, MapPin, Star, Shield, Zap, Home, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 import logo from '../../assets/logo.png';
 
 const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
 
 export function AuthLayout({ children, title, subtitle }) {
-  const [stats, setStats] = React.useState({
+  const [stats, setStats] = useState({
     happyTenants: 0,
     liveListings: 0,
     avgRating: '4.9'
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get(`${API}/stats`)
       .then(res => setStats(res.data))
-      .catch(err => console.error('Stats fetch error in AuthLayout:', err));
+      .catch(err => console.error('Stats fetch error:', err));
   }, []);
 
   return (
-    <div className="min-h-screen flex bg-white overflow-hidden">
-
-      {/* ══════════════════════════════════
-          LEFT BRAND PANEL (Desktop Only)
-          ══════════════════════════════════ */}
-      <div className="hidden lg:flex lg:w-[45%] relative flex-col overflow-hidden shadow-[10px_0_30px_rgba(0,0,0,0.15)] z-20"
-        style={{
-          background: 'linear-gradient(145deg, #0f172a 0%, #172554 40%, #1e3a8a 100%)'
-        }}
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-white">
+      {/* 
+        LEFT SECTION (BRANDING) 
+        Mobile/Tablet: Top alignment
+        Desktop: 50% split alignment
+      */}
+      <div 
+        className="w-full lg:w-1/2 flex flex-col justify-between items-center bg-slate-900 p-8 md:p-12 lg:p-16 text-center shadow-lg lg:shadow-2xl z-10"
+        style={{ background: 'linear-gradient(145deg, #0f172a 0%, #172554 40%, #1e3a8a 100%)' }}
       >
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-40 animate-pulse mix-blend-screen pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #3b82f6 0%, transparent 60%)', animationDuration: '4s' }} />
-        <div className="absolute bottom-[-10%] right-[-20%] w-[500px] h-[500px] rounded-full opacity-30 animate-pulse mix-blend-screen pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #22c55e 0%, transparent 60%)', animationDelay: '2s', animationDuration: '5s' }} />
-
-
-
-        {/* Diagonal Light Beam */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none"
-           style={{
-             background: 'linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)',
-           }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col h-full p-10 xl:p-14">
-
-          {/* Logo */}
-          <Link to="/" className="flex flex-col items-center gap-6 group">
-            <div className="w-28 h-28 xl:w-36 xl:h-36 flex items-center justify-center overflow-hidden rounded-[2.5rem] shadow-2xl border border-white/10 group-hover:scale-105 transition-transform duration-500">
-              <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
-            </div>
-          </Link>
-
-          {/* Hero Text */}
-          <div className="mt-auto mb-20 flex-1 flex flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-
-              <h2 className="text-5xl xl:text-6xl font-black text-white mb-6 leading-[1.1] tracking-tighter">
-                Find Your<br />
-                <span className="text-transparent bg-clip-text" style={{
-                  backgroundImage: 'linear-gradient(90deg, #60A5FA 0%, #34D399 70%, #FBBF24 100%)'
-                }}>
-                  Perfect Home
-                </span>
-                <br />Smartly.
-              </h2>
-              <p className="text-[#94a3b8] text-lg leading-relaxed max-w-md font-medium text-shadow-sm">
-                Browse thousands of verified rooms across India. No brokers, no hidden fees. Just seamless booking with real owners.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Bottom Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="pt-8 border-t border-white/10 grid grid-cols-3 gap-0 backdrop-blur-sm bg-black/5 rounded-3xl"
-          >
-            {[
-              { value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants', color: '#60A5FA' },
-              { value: stats.liveListings || '50+', label: 'Live Listings', color: '#34D399' },
-              { value: `${stats.avgRating}★`, label: 'Average Rating', color: '#FCD34D' },
-            ].map((stat, i) => (
-              <div key={i} className={`text-center py-2 ${i > 0 ? 'border-l border-white/10' : ''}`}>
-                <p className="text-3xl font-black text-shadow-md" style={{ color: stat.color }}>{stat.value}</p>
-                <p className="text-[#94a3b8] text-[10px] font-bold mt-1 uppercase tracking-[0.2em]">{stat.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════
-          RIGHT FORM PANEL
-          ══════════════════════════════════ */}
-      <div className="flex-1 flex flex-col items-center justify-center relative min-h-screen py-6 overflow-y-auto"
-        style={{
-          background: 'linear-gradient(to bottom right, #f0f9ff 0%, #e0e7ff 50%, #dcfce7 100%)'
-        }}
-      >
-        {/* Dynamic Abstract Background Shapes */}
-        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full blur-[120px] pointer-events-none opacity-60"
-          style={{ background: 'radial-gradient(circle, #93c5fd 0%, transparent 60%)' }} />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full blur-[150px] pointer-events-none opacity-50"
-          style={{ background: 'radial-gradient(circle, #a7f3d0 0%, transparent 60%)' }} />
-        <div className="absolute top-[30%] left-[20%] w-[30vw] h-[30vw] rounded-full blur-[100px] pointer-events-none opacity-40 mix-blend-multiply"
-          style={{ background: 'radial-gradient(circle, #c4b5fd 0%, transparent 60%)' }} />
-
-
-
-        {/* Mobile Logo */}
-        <Link to="/" className="mb-6 lg:hidden relative z-10 bg-white/60 backdrop-blur-md p-1 rounded-3xl shadow-lg border border-white">
-          <div className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-[1.25rem]">
-            <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
+        {/* Logo Container */}
+        <Link to="/" className="mb-6 hover:scale-105 transition-transform duration-300">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center overflow-hidden rounded-[1.5rem] shadow-xl border border-white/10 bg-white/5">
+            <img src={logo} alt="SmartRoom Finder Logo" className="w-full h-full object-cover" />
           </div>
         </Link>
 
-        {/* FORM CONTAINER */}
+        {/* Branding Typography */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full sm:max-w-[480px] px-4 sm:px-6 relative z-10"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full flex-1 flex flex-col justify-center mb-6"
         >
-          {/* Header */}
-          <div className="text-center mb-6">
-            {title && (
-              <h1 className="text-4xl font-extrabold text-[#0f172a] tracking-tight mb-3 drop-shadow-sm">
-                {title}
-              </h1>
-            )}
-            {subtitle && (
-              <p className="text-[#475569] text-base font-medium max-w-[320px] mx-auto leading-relaxed">
-                {subtitle}
-              </p>
-            )}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 lg:mb-6 leading-tight tracking-tight">
+            Find Your <span className="text-blue-400">Perfect Home</span> Smartly.
+          </h2>
+          <p className="text-slate-300 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">
+            Browse thousands of verified rooms across India. No brokers, no hidden fees. Just seamless booking.
+          </p>
+        </motion.div>
+
+        {/* Responsive Stats */}
+        <div className="w-full max-w-md grid grid-cols-3 gap-2 sm:gap-4 border-t border-slate-700 pt-6 mt-auto">
+           {[
+              { value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants', color: 'text-blue-400' },
+              { value: stats.liveListings || '50+', label: 'Live Listings', color: 'text-emerald-400' },
+              { value: `${stats.avgRating}★`, label: 'Avg Rating', color: 'text-amber-400' },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center justify-center p-2 rounded-xl backdrop-blur bg-white/5 border border-white/10 shadow-sm">
+                <span className={`text-xl sm:text-2xl font-black ${stat.color} mb-1 drop-shadow-sm`}>{stat.value}</span>
+                <span className="text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-wider text-center">{stat.label}</span>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* 
+        RIGHT SECTION (FORM) 
+        Mobile/Tablet: Bottom alignment 
+        Desktop: 50% split alignment 
+      */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 px-6 sm:p-10 lg:p-16 bg-slate-50 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-[480px] bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl border border-slate-200/60"
+        >
+          {/* Form Header */}
+          <div className="text-center mb-8">
+            {title && <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mb-2 drop-shadow-sm">{title}</h1>}
+            {subtitle && <p className="text-slate-500 text-sm sm:text-base font-medium">{subtitle}</p>}
           </div>
 
-          {/* Form Card with Glassmorphism */}
-          <div className="relative group">
-            {/* Animated Glow Border */}
-            <div className="absolute -inset-[2px] bg-gradient-to-r from-[#3b82f6] via-[#22c55e] to-[#8b5cf6] rounded-[2rem] opacity-30 group-hover:opacity-60 blur-md transition-opacity duration-1000 animate-pulse pointer-events-none" />
-            
-            <div
-              className="relative bg-white/80 backdrop-blur-xl rounded-[2rem] p-6 sm:p-8"
-              style={{
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255,255,255,0.8) inset',
-                border: '1px solid rgba(255, 255, 255, 0.5)'
-              }}
-            >
-              {children}
-            </div>
+          {/* Children Inject (Inputs and Buttons) */}
+          <div className="w-full">
+            {children}
           </div>
-
-
         </motion.div>
       </div>
     </div>

@@ -77,6 +77,18 @@ const OwnerDashboard = () => {
     refreshUser(); // Proactively fetch latest verification status from DB on mount
   }, []);
 
+  // Prevent background scrolling when ANY modal is top-level open
+  useEffect(() => {
+    if (showAddModal || lightboxOpen || confirmState.isOpen || modal.show) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showAddModal, lightboxOpen, confirmState.isOpen, modal.show]);
+
   const handleDelete = (id) => {
     triggerConfirm({
       title: 'Delete Property?',
@@ -647,7 +659,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (photos.length < 1) { setError('At least 1 property photo is required.'); return; }
+    if (photos.length < 5) { setError(`Minimum 5 property photos are required. You added ${photos.length}.`); return; }
     setLoading(true);
     try {
       const data = new FormData();
@@ -655,7 +667,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
       Object.entries(formData).forEach(([k, v]) => data.append(k, v));
       const token = localStorage.getItem('token');
       await axios.post(`${API}/rooms`, data, {
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+        headers: { Authorization: `Bearer ${token}` }
       });
       onSuccess();
     } catch (err) {
@@ -760,7 +772,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
           <div className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-[#64748B] mb-3">
-                Property Photos <span className="text-[#DC2626]">(minimum 1 required)</span>
+                Property Photos <span className="text-[#DC2626]">(minimum 5 required)</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {previews.map((p, i) => (
@@ -781,7 +793,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                   <input type="file" accept="image/*" multiple onChange={handlePhotoSelect} className="hidden" />
                 </label>
               </div>
-              <p className="text-xs text-[#94A3B8] mt-2">{previews.length}/1+ photos added</p>
+              <p className="text-xs text-[#94A3B8] mt-2">{previews.length}/5+ photos added</p>
             </div>
 
             <div>
