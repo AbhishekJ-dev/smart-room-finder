@@ -19,7 +19,17 @@ const auth = (req, res, next) => {
 };
 
 // ─── ADD ROOM (Owner only, minimum 5 photos) ───
-router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), async (req, res) => {
+router.post('/', auth, requireOwnerVerification, (req, res, next) => {
+    // Run multer first, handle its errors cleanly before entering main logic
+    upload.array('photos', 10)(req, res, (err) => {
+        if (err) {
+            // Multer / Cloudinary / file filter errors
+            console.error('[MULTER ERROR]', err.message);
+            return res.status(400).json({ message: err.message || 'File upload error.' });
+        }
+        next();
+    });
+}, async (req, res) => {
     let connection;
     try {
         connection = await db.getConnection();
@@ -30,27 +40,26 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
             annualRent = (parseFloat(price_monthly) || 0) * 12;
         }
 
-        // Validation
+        // ─── Validation ───────────────────────────────────────────────────
         if (!city || city.trim() === '') {
             return res.status(400).json({ message: 'Validation Error: City is required.' });
         }
 
         if (!req.files || req.files.length < 5) {
-            return res.status(400).json({ message: 'Validation Error: At least 5 photos are required.' });
-        }
-
-        if (parseFloat(annualRent) < 0) {
-            return res.status(400).json({ message: 'Annual rent cannot be negative' });
+            return res.status(400).json({ message: `Validation Error: At least 5 photos are required. You uploaded ${req.files?.length || 0}.` });
         }
 
         if (!type || !area || !location || !contact) {
-            console.warn('Add room failed: Missing required fields');
-            return res.status(400).json({ message: 'Room type, area, location, and contact are required' });
+            return res.status(400).json({ message: 'Room type, area, location, and contact are required.' });
+        }
+
+        if (parseFloat(annualRent) < 0) {
+            return res.status(400).json({ message: 'Annual rent cannot be negative.' });
         }
 
         await connection.beginTransaction();
 
-        // 1. Insert room
+        // ─── 1. Insert room ───────────────────────────────────────────────
         const [result] = await connection.execute(
             `INSERT INTO rooms (
                 owner_id, type, price_daily, price_weekly, price_monthly, 
@@ -65,20 +74,14 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
         );
         const roomId = result.insertId;
 
-        // 2. Insert photos
+        // ─── 2. Insert photos from Cloudinary ─────────────────────────────
         for (const file of req.files) {
-            // Cloudinary storage provides the URL in file.path or file.secure_url
-            let imageUrl = file.path || file.secure_url;
-            
-            // Handle local fallback dynamically if Cloudinary isn't configured
-            if (imageUrl && !imageUrl.startsWith('http')) {
-                // multer diskStorage assigns file.filename
-                imageUrl = `/uploads/${file.filename}`;
-            }
+            // multer-storage-cloudinary stores the secure URL in file.path
+            const imageUrl = file.path;
 
-            if (!imageUrl) {
-                console.error('[UPLOAD ERROR] File object missing path/url:', file);
-                throw new Error('Upload failed to construct a valid image URL.');
+            if (!imageUrl || !imageUrl.startsWith('http')) {
+                console.error('[UPLOAD ERROR] Invalid image URL from Cloudinary:', file);
+                throw new Error('Cloudinary returned an invalid image URL. Check your credentials.');
             }
 
             await connection.execute(
@@ -88,14 +91,18 @@ router.post('/', auth, requireOwnerVerification, upload.array('photos', 10), asy
         }
 
         await connection.commit();
-        res.status(201).json({ message: 'Property added successfully with Cloudinary storage!', roomId });
+        res.status(201).json({
+            message: 'Property added successfully!',
+            roomId,
+            uploadedPhotos: req.files.length
+        });
+
     } catch (error) {
         if (connection) await connection.rollback();
-        console.error('CRITICAL: Add room error:', error);
-        res.status(500).json({ 
-            message: 'Server Error while adding property.', 
+        console.error('CRITICAL: Add room error:', error.message);
+        res.status(500).json({
+            message: 'Server Error while adding property.',
             error: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     } finally {
         if (connection) connection.release();
