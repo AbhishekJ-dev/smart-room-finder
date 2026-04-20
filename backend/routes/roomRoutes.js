@@ -3,6 +3,7 @@ const db = require('../config/db');
 const jwt = require('jsonwebtoken');
 const { upload } = require('../config/cloudinaryConfig');
 const requireOwnerVerification = require('../middleware/requireOwnerVerification');
+const checkSubscription = require('../middleware/checkSubscription');
 const router = express.Router();
 
 // Auth middleware
@@ -113,12 +114,27 @@ router.post('/', auth, requireOwnerVerification, (req, res, next) => {
 router.get('/', async (req, res) => {
     try {
         let isAuthenticated = false;
+        let isSubscribed = false;
+        let userId = null;
+        let userRole = null;
+
         const token = req.headers.authorization?.split(' ')[1];
         if (token && token !== 'null' && token !== 'undefined') {
             try {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET || 'smart_room_finder_secret');
                 isAuthenticated = true;
-                req.userId = decoded.id;
+                userId = decoded.id;
+                userRole = decoded.role;
+
+                if (userRole === 'owner' || userRole === 'admin') {
+                    isSubscribed = true;
+                } else {
+                    const [subs] = await db.execute(
+                        'SELECT id FROM subscriptions WHERE user_id = ? AND is_active = true AND end_date >= NOW() LIMIT 1',
+                        [userId]
+                    );
+                    isSubscribed = subs.length > 0;
+                }
             } catch (err) {}
         }
 
@@ -134,10 +150,7 @@ router.get('/', async (req, res) => {
             ORDER BY r.created_at DESC
         `);
 
-        // Mask sensitive data:
-        // 1. Hide for unauthenticated visitors
-        // 2. Hide for authenticated users WITHOUT an active subscription
-        const processedRooms = await Promise.all(rooms.map(async (r) => {
+        const processedRooms = rooms.map((r) => {
             let photos = r.photos;
             if (typeof photos === 'string') {
                 if (photos.startsWith('[')) {
@@ -149,34 +162,50 @@ router.get('/', async (req, res) => {
                 photos = [];
             }
             
-            const roomData = { ...r, photos: photos || [], is_booked: !!r.is_booked, has_pending: !!r.has_pending };
+            const roomData = { 
+                ...r, 
+                photos: photos || [], 
+                is_booked: !!r.is_booked, 
+                has_pending: !!r.has_pending 
+            };
             
-            let isSubscribed = false;
-            if (isAuthenticated) {
-                // Verify subscription status from DB
-                const [subs] = await db.execute(
-                    'SELECT id FROM subscriptions WHERE user_id = ? AND is_active = true AND end_date >= NOW() LIMIT 1',
-                    [req.userId] // Wait, I need to make sure userId is set. roomRoutes uses req.user from auth.
-                );
-                isSubscribed = subs.length > 0;
-            }
+            // Mask if not authenticated OR not subscribed OR not the owner
+            const isRoomOwner = isAuthenticated && userId === r.owner_id;
 
-            // Mask if not authenticated OR not subscribed
-            if (!isAuthenticated || !isSubscribed) {
+            if (!isSubscribed && !isRoomOwner) {
                 roomData.contact = null;
                 roomData.location = null;
-                roomData.is_locked = true; // Add a flag for frontend
+                roomData.is_locked = true; 
             } else {
                 roomData.is_locked = false;
             }
 
             return roomData;
-        }));
+        });
 
         res.json(processedRooms);
     } catch (error) {
         console.error('Get rooms error:', error);
         res.status(500).json({ message: error.message || 'Failed to fetch rooms.' });
+    }
+});
+
+// ─── GET ROOM CONTACT DETAILS (Premium Endpoint) ───
+router.get('/:id/contact', auth, checkSubscription, async (req, res) => {
+    try {
+        const [rooms] = await db.execute(
+            'SELECT contact, location, city, area FROM rooms WHERE id = ?',
+            [req.params.id]
+        );
+
+        if (rooms.length === 0) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+
+        res.json(rooms[0]);
+    } catch (error) {
+        console.error('Get contact error:', error);
+        res.status(500).json({ message: 'Failed to fetch contact details' });
     }
 });
 

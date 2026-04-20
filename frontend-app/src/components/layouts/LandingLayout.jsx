@@ -210,7 +210,7 @@ export function LandingLayout({ children }) {
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-[#64748B] text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
-            <p className="text-[#64748B] text-sm flex items-center">Designed & Built by <a href="https://www.linkedin.com/in/abhishek-j-5ab635391" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium ml-1 flex items-center gap-1.5 hover:text-white transition-colors">Abhishek J <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></a></p>
+            <p className="text-[#64748B] text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
           </div>
         </div>
       </footer>

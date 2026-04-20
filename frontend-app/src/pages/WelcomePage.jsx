@@ -310,11 +310,6 @@ const WelcomePage = () => {
               <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10"
                 style={{ background: 'radial-gradient(circle, #34D399, transparent)', transform: 'translate(-30%, 30%)' }} />
               <div className="relative z-10">
-                {/* Badge */}
-                <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase"
-                  style={{ background: 'rgba(96,165,250,0.15)', color: '#60A5FA', border: '1px solid rgba(96,165,250,0.3)' }}>
-                  Free to Join · Plans from ₹99
-                </span>
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
                   Browse Listings Free. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
