@@ -35,6 +35,15 @@ router.get('/plans', async (req, res) => {
     }
 });
 
+// ─── GET RAZORPAY CONFIG (exposes ONLY Key ID, never the secret) ───
+router.get('/config', auth, (req, res) => {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    if (!keyId || keyId.includes('YOUR_KEY')) {
+        return res.status(500).json({ message: 'Razorpay is not configured on the server.' });
+    }
+    res.json({ key: keyId });
+});
+
 // ─── STEP 1: CREATE RAZORPAY ORDER ───
 router.post('/create-order', auth, async (req, res) => {
     try {

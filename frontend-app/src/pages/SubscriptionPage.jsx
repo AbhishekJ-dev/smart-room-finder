@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check, ShieldCheck, Zap, Star, Loader2, ArrowRight } from 'lucide-react';
+import { Check, ShieldCheck, Zap, Star, Loader2, ArrowRight, Lock } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -14,11 +14,22 @@ const SubscriptionPage = () => {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [purchasing, setPurchasing] = useState(null);
+    const [razorpayKey, setRazorpayKey] = useState('');
 
     useEffect(() => {
+        // Guard: Owners should never reach this page
+        if (user && user.role === 'owner') {
+            navigate('/owner-dashboard');
+            return;
+        }
+        if (user && user.role === 'admin') {
+            navigate('/admin-dashboard');
+            return;
+        }
         fetchPlans();
+        fetchRazorpayKey();
         loadRazorpayScript();
-    }, []);
+    }, [user]);
 
     const fetchPlans = async () => {
         try {
@@ -31,7 +42,21 @@ const SubscriptionPage = () => {
         }
     };
 
+    // Securely fetch the Razorpay Key ID from backend (never hardcode it)
+    const fetchRazorpayKey = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API}/subscriptions/config`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setRazorpayKey(res.data.key);
+        } catch (err) {
+            console.error('Failed to fetch Razorpay key:', err);
+        }
+    };
+
     const loadRazorpayScript = () => {
+        if (document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) return;
         const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
         script.async = true;
@@ -39,24 +64,27 @@ const SubscriptionPage = () => {
     };
 
     const handleSubscribe = async (planId) => {
+        if (!user) { navigate('/login'); return; }
+        if (!razorpayKey) { toast.error('Payment gateway not ready. Please refresh.'); return; }
+
         setPurchasing(planId);
         try {
             const token = localStorage.getItem('token');
             const headers = { Authorization: `Bearer ${token}` };
 
-            // 1. Create Order in Backend
+            // Step 1: Create order on backend
             const { data: orderData } = await axios.post(`${API}/subscriptions/create-order`, { planId }, { headers });
 
-            // 2. Open Razorpay Checkout
+            // Step 2: Open Razorpay Checkout with REAL key from backend
             const options = {
-                key: 'rzp_test_placeholder_key', // This should ideally be fetched from backend or env
+                key: razorpayKey,
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: 'Smart Room Finder',
                 description: `Subscription: ${orderData.planName}`,
                 order_id: orderData.orderId,
                 handler: async (response) => {
-                    // 3. Verify Payment
+                    // Step 3: Verify payment signature in backend
                     try {
                         await axios.post(`${API}/subscriptions/verify-payment`, {
                             razorpay_order_id: response.razorpay_order_id,
@@ -64,26 +92,33 @@ const SubscriptionPage = () => {
                             razorpay_signature: response.razorpay_signature
                         }, { headers });
 
-                        toast.success('Subscription activated successfully!');
+                        toast.success('🎉 Subscription activated! You now have full access.');
                         navigate('/user-dashboard');
                     } catch (err) {
-                        toast.error('Payment verification failed. Please contact support.');
+                        toast.error('Payment verification failed. Contact support if amount was deducted.');
                     }
                 },
                 prefill: {
-                    name: user?.name,
-                    email: user?.email,
+                    name: user?.name || '',
+                    email: user?.email || '',
                 },
-                theme: {
-                    color: '#2563EB',
-                },
+                theme: { color: '#2563EB' },
+                modal: {
+                    ondismiss: () => {
+                        toast('Payment cancelled.', { icon: 'ℹ️' });
+                        setPurchasing(null);
+                    }
+                }
             };
 
             const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', (response) => {
+                toast.error(`Payment failed: ${response.error.description}`);
+                setPurchasing(null);
+            });
             rzp.open();
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to initiate payment');
-        } finally {
+            toast.error(error.response?.data?.message || 'Failed to initiate payment. Try again.');
             setPurchasing(null);
         }
     };
