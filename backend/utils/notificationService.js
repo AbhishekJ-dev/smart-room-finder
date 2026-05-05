@@ -1,5 +1,5 @@
 const { sendEmail } = require('./emailService');
-const db = require('../config/db');
+const pool = require('../config/db');
 
 /**
  * Generates a consistent HTML wrapper for all emails
@@ -41,8 +41,8 @@ const generateEmailTemplate = (title, content) => {
  */
 const createInAppNotification = async (userId, message, type) => {
     try {
-        await db.execute(
-            'INSERT INTO notifications (user_id, message, type) VALUES (?, ?, ?)',
+        await pool.query(
+            'INSERT INTO notifications (user_id, message, type) VALUES ($1, $2, $3)',
             [userId, message, type]
         );
     } catch (error) {

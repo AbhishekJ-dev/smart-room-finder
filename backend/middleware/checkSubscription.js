@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+const pool = require('../config/db');
 
 const checkSubscription = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
@@ -11,18 +11,14 @@ const checkSubscription = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'smart_room_finder_secret');
         req.user = decoded;
 
-        // ── RULE: Only tenants can subscribe. Owners always bypass this gate.
+        // ── RULE: Owners and admins always bypass this gate.
         if (decoded.role === 'owner' || decoded.role === 'admin') {
             return next();
         }
 
-        if (decoded.role !== 'tenant') {
-            return res.status(403).json({ message: 'Access restricted to tenant accounts only.' });
-        }
-
-        // ── Verify active subscription from DB (use NOW() for real-time expiry check)
-        const [subs] = await db.execute(
-            'SELECT * FROM subscriptions WHERE user_id = ? AND is_active = true AND end_date >= NOW() ORDER BY end_date DESC LIMIT 1',
+        // ── Verify active subscription from DB
+        const { rows: subs } = await pool.query(
+            'SELECT * FROM subscriptions WHERE user_id = $1 AND is_active = true AND end_date >= NOW() ORDER BY end_date DESC LIMIT 1',
             [decoded.id]
         );
 

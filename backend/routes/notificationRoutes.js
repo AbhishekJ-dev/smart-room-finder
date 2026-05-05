@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/db');
+const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
@@ -22,8 +22,8 @@ const auth = (req, res, next) => {
  */
 router.get('/', auth, async (req, res) => {
     try {
-        const [notifications] = await db.execute(
-            'SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 50',
+        const { rows: notifications } = await pool.query(
+            'SELECT * FROM notifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50',
             [req.user.id]
         );
         res.json(notifications);
@@ -39,8 +39,8 @@ router.get('/', auth, async (req, res) => {
  */
 router.put('/:id/read', auth, async (req, res) => {
     try {
-        await db.execute(
-            'UPDATE notifications SET is_read = TRUE WHERE id = ? AND user_id = ?',
+        await pool.query(
+            'UPDATE notifications SET is_read = TRUE WHERE id = $1 AND user_id = $2',
             [req.params.id, req.user.id]
         );
         res.json({ message: 'Notification marked as read' });
@@ -56,8 +56,8 @@ router.put('/:id/read', auth, async (req, res) => {
  */
 router.put('/read-all', auth, async (req, res) => {
     try {
-        await db.execute(
-            'UPDATE notifications SET is_read = TRUE WHERE user_id = ?',
+        await pool.query(
+            'UPDATE notifications SET is_read = TRUE WHERE user_id = $1',
             [req.user.id]
         );
         res.json({ message: 'All notifications marked as read' });

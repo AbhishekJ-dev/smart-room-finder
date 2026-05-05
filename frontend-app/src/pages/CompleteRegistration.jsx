@@ -80,7 +80,7 @@ const CompleteRegistration = () => {
                         <img 
                             src={picture} 
                             alt="Profile" 
-                            className="w-20 h-20 rounded-full border-4 border-[#2563eb]/10 p-1 object-cover shadow-lg"
+                            className="w-20 h-20 rounded-full border-4 border-[#4F46E5]/10 p-1 object-cover shadow-lg"
                         />
                         <div className="absolute -bottom-1 -right-1 bg-green-500 text-white p-1 rounded-full border-2 border-white">
                             <CheckCircle size={12} />
@@ -100,7 +100,7 @@ const CompleteRegistration = () => {
                         }}
                         className={`p-5 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center gap-3 cursor-pointer shadow-sm active:scale-[0.98] ${
                             formData.role === 'user'
-                                ? 'bg-[#2563eb]/5 text-[#2563eb] border-[#2563eb]/40 shadow-blue-500/5'
+                                ? 'bg-[#4F46E5]/5 text-[#4F46E5] border-[#4F46E5]/40 shadow-blue-500/5'
                                 : 'bg-[#f9fafb] border-[#e5e7eb] text-[#6b7280] hover:bg-[#f3f4f6]'
                         }`}
                     >
@@ -114,7 +114,7 @@ const CompleteRegistration = () => {
                         }}
                         className={`p-5 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center gap-3 cursor-pointer shadow-sm active:scale-[0.98] ${
                             formData.role === 'owner'
-                                ? 'bg-[#2563eb]/5 text-[#2563eb] border-[#2563eb]/40 shadow-blue-500/5'
+                                ? 'bg-[#4F46E5]/5 text-[#4F46E5] border-[#4F46E5]/40 shadow-blue-500/5'
                                 : 'bg-[#f9fafb] border-[#e5e7eb] text-[#6b7280] hover:bg-[#f3f4f6]'
                         }`}
                     >
@@ -149,7 +149,7 @@ const CompleteRegistration = () => {
 
             <div className="mt-8 text-center">
                 <p className="text-[#6b7280] text-[11px] font-black uppercase tracking-widest">
-                    Wrong account? <button onClick={() => navigate('/login')} className="text-[#2563eb] font-black hover:underline ml-1">Go back</button>
+                    Wrong account? <button onClick={() => navigate('/login')} className="text-[#4F46E5] font-black hover:underline ml-1">Go back</button>
                 </p>
             </div>
         </AuthLayout>

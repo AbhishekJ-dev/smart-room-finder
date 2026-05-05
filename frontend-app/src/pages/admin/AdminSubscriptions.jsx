@@ -103,16 +103,16 @@ const AdminSubscriptions = () => {
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           {/* Search */}
           <div className="relative w-full sm:w-[300px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={15} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={15} />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search tenant, email or plan..."
-              className="w-full bg-white border border-[#E2E8F0] rounded-xl py-2.5 pl-9 pr-9 text-sm text-[#1E293B] placeholder-[#94A3B8] outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition-all shadow-soft"
+              className="w-full bg-white border border-[#E5E7EB] rounded-xl py-2.5 pl-9 pr-9 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#1E293B] cursor-pointer">
+              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827] cursor-pointer">
                 <X size={13} />
               </button>
             )}
@@ -120,11 +120,11 @@ const AdminSubscriptions = () => {
 
           {/* Status Filter */}
           <div className="relative shrink-0">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={13} />
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={13} />
             <select
               value={filterStatus}
               onChange={e => setFilterStatus(e.target.value)}
-              className="appearance-none bg-white border border-[#E2E8F0] rounded-xl py-2.5 pl-8 pr-8 text-xs font-bold text-[#64748B] outline-none focus:border-[#2563EB] transition-all cursor-pointer shadow-soft"
+              className="appearance-none bg-white border border-[#E5E7EB] rounded-xl py-2.5 pl-8 pr-8 text-xs font-bold text-[#6B7280] outline-none focus:border-[#4F46E5] transition-all cursor-pointer shadow-soft"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -137,7 +137,7 @@ const AdminSubscriptions = () => {
         <button
           onClick={fetchSubscriptions}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#E2E8F0] rounded-xl text-xs font-semibold text-[#64748B] hover:border-[#2563EB] hover:text-[#2563EB] transition-all shadow-soft cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#6B7280] hover:border-[#4F46E5] hover:text-[#4F46E5] transition-all shadow-soft cursor-pointer disabled:opacity-50"
         >
           <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
           Refresh
@@ -145,24 +145,24 @@ const AdminSubscriptions = () => {
       </div>
 
       {/* ── Table */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-soft overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[900px]">
             <thead>
-              <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+              <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
                   <div className="flex items-center gap-1"><Hash size={11} /> ID</div>
                 </th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Tenant</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Plan Details</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Tenant</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Plan Details</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
                   <div className="flex items-center gap-1"><Calendar size={11} /> Period</div>
                 </th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Status</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B] text-right">Actions</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Status</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F1F5F9]">
+            <tbody className="divide-y divide-[#F3F4F6]">
               {loading ? (
                 [1,2,3,4,5].map(i => (
                   <tr key={i}>
@@ -177,7 +177,7 @@ const AdminSubscriptions = () => {
                 <tr>
                   <td colSpan="6" className="px-6 py-16 text-center">
                     <CreditCard size={36} className="mx-auto text-[#CBD5E1] mb-3" />
-                    <p className="text-[#94A3B8] text-sm font-semibold">
+                    <p className="text-[#9CA3AF] text-sm font-semibold">
                       {search || filterStatus !== 'all' ? 'No subscriptions match your filters' : 'No subscriptions found'}
                     </p>
                   </td>
@@ -196,28 +196,28 @@ const AdminSubscriptions = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ delay: idx * 0.02 }}
-                        className={`hover:bg-[#F8FAFC] transition-colors group ${isToggling ? 'opacity-40' : ''}`}
+                        className={`hover:bg-[#F9FAFB] transition-colors group ${isToggling ? 'opacity-40' : ''}`}
                       >
-                        <td className="px-6 py-4 text-xs font-bold text-[#94A3B8] font-mono">#{sub.id}</td>
+                        <td className="px-6 py-4 text-xs font-bold text-[#9CA3AF] font-mono">#{sub.id}</td>
                         <td className="px-6 py-4">
-                          <p className="text-sm font-bold text-[#1E293B]">{sub.user_name}</p>
-                          <p className="text-[11px] text-[#64748B]">{sub.user_email}</p>
+                          <p className="text-sm font-bold text-[#111827]">{sub.user_name}</p>
+                          <p className="text-[11px] text-[#6B7280]">{sub.user_email}</p>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#2563EB]">
+                            <div className="w-8 h-8 rounded-lg bg-[#EEF2FF] flex items-center justify-center text-[#4F46E5]">
                               <CreditCard size={14} />
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-[#1E293B] capitalize">{sub.plan_name || 'Premium Access'}</p>
-                              <p className="text-[10px] text-[#94A3B8] font-bold uppercase">₹{sub.price}</p>
+                              <p className="text-sm font-bold text-[#111827] capitalize">{sub.plan_name || 'Premium Access'}</p>
+                              <p className="text-[10px] text-[#9CA3AF] font-bold uppercase">₹{sub.price}</p>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
-                              <Calendar size={11} className="text-[#94A3B8]" />
+                            <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
+                              <Calendar size={11} className="text-[#9CA3AF]" />
                               <span>{new Date(sub.start_date).toLocaleDateString('en-IN', { day:'2-digit', month:'short' })} — {new Date(sub.end_date).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' })}</span>
                             </div>
                             {status === 'active' && (
@@ -259,14 +259,14 @@ const AdminSubscriptions = () => {
 
         {/* Footer */}
         {!loading && filtered.length > 0 && (
-          <div className="px-6 py-3 border-t border-[#F1F5F9] flex items-center justify-between bg-[#FAFAFA]">
-            <p className="text-xs text-[#94A3B8] font-medium">
-              Showing <span className="font-bold text-[#64748B]">{filtered.length}</span> of <span className="font-bold text-[#64748B]">{subscriptions.length}</span> records
+          <div className="px-6 py-3 border-t border-[#F3F4F6] flex items-center justify-between bg-[#FAFAFA]">
+            <p className="text-xs text-[#9CA3AF] font-medium">
+              Showing <span className="font-bold text-[#6B7280]">{filtered.length}</span> of <span className="font-bold text-[#6B7280]">{subscriptions.length}</span> records
             </p>
             {(search || filterStatus !== 'all') && (
               <button 
                 onClick={() => { setSearch(''); setFilterStatus('all'); }} 
-                className="text-xs text-[#2563EB] font-semibold hover:underline cursor-pointer"
+                className="text-xs text-[#4F46E5] font-semibold hover:underline cursor-pointer"
               >
                 Clear filters
               </button>
@@ -276,10 +276,10 @@ const AdminSubscriptions = () => {
       </div>
 
       {/* Info Alert */}
-      <div className="mt-5 p-4 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex gap-3">
-        <AlertCircle size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
-        <p className="text-xs text-[#64748B] leading-relaxed">
-          <span className="font-bold text-[#1E293B]">Admin Override:</span> You can manually activate or deactivate any subscription. 
+      <div className="mt-5 p-4 rounded-2xl bg-[#F9FAFB] border border-[#E5E7EB] flex gap-3">
+        <AlertCircle size={18} className="text-[#4F46E5] shrink-0 mt-0.5" />
+        <p className="text-xs text-[#6B7280] leading-relaxed">
+          <span className="font-bold text-[#111827]">Admin Override:</span> You can manually activate or deactivate any subscription. 
           Deactivating a subscription will immediately restrict the tenant's access to premium details regardless of their payment status or expiry date.
         </p>
       </div>

@@ -17,7 +17,7 @@ export default function SplashScreen() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#2563EB] to-[#1E293B] overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#4F46E5] to-[#111827] overflow-hidden">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -31,7 +31,7 @@ export default function SplashScreen() {
           <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover animate-float" />
         </div>
         
-        <p className="text-[#94A3B8] text-sm sm:text-lg font-bold tracking-[0.3em] uppercase drop-shadow-sm opacity-80">
+        <p className="text-[#9CA3AF] text-sm sm:text-lg font-bold tracking-[0.3em] uppercase drop-shadow-sm opacity-80">
           Find your room smartly
         </p>
       </motion.div>

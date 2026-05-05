@@ -12,10 +12,10 @@ export function Button({
   const base = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed text-sm px-5 py-3 active:scale-[0.97]';
 
   const variants = {
-    primary:   'bg-[#2563EB] text-white hover:bg-[#1D4ED8] shadow-blue hover:shadow-lg',
-    secondary: 'bg-[#F8FAFC] text-[#1E293B] border border-[#E2E8F0] hover:bg-[#F1F5F9] hover:border-[#CBD5E1]',
+    primary:   'bg-[#4F46E5] text-white hover:bg-[#4338CA] shadow-blue hover:shadow-lg',
+    secondary: 'bg-[#F9FAFB] text-[#111827] border border-[#E5E7EB] hover:bg-[#F3F4F6] hover:border-[#CBD5E1]',
     danger:    'bg-[#FFF1F2] text-[#DC2626] border border-[#FECDD3] hover:bg-[#FECDD3]',
-    ghost:     'text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#1E293B]',
+    ghost:     'text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#111827]',
   };
 
   return (

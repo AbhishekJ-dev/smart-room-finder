@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { generateOTP, sendOTP } = require('../utils/otpService');
@@ -9,14 +9,14 @@ exports.forgotPassword = async (req, res) => {
         const { email } = req.body;
         if (!email) return res.status(400).json({ message: 'Email is required' });
 
-        const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const { rows: users } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (users.length === 0) return res.status(404).json({ message: 'User with this email does not exist' });
 
         const otp = generateOTP();
         const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-        await db.execute(
-            'UPDATE users SET reset_otp = ?, otp_expiry = ? WHERE email = ?',
+        await pool.query(
+            'UPDATE users SET reset_otp = $1, otp_expiry = $2 WHERE email = $3',
             [otp, expiry, email]
         );
 
@@ -35,8 +35,8 @@ exports.verifyResetOTP = async (req, res) => {
         const { email, otp } = req.body;
         if (!email || !otp) return res.status(400).json({ message: 'Email and OTP are required' });
 
-        const [users] = await db.execute(
-            'SELECT * FROM users WHERE email = ? AND reset_otp = ?',
+        const { rows: users } = await pool.query(
+            'SELECT * FROM users WHERE email = $1 AND reset_otp = $2',
             [email, otp]
         );
 
@@ -61,8 +61,8 @@ exports.resetPassword = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        await db.execute(
-            'UPDATE users SET password = ?, reset_otp = NULL, otp_expiry = NULL WHERE email = ?',
+        await pool.query(
+            'UPDATE users SET password = $1, reset_otp = NULL, otp_expiry = NULL WHERE email = $2',
             [hashedPassword, email]
         );
 
@@ -82,7 +82,7 @@ exports.register = async (req, res) => {
         }
 
         // Check if user exists
-        const [existing] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const { rows: existing } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (existing.length > 0) {
             const existingUser = existing[0];
             if (existingUser.role !== role) {
@@ -96,31 +96,31 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert user using transaction to ensure data integrity
-        const connection = await db.getConnection();
-        await connection.beginTransaction();
+        const client = await pool.connect();
+        await client.query('BEGIN');
 
         try {
-            const [result] = await connection.execute(
-                'INSERT INTO users (name, email, password, role, is_verified) VALUES (?, ?, ?, ?, 0)',
+            const { rows: result } = await client.query(
+                'INSERT INTO users (name, email, password, role, is_verified) VALUES ($1, $2, $3, $4, false) RETURNING id',
                 [name, email, hashedPassword, role]
             );
 
-            const newUserId = result.insertId;
+            const newUserId = result[0].id;
 
             // Link generic profiles based on role
             if (role === 'owner') {
-                await connection.execute('INSERT INTO owners (user_id) VALUES (?)', [newUserId]);
+                await client.query('INSERT INTO owners (user_id) VALUES ($1)', [newUserId]);
             } else if (role === 'admin') {
-                await connection.execute('INSERT INTO admins (user_id) VALUES (?)', [newUserId]);
+                await client.query('INSERT INTO admins (user_id) VALUES ($1)', [newUserId]);
             }
 
-            await connection.commit();
+            await client.query('COMMIT');
             res.status(201).json({ message: 'Registration successful! Please login.' });
         } catch (err) {
-            await connection.rollback();
+            await client.query('ROLLBACK');
             throw err;
         } finally {
-            connection.release();
+            client.release();
         }
 
     } catch (error) {
@@ -137,7 +137,7 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
-        const [users] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const { rows: users } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found' });
 
         const user = users[0];
@@ -172,7 +172,7 @@ exports.login = async (req, res) => {
 };
 
 exports.completeGoogleRegistration = async (req, res) => {
-    const connection = await db.getConnection();
+    const client = await pool.connect();
     try {
         const { name, email, role, googleId } = req.body;
 
@@ -181,29 +181,29 @@ exports.completeGoogleRegistration = async (req, res) => {
         }
 
         // Check if user exists (fail-safe)
-        const [existing] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const { rows: existing } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (existing.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        await connection.beginTransaction();
+        await client.query('BEGIN');
 
         // 1. Insert user
-        const [result] = await connection.execute(
-            'INSERT INTO users (google_id, name, email, password, role, is_verified) VALUES (?, ?, ?, ?, ?, 1)',
+        const { rows: result } = await client.query(
+            'INSERT INTO users (google_id, name, email, password, role, is_verified) VALUES ($1, $2, $3, $4, $5, true) RETURNING id',
             [googleId, name, email, '', role]
         );
 
-        const newUserId = result.insertId;
+        const newUserId = result[0].id;
 
         // 2. Link generic profiles based on role
         if (role === 'owner') {
-            await connection.execute('INSERT INTO owners (user_id) VALUES (?)', [newUserId]);
+            await client.query('INSERT INTO owners (user_id) VALUES ($1)', [newUserId]);
         } else if (role === 'admin') {
-            await connection.execute('INSERT INTO admins (user_id) VALUES (?)', [newUserId]);
+            await client.query('INSERT INTO admins (user_id) VALUES ($1)', [newUserId]);
         }
 
-        await connection.commit();
+        await client.query('COMMIT');
 
         // 3. Generate token
         const token = jwt.sign(
@@ -227,18 +227,18 @@ exports.completeGoogleRegistration = async (req, res) => {
         notificationService.sendLoginNotification({ name, email }).catch(err => console.error('Login email error:', err));
 
     } catch (error) {
-        await connection.rollback();
+        await client.query('ROLLBACK');
         console.error('Complete Google registration error:', error);
         res.status(500).json({ message: error.message });
     } finally {
-        connection.release();
+        client.release();
     }
 };
 
 exports.getProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const [users] = await db.execute('SELECT id, name, email, role, is_verified FROM users WHERE id = ?', [id]);
+        const { rows: users } = await pool.query('SELECT id, name, email, role, is_verified FROM users WHERE id = $1', [id]);
         
         if (users.length === 0) {
             return res.status(404).json({ message: 'User not found' });

@@ -23,9 +23,9 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "multer-storage-cloudinary": "^4.0.0",
-    "mysql2": "^3.22.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.20.0",
     "razorpay": "^2.9.6",
     "sib-api-v3-sdk": "^8.5.0"
   },

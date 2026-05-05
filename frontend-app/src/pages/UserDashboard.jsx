@@ -159,13 +159,13 @@ const UserDashboard = () => {
           {/* Search + Filter Bar */}
           <div className="flex gap-3 mb-6 relative z-20">
             <div className="relative flex-1 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8] group-focus-within:text-[#2563EB] transition-colors" size={17} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] group-focus-within:text-[#4F46E5] transition-colors" size={17} />
               <input
                 type="text"
                 placeholder="Search by area, city, or room type..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-white border border-[#E2E8F0] rounded-xl py-3 pl-11 pr-4 text-sm text-[#1E293B] placeholder-[#94A3B8] outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition-all shadow-soft"
+                className="w-full bg-white border border-[#E5E7EB] rounded-xl py-3 pl-11 pr-4 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
               />
             </div>
 
@@ -174,14 +174,14 @@ const UserDashboard = () => {
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border shadow-soft cursor-pointer ${
                   showFilters || hasFilters
-                    ? 'bg-[#EFF6FF] border-[#2563EB] text-[#2563EB]'
-                    : 'bg-white border-[#E2E8F0] text-[#64748B] hover:border-[#CBD5E1]'
+                    ? 'bg-[#EEF2FF] border-[#4F46E5] text-[#4F46E5]'
+                    : 'bg-white border-[#E5E7EB] text-[#6B7280] hover:border-[#CBD5E1]'
                 }`}
               >
                 <SlidersHorizontal size={16} />
                 <span className="hidden sm:inline">Filters</span>
                 {hasFilters && (
-                  <span className="w-4 h-4 bg-[#2563EB] text-white rounded-full text-[9px] flex items-center justify-center font-bold">!</span>
+                  <span className="w-4 h-4 bg-[#4F46E5] text-white rounded-full text-[9px] flex items-center justify-center font-bold">!</span>
                 )}
               </button>
               <FilterDropdown
@@ -195,8 +195,8 @@ const UserDashboard = () => {
 
           {/* Results count */}
           <div className="flex items-center justify-between mb-5">
-            <p className="text-sm text-[#64748B] font-medium">
-              <span className="text-[#1E293B] font-semibold">{filteredRooms.length}</span> properties found
+            <p className="text-sm text-[#6B7280] font-medium">
+              <span className="text-[#111827] font-semibold">{filteredRooms.length}</span> properties found
             </p>
             {hasFilters && (
               <button
@@ -212,7 +212,7 @@ const UserDashboard = () => {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-soft">
+                <div key={i} className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-soft">
                   <div className="skeleton h-52 w-full" />
                   <div className="p-4 space-y-3">
                     <div className="skeleton h-4 w-3/4 rounded-lg" />
@@ -223,15 +223,15 @@ const UserDashboard = () => {
               ))}
             </div>
           ) : filteredRooms.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 bg-white border border-[#E2E8F0] rounded-2xl text-center shadow-soft">
-              <div className="w-16 h-16 bg-[#F1F5F9] rounded-2xl flex items-center justify-center mb-5">
+            <div className="flex flex-col items-center justify-center py-20 bg-white border border-[#E5E7EB] rounded-2xl text-center shadow-soft">
+              <div className="w-16 h-16 bg-[#F3F4F6] rounded-2xl flex items-center justify-center mb-5">
                 <Search size={28} className="text-[#CBD5E1]" />
               </div>
-              <h3 className="text-lg font-semibold text-[#1E293B] mb-2">No rooms found</h3>
-              <p className="text-[#64748B] text-sm max-w-xs mb-5">Try adjusting your search or clearing filters.</p>
+              <h3 className="text-lg font-semibold text-[#111827] mb-2">No rooms found</h3>
+              <p className="text-[#6B7280] text-sm max-w-xs mb-5">Try adjusting your search or clearing filters.</p>
               <button
                 onClick={() => { setSearch(''); setTypeFilter('All'); setTenantFilter('All'); setMinPrice(1000); setMaxPrice(50000); }}
-                className="px-5 py-2.5 bg-[#F1F5F9] text-[#64748B] text-sm font-semibold rounded-xl hover:bg-[#E2E8F0] transition-all cursor-pointer"
+                className="px-5 py-2.5 bg-[#F3F4F6] text-[#6B7280] text-sm font-semibold rounded-xl hover:bg-[#E5E7EB] transition-all cursor-pointer"
               >
                 Clear all filters
               </button>
@@ -330,10 +330,10 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
       transition={{ delay, duration: 0.4 }}
       whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#BFDBFE] transition-all duration-300 cursor-pointer"
+      className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer"
     >
       {/* Image */}
-      <div className="relative h-52 overflow-hidden bg-[#F1F5F9]">
+      <div className="relative h-52 overflow-hidden bg-[#F3F4F6]">
         <img
           src={imgSrc}
           alt={room.area}
@@ -364,12 +364,12 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
       <div className="p-5 flex-1 flex flex-col">
         {/* Title + Price */}
         <div className="flex items-start justify-between gap-3 mb-3">
-          <h3 className="font-semibold text-[#1E293B] text-base leading-snug flex-1 min-w-0 truncate">
+          <h3 className="font-semibold text-[#111827] text-base leading-snug flex-1 min-w-0 truncate">
             {displayLocation}
           </h3>
           <div className="text-right shrink-0">
-            <p className="text-[#2563EB] font-bold text-lg leading-tight">₹{room.price_monthly?.toLocaleString()}</p>
-            <p className="text-[#94A3B8] text-[10px] font-medium">/month</p>
+            <p className="text-[#4F46E5] font-bold text-lg leading-tight">₹{room.price_monthly?.toLocaleString()}</p>
+            <p className="text-[#9CA3AF] text-[10px] font-medium">/month</p>
             {(room.annual_rent > 0 || room.price_yearly > 0) && (
               <p className="text-[#22C55E] font-semibold text-xs mt-0.5">₹{(room.annual_rent || room.price_yearly)?.toLocaleString()}/yr</p>
             )}
@@ -378,8 +378,8 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
 
         {/* Info rows */}
         <div className="space-y-2 mb-4">
-          <div className="flex items-start gap-2 text-sm text-[#64748B]">
-            <MapPin size={13} className="text-[#2563EB] mt-0.5 shrink-0" />
+          <div className="flex items-start gap-2 text-sm text-[#6B7280]">
+            <MapPin size={13} className="text-[#4F46E5] mt-0.5 shrink-0" />
             {room.is_locked ? (
               <span className="italic flex items-center gap-1.5 opacity-60">
                 <Lock size={12} /> Exact location locked
@@ -389,15 +389,15 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
                 href={`https://maps.google.com/?q=${encodeURIComponent(room.location)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#2563EB] transition-colors truncate font-medium"
+                className="hover:text-[#4F46E5] transition-colors truncate font-medium"
                 onClick={e => e.stopPropagation()}
               >
                 {room.location}
               </a>
             )}
           </div>
-          <div className="flex items-center gap-2 text-sm text-[#64748B]">
-            <Phone size={13} className="text-[#2563EB] shrink-0" />
+          <div className="flex items-center gap-2 text-sm text-[#6B7280]">
+            <Phone size={13} className="text-[#4F46E5] shrink-0" />
             {room.is_locked ? (
               <span className="italic flex items-center gap-1.5 opacity-60">
                 <Lock size={12} /> Contact hidden
@@ -405,7 +405,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
             ) : (
               <a
                 href={`tel:${room.contact}`}
-                className="hover:text-[#2563EB] transition-colors font-medium"
+                className="hover:text-[#4F46E5] transition-colors font-medium"
                 onClick={e => e.stopPropagation()}
               >
                 {room.contact}
@@ -426,13 +426,13 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
               ✓ Your Booking Confirmed
             </div>
           ) : room.is_booked ? (
-            <div className="w-full py-3 bg-[#F8FAFC] border border-[#E2E8F0] text-[#94A3B8] rounded-xl text-sm font-semibold text-center cursor-not-allowed">
+            <div className="w-full py-3 bg-[#F9FAFB] border border-[#E5E7EB] text-[#9CA3AF] rounded-xl text-sm font-semibold text-center cursor-not-allowed">
               Already Booked
             </div>
           ) : room.is_locked ? (
             <button
               onClick={() => navigate('/subscribe')}
-              className="w-full py-3 bg-[#1E293B] hover:bg-[#0F172A] text-white rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] cursor-pointer"
+              className="w-full py-3 bg-[#111827] hover:bg-[#0F172A] text-white rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] cursor-pointer"
             >
               <Lock size={14} /> Subscribe to Unlock Details
             </button>
@@ -443,7 +443,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
           ) : (
             <button
               onClick={onBook}
-              className="w-full py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-sm font-semibold transition-all shadow-blue hover:shadow-lg active:scale-[0.98] cursor-pointer"
+              className="w-full py-3 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-xl text-sm font-semibold transition-all shadow-blue hover:shadow-lg active:scale-[0.98] cursor-pointer"
             >
               Book Now
             </button>

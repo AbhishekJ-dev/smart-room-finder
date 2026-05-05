@@ -54,19 +54,19 @@ const AdminBookings = () => {
 
   return (
     <AdminLayout title="Booking Management" subtitle="Oversee platform transactions and approval flows.">
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-soft overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[900px]">
             <thead>
-              <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Tenant → Owner</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Property</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Amount</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Status</th>
-                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B] text-right">Actions</th>
+              <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Tenant → Owner</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Property</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Amount</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Status</th>
+                <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F1F5F9]">
+            <tbody className="divide-y divide-[#F3F4F6]">
               {loading ? (
                 [1, 2, 3].map(i => (
                   <tr key={i}>
@@ -77,19 +77,19 @@ const AdminBookings = () => {
                 ))
               ) : bookings.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-10 text-center text-[#94A3B8] text-sm font-medium">No bookings found</td>
+                  <td colSpan="5" className="px-6 py-10 text-center text-[#9CA3AF] text-sm font-medium">No bookings found</td>
                 </tr>
               ) : bookings.map(booking => (
-                <tr key={booking.id} className="hover:bg-[#F8FAFC] transition-colors group">
+                <tr key={booking.id} className="hover:bg-[#F9FAFB] transition-colors group">
                   {/* Tenant → Owner */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-semibold text-[#1E293B] truncate max-w-[120px]">{booking.user_name}</span>
+                      <span className="text-sm font-semibold text-[#111827] truncate max-w-[120px]">{booking.user_name}</span>
                       <ChevronRight size={13} className="text-[#CBD5E1] shrink-0" />
-                      <span className="text-sm text-[#64748B] font-medium truncate max-w-[120px]">{booking.owner_name}</span>
+                      <span className="text-sm text-[#6B7280] font-medium truncate max-w-[120px]">{booking.owner_name}</span>
                     </div>
                     {booking.duration && (
-                      <p className="text-xs text-[#94A3B8] mt-0.5">{booking.duration}</p>
+                      <p className="text-xs text-[#9CA3AF] mt-0.5">{booking.duration}</p>
                     )}
                   </td>
 
@@ -99,22 +99,22 @@ const AdminBookings = () => {
                       className="flex items-center gap-2 cursor-pointer group/link"
                       onClick={() => navigate('/admin/properties')}
                     >
-                      <div className="w-8 h-8 bg-[#EFF6FF] rounded-lg flex items-center justify-center text-[#2563EB] shrink-0">
+                      <div className="w-8 h-8 bg-[#EEF2FF] rounded-lg flex items-center justify-center text-[#4F46E5] shrink-0">
                         <CalendarCheck size={14} />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-[#1E293B] group-hover/link:text-[#2563EB] transition-colors truncate max-w-[140px]">
+                        <p className="text-sm font-medium text-[#111827] group-hover/link:text-[#4F46E5] transition-colors truncate max-w-[140px]">
                           {booking.property_area}
                         </p>
-                        <p className="text-xs text-[#94A3B8]">{booking.property_type}</p>
+                        <p className="text-xs text-[#9CA3AF]">{booking.property_type}</p>
                       </div>
                     </div>
                   </td>
 
                   {/* Amount */}
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-sm font-semibold text-[#1E293B]">
-                      <IndianRupee size={13} className="text-[#2563EB]" />
+                    <div className="flex items-center gap-1 text-sm font-semibold text-[#111827]">
+                      <IndianRupee size={13} className="text-[#4F46E5]" />
                       {booking.total_price?.toLocaleString()}
                     </div>
                   </td>
@@ -146,7 +146,7 @@ const AdminBookings = () => {
                       {booking.status === 'confirmed' && (
                         <button
                           onClick={() => updateStatus(booking.id, 'completed')}
-                          className="px-3 py-1.5 bg-[#EFF6FF] text-[#2563EB] text-xs font-semibold rounded-lg hover:bg-[#BFDBFE] border border-[#BFDBFE] transition-all cursor-pointer whitespace-nowrap"
+                          className="px-3 py-1.5 bg-[#EEF2FF] text-[#4F46E5] text-xs font-semibold rounded-lg hover:bg-[#C7D2FE] border border-[#C7D2FE] transition-all cursor-pointer whitespace-nowrap"
                         >
                           Mark Done
                         </button>

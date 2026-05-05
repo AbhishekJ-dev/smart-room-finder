@@ -77,7 +77,7 @@ const OTPInput = ({ value, onChange, disabled }) => {
           value={digits[i] || ''} onChange={e => handleChange(e, i)}
           onKeyDown={e => handleKey(e, i)} onPaste={handlePaste}
           className={`w-11 h-14 text-center text-xl font-black border-2 rounded-xl outline-none transition-all duration-200 bg-white text-[#111827]
-            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#2563eb] bg-[#eff6ff] shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#2563eb] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
+            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#4F46E5] bg-[#EEF2FF] shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#4F46E5] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
         />
       ))}
     </div>
@@ -93,12 +93,12 @@ const ModalShell = ({ onClose, icon, title, subtitle, children }) => (
     <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#e5e7eb] overflow-hidden z-10">
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#2563eb] via-[#3b82f6] to-[#60a5fa]" />
+      <div className="h-1.5 w-full bg-gradient-to-r from-[#4F46E5] via-[#3b82f6] to-[#60a5fa]" />
       <div className="p-8">
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-2 bg-[#eff6ff] rounded-xl">{icon}</div>
+              <div className="p-2 bg-[#EEF2FF] rounded-xl">{icon}</div>
               <h3 className="text-lg font-black text-[#111827]">{title}</h3>
             </div>
             <p className="text-xs text-[#6b7280] font-medium ml-10">{subtitle}</p>
@@ -152,15 +152,15 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
 
   return (
     <ModalShell onClose={onClose}
-      icon={<ShieldCheck size={18} className="text-[#2563eb]" />}
+      icon={<ShieldCheck size={18} className="text-[#4F46E5]" />}
       title="Verify Your Account"
       subtitle={step === 1 ? `An OTP will be sent to ${user?.email}` : 'Check your email for the OTP'}
     >
       <AnimatePresence mode="wait">
         {step === 1 ? (
           <motion.div key="v1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-4">
-            <div className="p-4 bg-[#eff6ff] rounded-2xl border border-[#dbeafe] flex items-center gap-3">
-              <Mail size={18} className="text-[#2563eb] shrink-0" />
+            <div className="p-4 bg-[#EEF2FF] rounded-2xl border border-[#dbeafe] flex items-center gap-3">
+              <Mail size={18} className="text-[#4F46E5] shrink-0" />
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black">OTP will be sent to</p>
                 <p className="text-sm font-bold text-[#111827]">{user?.email}</p>
@@ -173,7 +173,7 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
               </div>
             )}
             <button onClick={sendOTP} disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
               {loading ? 'Sending OTP...' : 'Send OTP to My Email'}
             </button>
@@ -182,7 +182,7 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
           <motion.div key="v2" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-6">
             <div className="flex flex-col items-center">
               <OTPTimer onExpire={() => setIsExpired(true)} />
-              <p className="text-xs text-[#9ca3af] mt-3">Check your <span className="font-bold text-[#2563eb]">email</span> for the code</p>
+              <p className="text-xs text-[#9ca3af] mt-3">Check your <span className="font-bold text-[#4F46E5]">email</span> for the code</p>
             </div>
             <OTPInput value={otp} onChange={setOtp} disabled={isExpired || loading} />
             <div className="space-y-2.5">
@@ -242,7 +242,7 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
 
   return (
     <ModalShell onClose={onClose}
-      icon={<Mail size={18} className="text-[#2563eb]" />}
+      icon={<Mail size={18} className="text-[#4F46E5]" />}
       title="Change Email Address"
       subtitle={step === 1 ? 'Enter your new email address.' : `OTP sent for ${newEmail}`}
     >
@@ -252,10 +252,10 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">New Email Address</label>
               <input type="email" placeholder="name@example.com" value={newEmail} onChange={e => setNewEmail(e.target.value)}
-                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-[#111827] outline-none focus:border-[#2563eb] focus:ring-4 focus:ring-[#2563eb]/20 bg-[#f9fafb] transition-all" />
+                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-[#111827] outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/20 bg-[#f9fafb] transition-all" />
             </div>
             <button onClick={sendOTP} disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
               {loading ? 'Sending OTP...' : 'Generate OTP'}
             </button>
@@ -264,12 +264,12 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
           <motion.div key="e2" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-6">
             <div className="flex flex-col items-center">
               <OTPTimer onExpire={() => setIsExpired(true)} />
-              <p className="text-xs text-[#9ca3af] mt-3">Enter the code sent to your <span className="font-bold text-[#2563eb]">new email</span></p>
+              <p className="text-xs text-[#9ca3af] mt-3">Enter the code sent to your <span className="font-bold text-[#4F46E5]">new email</span></p>
             </div>
             <OTPInput value={otp} onChange={setOtp} disabled={isExpired || loading} />
             <div className="space-y-2.5">
               <button onClick={verifyOTP} disabled={loading || otp.length < 6 || isExpired}
-                className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-50 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+                className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-50 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
                 {loading ? <Loader2 size={16} className="animate-spin" /> : <ShieldCheck size={16} />}
                 {loading ? 'Verifying...' : 'Verify & Update Email'}
               </button>
@@ -341,7 +341,7 @@ const Profile = ({ userId: propsUserId }) => {
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <div className="w-10 h-10 border-4 border-[#2563eb] border-t-transparent rounded-full animate-spin" />
+      <div className="w-10 h-10 border-4 border-[#4F46E5] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -359,7 +359,7 @@ const Profile = ({ userId: propsUserId }) => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto">
         <div className="bg-white rounded-3xl border border-[#e5e7eb] shadow-sm overflow-hidden">
           {/* Hero gradient */}
-          <div className="h-32 bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] relative overflow-hidden">
+          <div className="h-32 bg-gradient-to-br from-[#4338CA] via-[#4F46E5] to-[#3b82f6] relative overflow-hidden">
             <div className="absolute inset-0 opacity-20"
               style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
           </div>
@@ -367,7 +367,7 @@ const Profile = ({ userId: propsUserId }) => {
           <div className="px-8 pb-8">
             <div className="relative -mt-12 mb-8 flex flex-col items-center text-center">
               <div className="w-24 h-24 bg-white rounded-2xl shadow-lg border-4 border-white flex items-center justify-center shrink-0 z-10 transition-transform hover:scale-105">
-                <User size={48} className="text-[#2563eb]" />
+                <User size={48} className="text-[#4F46E5]" />
               </div>
               <div className="pt-3">
                 <h2 className="text-2xl font-black text-[#111827] leading-tight">{userData.name}</h2>
@@ -396,7 +396,7 @@ const Profile = ({ userId: propsUserId }) => {
 
               {/* Full Name */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
-                <div className="p-2.5 bg-white rounded-xl text-[#2563eb] shadow-sm border border-[#e5e7eb] shrink-0">
+                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
                   <User size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -406,15 +406,15 @@ const Profile = ({ userId: propsUserId }) => {
                       <input autoFocus value={nameValue}
                         onChange={e => setNameValue(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setEditingName(false); }}
-                        className="flex-1 min-w-0 border border-[#2563eb] rounded-xl px-3 py-1.5 text-sm text-[#111827] outline-none bg-white font-bold" />
-                      <button onClick={saveName} className="p-1.5 bg-[#2563eb] text-white rounded-xl">
+                        className="flex-1 min-w-0 border border-[#4F46E5] rounded-xl px-3 py-1.5 text-sm text-[#111827] outline-none bg-white font-bold" />
+                      <button onClick={saveName} className="p-1.5 bg-[#4F46E5] text-white rounded-xl">
                         {nameLoading ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
                       </button>
                     </div>
                   ) : (
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-bold text-[#111827] truncate">{userData.name}</p>
-                      <button onClick={() => setEditingName(true)} className="opacity-0 group-hover:opacity-100 p-1.5 text-[#6b7280] hover:text-[#2563eb] transition-all"><Pencil size={13} /></button>
+                      <button onClick={() => setEditingName(true)} className="opacity-0 group-hover:opacity-100 p-1.5 text-[#6b7280] hover:text-[#4F46E5] transition-all"><Pencil size={13} /></button>
                     </div>
                   )}
                 </div>
@@ -422,14 +422,14 @@ const Profile = ({ userId: propsUserId }) => {
 
               {/* Email Address */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
-                <div className="p-2.5 bg-white rounded-xl text-[#2563eb] shadow-sm border border-[#e5e7eb] shrink-0">
+                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
                   <Mail size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black mb-1">Email Address</p>
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-bold text-[#111827] truncate">{userData.email}</p>
-                    <button onClick={() => setShowEmailModal(true)} className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#2563eb] hover:bg-[#eff6ff] rounded-xl border border-transparent hover:border-[#dbeafe] transition-all">
+                    <button onClick={() => setShowEmailModal(true)} className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl border border-transparent hover:border-[#dbeafe] transition-all">
                       <Pencil size={11} /> Edit
                     </button>
                   </div>

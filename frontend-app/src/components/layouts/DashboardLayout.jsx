@@ -23,11 +23,11 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
   const panelLabel = user?.role === 'owner' ? 'Owner Panel' : 'My Dashboard';
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB] text-[#1E293B] overflow-x-hidden">
+    <div className="flex min-h-screen bg-[#F9FAFB] text-[#111827] overflow-x-hidden">
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-[#1E293B]/40 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-[#111827]/40 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -35,24 +35,24 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
       {/* ── SIDEBAR ── */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-64 flex flex-col
-        bg-white border-r border-[#E2E8F0]
+        bg-white border-r border-[#E5E7EB]
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 shadow-card
       `}>
-        <div className="flex flex-col items-center justify-center p-6 border-b border-[#E2E8F0] shrink-0 gap-3">
+        <div className="flex flex-col items-center justify-center p-6 border-b border-[#E5E7EB] shrink-0 gap-3">
           <Link to="/" className="group flex flex-col items-center gap-3">
-            <div className="w-16 h-16 flex items-center justify-center overflow-hidden rounded-2xl shadow-md border border-[#F1F5F9] transition-transform group-hover:scale-105">
+            <div className="w-16 h-16 flex items-center justify-center overflow-hidden rounded-2xl shadow-md border border-[#F3F4F6] transition-transform group-hover:scale-105">
               <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
             </div>
             <div className="text-center">
-              <h2 className="text-lg font-black tracking-tighter text-[#1E293B]">SMART<span className="text-[#2563EB]">ROOM</span></h2>
-              <p className="text-[9px] text-[#94A3B8] font-bold uppercase tracking-widest leading-none mt-1">{panelLabel}</p>
+              <h2 className="text-lg font-black tracking-tighter text-[#111827]">SMART<span className="text-[#4F46E5]">ROOM</span></h2>
+              <p className="text-[9px] text-[#9CA3AF] font-bold uppercase tracking-widest leading-none mt-1">{panelLabel}</p>
             </div>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden absolute top-4 right-4 p-2 rounded-lg text-[#94A3B8] hover:bg-[#F1F5F9] transition-colors cursor-pointer"
+            className="lg:hidden absolute top-4 right-4 p-2 rounded-lg text-[#9CA3AF] hover:bg-[#F3F4F6] transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <X size={16} />
           </button>
@@ -60,7 +60,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-5 overflow-y-auto space-y-1">
-          <p className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-wider px-3 mb-3">Menu</p>
+          <p className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider px-3 mb-3">Menu</p>
           {navItems.map(item => {
             const isActive = activeNav === item.id;
             return (
@@ -69,17 +69,17 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
                 onClick={() => { onNavClick?.(item.id); setSidebarOpen(false); }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer text-left group ${
                   isActive
-                    ? 'bg-[#EFF6FF] text-[#2563EB] font-semibold'
-                    : 'text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#1E293B]'
+                    ? 'bg-[#EEF2FF] text-[#4F46E5] font-semibold'
+                    : 'text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]'
                 }`}
               >
                 <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                  isActive ? 'bg-[#2563EB] text-white' : 'bg-[#F1F5F9] text-[#94A3B8] group-hover:bg-[#E2E8F0] group-hover:text-[#64748B]'
+                  isActive ? 'bg-[#4F46E5] text-white' : 'bg-[#F3F4F6] text-[#9CA3AF] group-hover:bg-[#E5E7EB] group-hover:text-[#6B7280]'
                 }`}>
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
-                {isActive && <ChevronRight size={14} className="ml-auto text-[#2563EB]" />}
+                {isActive && <ChevronRight size={14} className="ml-auto text-[#4F46E5]" />}
               </button>
             );
           })}
@@ -90,17 +90,17 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
               onClick={() => setProfileExpanded(!profileExpanded)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer text-left group ${
                 profileExpanded
-                  ? 'bg-[#EFF6FF] text-[#2563EB] font-semibold'
-                  : 'text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#1E293B]'
+                  ? 'bg-[#EEF2FF] text-[#4F46E5] font-semibold'
+                  : 'text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#111827]'
               }`}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                profileExpanded ? 'bg-[#2563EB] text-white' : 'bg-[#F1F5F9] text-[#94A3B8] group-hover:bg-[#E2E8F0] group-hover:text-[#64748B]'
+                profileExpanded ? 'bg-[#4F46E5] text-white' : 'bg-[#F3F4F6] text-[#9CA3AF] group-hover:bg-[#E5E7EB] group-hover:text-[#6B7280]'
               }`}>
                 <User size={16} />
               </span>
               <span>Profile</span>
-              <ChevronRight size={14} className={`ml-auto text-[#94A3B8] transition-transform ${profileExpanded ? 'rotate-90' : ''}`} />
+              <ChevronRight size={14} className={`ml-auto text-[#9CA3AF] transition-transform ${profileExpanded ? 'rotate-90' : ''}`} />
             </button>
 
             <AnimatePresence>
@@ -111,16 +111,16 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="mx-3 mt-1.5 p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-3 shadow-inner">
+                  <div className="mx-3 mt-1.5 p-3 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] space-y-3 shadow-inner">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2563eb] to-[#60a5fa] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">{userInitial}</div>
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#60a5fa] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">{userInitial}</div>
                         <div className="overflow-hidden flex-1">
-                            <p className="text-xs font-bold text-[#1E293B] truncate">{user?.name}</p>
-                            <p className="text-[10px] text-[#64748B] truncate">{user?.email}</p>
+                            <p className="text-xs font-bold text-[#111827] truncate">{user?.name}</p>
+                            <p className="text-[10px] text-[#6B7280] truncate">{user?.email}</p>
                         </div>
                     </div>
                     
-                    <button onClick={() => { setShowProfileModal(true); setSidebarOpen(false); }} className="w-full py-2 bg-white border border-[#E2E8F0] hover:border-[#2563eb] hover:text-[#2563eb] text-[#64748B] text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm">
+                    <button onClick={() => { setShowProfileModal(true); setSidebarOpen(false); }} className="w-full py-2 bg-white border border-[#E5E7EB] hover:border-[#4F46E5] hover:text-[#4F46E5] text-[#6B7280] text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm">
                         <Settings size={13} /> Manage Account
                     </button>
                   </div>
@@ -131,14 +131,14 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         </nav>
 
         {/* User Profile + Logout */}
-        <div className="p-4 border-t border-[#E2E8F0] space-y-3">
+        <div className="p-4 border-t border-[#E5E7EB] space-y-3">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#3B82F6] flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-blue">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#3B82F6] flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-blue">
               {userInitial}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-[#1E293B] truncate">{user?.name}</p>
-              <p className="text-xs text-[#94A3B8] capitalize">{user?.role}</p>
+              <p className="text-sm font-semibold text-[#111827] truncate">{user?.name}</p>
+              <p className="text-xs text-[#9CA3AF] capitalize">{user?.role}</p>
             </div>
           </div>
           <button
@@ -154,17 +154,17 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
       {/* ── MAIN CONTENT ── */}
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
         {/* Top header */}
-        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-[#E2E8F0] px-5 lg:px-8 h-[70px] flex items-center justify-between shrink-0 shadow-soft">
+        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-[#E5E7EB] px-5 lg:px-8 h-[70px] flex items-center justify-between shrink-0 shadow-soft">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-[#64748B] hover:bg-[#F1F5F9] cursor-pointer transition-colors"
+              className="lg:hidden p-2 rounded-xl text-[#6B7280] hover:bg-[#F3F4F6] cursor-pointer transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <Menu size={20} />
             </button>
             <div>
-              <h1 className="text-lg font-bold text-[#1E293B] leading-tight">{title}</h1>
-              {subtitle && <div className="text-xs text-[#94A3B8] font-medium leading-tight mt-0.5">{subtitle}</div>}
+              <h1 className="text-lg font-bold text-[#111827] leading-tight">{title}</h1>
+              {subtitle && <div className="text-xs text-[#9CA3AF] font-medium leading-tight mt-0.5">{subtitle}</div>}
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -184,9 +184,9 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         </motion.main>
 
         {/* Footer */}
-        <footer className="border-t border-[#E2E8F0] bg-white px-8 py-4 flex items-center justify-between shrink-0">
-          <span className="text-xs font-semibold text-[#2563EB]">SmartRoom Finder</span>
-          <span className="text-[10px] text-[#94A3B8]">© 2026 Abhishek J</span>
+        <footer className="border-t border-[#E5E7EB] bg-white px-8 py-4 flex items-center justify-between shrink-0">
+          <span className="text-xs font-semibold text-[#4F46E5]">SmartRoom Finder</span>
+          <span className="text-[10px] text-[#9CA3AF]">© 2026 Abhishek J</span>
         </footer>
       </div>
 
@@ -197,7 +197,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#1E293B]/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 bg-[#111827]/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 overflow-y-auto"
             onClick={e => { if (e.target === e.currentTarget) setShowProfileModal(false); }}
           >
             <motion.div
@@ -208,7 +208,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
             >
               <button
                 onClick={() => setShowProfileModal(false)}
-                className="absolute -top-4 -right-4 lg:-right-12 p-2 bg-white text-[#64748B] hover:text-[#EF4444] rounded-full shadow-lg transition-colors cursor-pointer z-50 ring-4 ring-white/10"
+                className="absolute -top-4 -right-4 lg:-right-12 p-2 bg-white text-[#6B7280] hover:text-[#EF4444] rounded-full shadow-lg transition-colors cursor-pointer z-50 ring-4 ring-white/10"
               >
                 <X size={20} />
               </button>

@@ -63,7 +63,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                 </p>
                 <button
                     onClick={onExploreRooms}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#2563eb] text-white text-sm font-black rounded-xl hover:bg-[#1d4ed8] transition-all shadow-lg shadow-[#2563eb]/20 cursor-pointer"
+                    className="flex items-center gap-2 px-6 py-3 bg-[#4F46E5] text-white text-sm font-black rounded-xl hover:bg-[#4338CA] transition-all shadow-lg shadow-[#4F46E5]/20 cursor-pointer"
                 >
                     <Search size={16} />
                     Explore Rooms
@@ -106,7 +106,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                         <div>
                             <div className="flex justify-between items-start mb-1">
                                 <h3 className="font-extrabold text-[#111827] text-lg leading-tight tracking-tight">{booking.title}</h3>
-                                <p className="text-[#2563eb] font-black text-sm">₹{booking.price}</p>
+                                <p className="text-[#4F46E5] font-black text-sm">₹{booking.price}</p>
                             </div>
                             <p className="text-[#6b7280] text-xs font-medium flex items-center gap-1.5 mb-4">
                                 <MapPin size={12} className="text-[#6b7280]/60" /> {booking.area}
@@ -124,7 +124,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                                     <p className="text-xs font-bold text-[#111827]">₹{booking.total_price}</p>
                                 </div>
                            </div>
-                           <ChevronRight size={16} className="text-[#6b7280]/40 group-hover:text-[#2563eb] transition-colors" />
+                           <ChevronRight size={16} className="text-[#6b7280]/40 group-hover:text-[#4F46E5] transition-colors" />
                         </div>
                     </div>
                 </motion.div>

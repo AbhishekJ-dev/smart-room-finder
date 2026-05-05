@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/db');
+const pool = require('../config/db');
 const { generateOTP, sendOTP } = require('../utils/otpService');
 const router = express.Router();
 
@@ -8,8 +8,8 @@ const router = express.Router();
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/:id', async (req, res) => {
     try {
-        const [users] = await db.execute(
-            'SELECT id, name, email, role, is_verified FROM users WHERE id = ?',
+        const { rows: users } = await pool.query(
+            'SELECT id, name, email, role, is_verified FROM users WHERE id = $1',
             [req.params.id]
         );
         if (users.length === 0) return res.status(404).json({ message: 'User not found' });
@@ -29,11 +29,11 @@ router.put('/:id/name', async (req, res) => {
         return res.status(400).json({ message: 'Name must be at least 2 characters.' });
     }
     try {
-        const [result] = await db.execute(
-            'UPDATE users SET name = ? WHERE id = ?',
+        const { rows: result } = await pool.query(
+            'UPDATE users SET name = $1 WHERE id = $2',
             [String(name).trim(), req.params.id]
         );
-        if (result.affectedRows === 0) return res.status(404).json({ message: 'User not found.' });
+        if (result.rowCount === 0) return res.status(404).json({ message: 'User not found.' });
         res.json({ message: 'Name updated successfully.' });
     } catch (error) {
         console.error('Update name error:', error);
@@ -46,14 +46,14 @@ router.put('/:id/name', async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.post('/:id/send-verify-otp', async (req, res) => {
     try {
-        const [users] = await db.execute('SELECT email FROM users WHERE id = ?', [req.params.id]);
+        const { rows: users } = await pool.query('SELECT email FROM users WHERE id = $1', [req.params.id]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found.' });
 
         const email = users[0].email;
         const otp = generateOTP();
         const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-        await db.execute('UPDATE users SET otp = ?, otp_expiry = ? WHERE id = ?', [otp, expiry, req.params.id]);
+        await pool.query('UPDATE users SET otp_code = $1, otp_expiry = $2 WHERE id = $3', [otp, expiry, req.params.id]);
         const sent = await sendOTP(email, otp, 'verification');
         if (!sent) return res.status(500).json({ message: 'Failed to deliver OTP email. Please check your email configuration.' });
 
@@ -72,23 +72,23 @@ router.post('/:id/confirm-verify', async (req, res) => {
     if (!otp) return res.status(400).json({ message: 'OTP is required.' });
 
     try {
-        const [users] = await db.execute('SELECT otp, otp_expiry FROM users WHERE id = ?', [req.params.id]);
+        const { rows: users } = await pool.query('SELECT otp_code, otp_expiry FROM users WHERE id = $1', [req.params.id]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found.' });
 
         const user = users[0];
-        if (!user.otp) return res.status(400).json({ message: 'No OTP requested.' });
+        if (!user.otp_code) return res.status(400).json({ message: 'No OTP requested.' });
         
         if (new Date() > new Date(user.otp_expiry)) {
-            await db.execute('UPDATE users SET otp = NULL, otp_expiry = NULL WHERE id = ?', [req.params.id]);
+            await pool.query('UPDATE users SET otp_code = NULL, otp_expiry = NULL WHERE id = $1', [req.params.id]);
             return res.status(400).json({ message: 'OTP has expired.' });
         }
 
-        if (user.otp !== String(otp)) {
+        if (user.otp_code !== String(otp)) {
             return res.status(400).json({ message: 'Invalid OTP.' });
         }
 
         // Set verified, and clear OTP fields to prevent reuse
-        await db.execute('UPDATE users SET is_verified = TRUE, otp = NULL, otp_expiry = NULL WHERE id = ?', [req.params.id]);
+        await pool.query('UPDATE users SET is_verified = TRUE, otp_code = NULL, otp_expiry = NULL WHERE id = $1', [req.params.id]);
         res.json({ message: 'Account verified successfully! Your account is now active.' });
     } catch (error) {
         console.error('Verify OTP error:', error);
@@ -105,14 +105,14 @@ router.post('/:id/send-email-otp', async (req, res) => {
 
     try {
         // Check if email already taken
-        const [existing] = await db.execute('SELECT id FROM users WHERE email = ? AND id != ?', [newEmail, req.params.id]);
+        const { rows: existing } = await pool.query('SELECT id FROM users WHERE email = $1 AND id != $2', [newEmail, req.params.id]);
         if (existing.length > 0) return res.status(400).json({ message: 'This email address is already in use.' });
 
         const otp = generateOTP();
         const expiry = new Date(Date.now() + 5 * 60 * 1000);
 
         // Security Rule: Update email instantly, set verified = false
-        await db.execute('UPDATE users SET email = ?, is_verified = FALSE, otp = ?, otp_expiry = ? WHERE id = ?', 
+        await pool.query('UPDATE users SET email = $1, is_verified = FALSE, otp_code = $2, otp_expiry = $3 WHERE id = $4', 
             [newEmail, otp, expiry, req.params.id]);
 
         const sent = await sendOTP(newEmail, otp, 'change');
@@ -133,24 +133,24 @@ router.post('/:id/update-email', async (req, res) => {
     if (!otp) return res.status(400).json({ message: 'OTP is required.' });
 
     try {
-        const [users] = await db.execute('SELECT otp, otp_expiry FROM users WHERE id = ?', [req.params.id]);
+        const { rows: users } = await pool.query('SELECT otp_code, otp_expiry FROM users WHERE id = $1', [req.params.id]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found.' });
         
         const user = users[0];
-        if (!user.otp) return res.status(400).json({ message: 'No verification requested.' });
+        if (!user.otp_code) return res.status(400).json({ message: 'No verification requested.' });
         
         if (new Date() > new Date(user.otp_expiry)) {
-            await db.execute('UPDATE users SET otp = NULL, otp_expiry = NULL WHERE id = ?', [req.params.id]);
+            await pool.query('UPDATE users SET otp_code = NULL, otp_expiry = NULL WHERE id = $1', [req.params.id]);
             return res.status(400).json({ message: 'OTP has expired.' });
         }
 
-        if (user.otp !== String(otp)) {
+        if (user.otp_code !== String(otp)) {
             return res.status(400).json({ message: 'Invalid OTP.' });
         }
 
         // Finalize: Set is_verified = TRUE and clear OTP fields
-        await db.execute(
-            'UPDATE users SET is_verified = TRUE, otp = NULL, otp_expiry = NULL WHERE id = ?', 
+        await pool.query(
+            'UPDATE users SET is_verified = TRUE, otp_code = NULL, otp_expiry = NULL WHERE id = $1', 
             [req.params.id]
         );
         res.json({ message: 'Email updated and verified successfully! Your account is now fully active.' });

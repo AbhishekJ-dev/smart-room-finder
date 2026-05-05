@@ -60,7 +60,7 @@ const LoginSuccess = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
       <div className="ambient-orb-1" />
       <div className="ambient-orb-2" />
-      <div className="w-12 h-12 border-[4px] border-[#2563eb]/10 border-t-[#2563eb] rounded-full animate-spin mb-6" />
+      <div className="w-12 h-12 border-[4px] border-[#4F46E5]/10 border-t-[#4F46E5] rounded-full animate-spin mb-6" />
       <p className="text-[11px] uppercase tracking-[0.4em] font-black text-[#6b7280] animate-pulse">Completing Sign In...</p>
     </div>
   );

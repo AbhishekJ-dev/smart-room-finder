@@ -1,7 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
-const db = require('./db');
+const pool = require('./db');
 
 passport.use(
   new GoogleStrategy(
@@ -22,8 +22,8 @@ passport.use(
         }
 
         // 1. Check if user already exists (by email OR google_id)
-        const [rows] = await db.execute(
-          'SELECT * FROM users WHERE email = ? OR google_id = ? LIMIT 1',
+        const { rows } = await pool.query(
+          'SELECT * FROM users WHERE email = $1 OR google_id = $2 LIMIT 1',
           [email, googleId]
         );
 
@@ -34,14 +34,14 @@ passport.use(
 
           // Update google_id if not set yet (existing email user signs in with Google)
           if (!user.google_id) {
-            await db.execute('UPDATE users SET google_id = ? WHERE id = ?', [googleId, user.id]);
+            await pool.query('UPDATE users SET google_id = $1 WHERE id = $2', [googleId, user.id]);
             user.google_id = googleId;
           }
 
           // Generate JWT using the role stored in the database
           const token = jwt.sign(
             { id: user.id, email: user.email, name: user.name, role: user.role },
-            process.env.JWT_SECRET || 'fallback_secret',
+            process.env.JWT_SECRET || 'smart_room_finder_secret',
             { expiresIn: '7d' }
           );
 

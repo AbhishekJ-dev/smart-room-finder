@@ -66,8 +66,8 @@ function ProtectedRoute({ children, allowedRole }) {
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F9FAFB]">
-      <div className="w-10 h-10 border-[3px] border-[#E2E8F0] border-t-[#2563EB] rounded-full animate-spin mb-4" />
-      <p className="text-xs font-semibold text-[#94A3B8] tracking-widest uppercase">Loading…</p>
+      <div className="w-10 h-10 border-[3px] border-[#E5E7EB] border-t-[#4F46E5] rounded-full animate-spin mb-4" />
+      <p className="text-xs font-semibold text-[#9CA3AF] tracking-widest uppercase">Loading…</p>
     </div>
   );
   if (!user) return null;
@@ -94,7 +94,7 @@ function AuthRedirect({ children }) {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-12 h-12 border-[4px] border-[#2563eb]/10 border-t-[#2563eb] rounded-full animate-spin" />
+      <div className="w-12 h-12 border-[4px] border-[#4F46E5]/10 border-t-[#4F46E5] rounded-full animate-spin" />
     </div>
   );
 
@@ -109,7 +109,7 @@ function App() {
         style: {
           marginTop: '20px',
           padding: '16px',
-          color: '#1E293B',
+          color: '#111827',
           boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
         },
       }} />

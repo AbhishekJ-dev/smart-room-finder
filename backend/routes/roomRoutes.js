@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/db');
+const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const { upload } = require('../config/cloudinaryConfig');
 const requireOwnerVerification = require('../middleware/requireOwnerVerification');
@@ -33,7 +33,7 @@ router.post('/', auth, requireOwnerVerification, (req, res, next) => {
 }, async (req, res) => {
     let connection;
     try {
-        connection = await db.getConnection();
+        connection = await pool.connect();
 
         let { type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, area, city, location, contact, description, tenant_type, annualRent } = req.body;
 
@@ -58,22 +58,22 @@ router.post('/', auth, requireOwnerVerification, (req, res, next) => {
             return res.status(400).json({ message: 'Annual rent cannot be negative.' });
         }
 
-        await connection.beginTransaction();
+        await connection.query('BEGIN');
 
         // ─── 1. Insert room ───────────────────────────────────────────────
-        const [result] = await connection.execute(
+        const { rows: result } = await connection.query(
             `INSERT INTO rooms (
                 owner_id, type, price_daily, price_weekly, price_monthly, 
                 price_quarterly, price_yearly, area, city, location, 
                 contact, description, annual_rent, tenant_type
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
             [
                 req.user.id, type, price_daily || 0, price_weekly || 0, price_monthly || 0,
                 price_quarterly || 0, price_yearly || 0, area, city, location,
                 contact, description || '', annualRent || 0, tenant_type || 'Anyone'
             ]
         );
-        const roomId = result.insertId;
+        const roomId = result[0].id;
 
         // ─── 2. Insert photos from Cloudinary ─────────────────────────────
         for (const file of req.files) {
@@ -85,13 +85,13 @@ router.post('/', auth, requireOwnerVerification, (req, res, next) => {
                 throw new Error('Cloudinary returned an invalid image URL. Check your credentials.');
             }
 
-            await connection.execute(
-                'INSERT INTO room_images (room_id, image_url) VALUES (?, ?)',
+            await connection.query(
+                'INSERT INTO room_images (room_id, image_url) VALUES ($1, $2)',
                 [roomId, imageUrl]
             );
         }
 
-        await connection.commit();
+        await connection.query('COMMIT');
         res.status(201).json({
             message: 'Property added successfully!',
             roomId,
@@ -99,7 +99,7 @@ router.post('/', auth, requireOwnerVerification, (req, res, next) => {
         });
 
     } catch (error) {
-        if (connection) await connection.rollback();
+        if (connection) await connection.query('ROLLBACK');
         console.error('CRITICAL: Add room error:', error.message);
         res.status(500).json({
             message: 'Server Error while adding property.',
@@ -129,8 +129,8 @@ router.get('/', async (req, res) => {
                 if (userRole === 'owner' || userRole === 'admin') {
                     isSubscribed = true;
                 } else {
-                    const [subs] = await db.execute(
-                        'SELECT id FROM subscriptions WHERE user_id = ? AND is_active = true AND end_date >= NOW() LIMIT 1',
+                    const { rows: subs } = await pool.query(
+                        'SELECT id FROM subscriptions WHERE user_id = $1 AND is_active = true AND end_date >= NOW() LIMIT 1',
                         [userId]
                     );
                     isSubscribed = subs.length > 0;
@@ -138,10 +138,10 @@ router.get('/', async (req, res) => {
             } catch (err) {}
         }
 
-        const [rooms] = await db.execute(`
+        const { rows: rooms } = await pool.query(`
             SELECT r.*, u.name as owner_name, 
-                   IFNULL(
-                       (SELECT GROUP_CONCAT(image_url) FROM room_images WHERE room_id = r.id),
+                   COALESCE(
+                       (SELECT string_agg(image_url, ',') FROM room_images WHERE room_id = r.id),
                        ''
                    ) as photos,
                    EXISTS (SELECT 1 FROM bookings b WHERE b.room_id = r.id AND b.status = 'pending') as has_pending
@@ -193,8 +193,8 @@ router.get('/', async (req, res) => {
 // ─── GET ROOM CONTACT DETAILS (Premium Endpoint) ───
 router.get('/:id/contact', auth, checkSubscription, async (req, res) => {
     try {
-        const [rooms] = await db.execute(
-            'SELECT contact, location, city, area FROM rooms WHERE id = ?',
+        const { rows: rooms } = await pool.query(
+            'SELECT contact, location, city, area FROM rooms WHERE id = $1',
             [req.params.id]
         );
 
@@ -212,15 +212,15 @@ router.get('/:id/contact', auth, checkSubscription, async (req, res) => {
 // ─── GET OWNER'S ROOMS ───
 router.get('/my-rooms', auth, async (req, res) => {
     try {
-        const [rooms] = await db.execute(`
+        const { rows: rooms } = await pool.query(`
             SELECT r.*, 
-                   IFNULL(
-                       (SELECT GROUP_CONCAT(image_url) FROM room_images WHERE room_id = r.id),
+                   COALESCE(
+                       (SELECT string_agg(image_url, ',') FROM room_images WHERE room_id = r.id),
                        ''
                    ) as photos,
                    EXISTS (SELECT 1 FROM bookings b WHERE b.room_id = r.id AND b.status = 'pending') as has_pending
             FROM rooms r
-            WHERE r.owner_id = ?
+            WHERE r.owner_id = $1
             ORDER BY r.created_at DESC
         `, [req.user.id]);
         
@@ -246,14 +246,14 @@ router.get('/my-rooms', auth, async (req, res) => {
 // ─── UPDATE ROOM ───
 router.put('/:id', auth, requireOwnerVerification, async (req, res) => {
     try {
-        const [rooms] = await db.execute('SELECT * FROM rooms WHERE id = ? AND owner_id = ?', [req.params.id, req.user.id]);
+        const { rows: rooms } = await pool.query('SELECT * FROM rooms WHERE id = $1 AND owner_id = $2', [req.params.id, req.user.id]);
         if (rooms.length === 0) return res.status(404).json({ message: 'Room not found' });
 
         const room = rooms[0];
         const { type, price_daily, price_weekly, price_monthly, price_quarterly, price_yearly, area, location, city, contact, description, is_booked, tenant_type, annualRent } = req.body;
 
-        await db.execute(
-            `UPDATE rooms SET type=?, price_daily=?, price_weekly=?, price_monthly=?, price_quarterly=?, price_yearly=?, annual_rent=?, area=?, location=?, city=?, contact=?, description=?, is_booked=?, tenant_type=? WHERE id=?`,
+        await pool.query(
+            `UPDATE rooms SET type=$1, price_daily=$2, price_weekly=$3, price_monthly=$4, price_quarterly=$5, price_yearly=$6, annual_rent=$7, area=$8, location=$9, city=$10, contact=$11, description=$12, is_booked=$13, tenant_type=$14 WHERE id=$15`,
             [
                 type || room.type, 
                 price_daily || room.price_daily, 
@@ -282,10 +282,10 @@ router.put('/:id', auth, requireOwnerVerification, async (req, res) => {
 // ─── DELETE ROOM ───
 router.delete('/:id', auth, requireOwnerVerification, async (req, res) => {
     try {
-        const [rooms] = await db.execute('SELECT * FROM rooms WHERE id = ? AND owner_id = ?', [req.params.id, req.user.id]);
+        const { rows: rooms } = await pool.query('SELECT * FROM rooms WHERE id = $1 AND owner_id = $2', [req.params.id, req.user.id]);
         if (rooms.length === 0) return res.status(404).json({ message: 'Room not found' });
 
-        await db.execute('DELETE FROM rooms WHERE id = ?', [req.params.id]);
+        await pool.query('DELETE FROM rooms WHERE id = $1', [req.params.id]);
         res.json({ message: 'Room deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });

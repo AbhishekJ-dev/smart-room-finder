@@ -126,19 +126,19 @@ const AdminPlans = () => {
       
       {/* ── Header Bar */}
       <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-sm font-bold text-[#1E293B]">All Managed Plans ({plans.length})</h2>
+        <h2 className="text-sm font-bold text-[#111827]">All Managed Plans ({plans.length})</h2>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchPlans}
             disabled={loading}
-            className="p-2 bg-white border border-[#E2E8F0] rounded-xl text-[#64748B] hover:text-[#2563EB] hover:border-[#2563EB] transition-all shadow-soft cursor-pointer disabled:opacity-50"
+            className="p-2 bg-white border border-[#E5E7EB] rounded-xl text-[#6B7280] hover:text-[#4F46E5] hover:border-[#4F46E5] transition-all shadow-soft cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
           </button>
           {!isAdding && !editingPlan && (
             <button
               onClick={handleAddStart}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] text-white rounded-xl text-xs font-bold shadow-blue hover:bg-[#1D4ED8] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#4F46E5] text-white rounded-xl text-xs font-bold shadow-blue hover:bg-[#4338CA] transition-all cursor-pointer"
             >
               <Plus size={16} /> Create New Plan
             </button>
@@ -154,70 +154,70 @@ const AdminPlans = () => {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-1"
           >
-            <div className="bg-white rounded-3xl border-2 border-[#2563EB] p-6 shadow-xl sticky top-6">
+            <div className="bg-white rounded-3xl border-2 border-[#4F46E5] p-6 shadow-xl sticky top-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-bold text-[#1E293B]">{isAdding ? 'Create New Plan' : 'Edit Plan'}</h3>
-                <button onClick={handleCancel} className="p-1.5 text-[#94A3B8] hover:text-[#1E293B] hover:bg-[#F1F5F9] rounded-lg transition-all cursor-pointer">
+                <h3 className="text-sm font-bold text-[#111827]">{isAdding ? 'Create New Plan' : 'Edit Plan'}</h3>
+                <button onClick={handleCancel} className="p-1.5 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#F3F4F6] rounded-lg transition-all cursor-pointer">
                   <X size={16} />
                 </button>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-bold text-[#64748B] uppercase tracking-widest mb-1.5 ml-1">Plan Name</label>
+                  <label className="block text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1.5 ml-1">Plan Name</label>
                   <input
                     type="text"
                     value={form.name}
                     onChange={e => setForm({...form, name: e.target.value})}
                     placeholder="e.g. Premium Plus"
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-4 text-sm font-bold text-[#1E293B] focus:border-[#2563EB] focus:ring-4 focus:ring-[#2563EB]/5 outline-none transition-all placeholder-[#94A3B8]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-4 text-sm font-bold text-[#111827] focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/5 outline-none transition-all placeholder-[#9CA3AF]"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-[#64748B] uppercase tracking-widest mb-1.5 ml-1">Price (₹)</label>
+                    <label className="block text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1.5 ml-1">Price (₹)</label>
                     <div className="relative">
-                      <IndianRupee className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={14} />
+                      <IndianRupee className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={14} />
                       <input
                         type="number"
                         value={form.price}
                         onChange={e => setForm({...form, price: e.target.value})}
                         placeholder="0"
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-[#1E293B] focus:border-[#2563EB] outline-none transition-all"
+                        className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-[#111827] focus:border-[#4F46E5] outline-none transition-all"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-[#64748B] uppercase tracking-widest mb-1.5 ml-1">Days</label>
+                    <label className="block text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1.5 ml-1">Days</label>
                     <div className="relative">
-                      <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={14} />
+                      <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={14} />
                       <input
                         type="number"
                         value={form.duration_days}
                         onChange={e => setForm({...form, duration_days: e.target.value})}
                         placeholder="30"
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-[#1E293B] focus:border-[#2563EB] outline-none transition-all"
+                        className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-[#111827] focus:border-[#4F46E5] outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-[#64748B] uppercase tracking-widest mb-1.5 ml-1">Description</label>
+                  <label className="block text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1.5 ml-1">Description</label>
                   <textarea
                     value={form.description}
                     onChange={e => setForm({...form, description: e.target.value})}
                     placeholder="Short summary of benefits..."
                     rows="3"
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-4 text-sm font-medium text-[#1E293B] focus:border-[#2563EB] outline-none transition-all resize-none placeholder-[#94A3B8]"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-4 text-sm font-medium text-[#111827] focus:border-[#4F46E5] outline-none transition-all resize-none placeholder-[#9CA3AF]"
                   />
                 </div>
 
                 <button
                   onClick={handleSave}
                   disabled={actionLoading}
-                  className="w-full py-3.5 bg-[#2563EB] text-white rounded-xl text-sm font-bold shadow-blue hover:bg-[#1D4ED8] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-2"
+                  className="w-full py-3.5 bg-[#4F46E5] text-white rounded-xl text-sm font-bold shadow-blue hover:bg-[#4338CA] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-2"
                 >
                   {actionLoading ? <RefreshCw className="animate-spin" size={16} /> : <Check size={18} />}
                   {isAdding ? 'Create Plan' : 'Save Changes'}
@@ -231,7 +231,7 @@ const AdminPlans = () => {
         <div className={`${(isAdding || editingPlan) ? 'lg:col-span-2' : 'lg:col-span-3'} grid grid-cols-1 md:grid-cols-2 gap-6`}>
           {loading ? (
             [1, 2, 3].map(i => (
-              <div key={i} className="bg-white rounded-3xl p-8 border border-[#E2E8F0] shadow-soft h-[240px]">
+              <div key={i} className="bg-white rounded-3xl p-8 border border-[#E5E7EB] shadow-soft h-[240px]">
                 <div className="skeleton h-6 w-24 rounded-lg mb-4" />
                 <div className="skeleton h-10 w-32 rounded-xl mb-6" />
                 <div className="skeleton h-4 w-full rounded mb-2" />
@@ -241,9 +241,9 @@ const AdminPlans = () => {
           ) : plans.length === 0 ? (
             <div className="col-span-full py-20 bg-white rounded-3xl border border-dashed border-[#CBD5E1] flex flex-col items-center justify-center text-center">
               <ShieldCheck size={48} className="text-[#CBD5E1] mb-4" />
-              <p className="text-sm font-bold text-[#1E293B]">No Plans Configured</p>
-              <p className="text-xs text-[#94A3B8] mt-1 max-w-[240px]">Create your first subscription tier to start accepting membership payments.</p>
-              <button onClick={handleAddStart} className="mt-6 text-[#2563EB] font-bold text-xs flex items-center gap-1.5 hover:underline cursor-pointer">
+              <p className="text-sm font-bold text-[#111827]">No Plans Configured</p>
+              <p className="text-xs text-[#9CA3AF] mt-1 max-w-[240px]">Create your first subscription tier to start accepting membership payments.</p>
+              <button onClick={handleAddStart} className="mt-6 text-[#4F46E5] font-bold text-xs flex items-center gap-1.5 hover:underline cursor-pointer">
                 <Plus size={14} /> Create One Now
               </button>
             </div>
@@ -261,28 +261,28 @@ const AdminPlans = () => {
                     animate={{ opacity: active ? 1 : 0.6, scale: 1 }}
                     transition={{ delay: idx * 0.05 }}
                     className={`bg-white rounded-3xl p-8 border-2 transition-all relative overflow-hidden group ${
-                      isEditing ? 'border-[#2563EB] shadow-xl' : 'border-[#E2E8F0] hover:border-[#BFDBFE]'
-                    } ${!active ? 'bg-[#F8FAFC]' : ''}`}
+                      isEditing ? 'border-[#4F46E5] shadow-xl' : 'border-[#E5E7EB] hover:border-[#C7D2FE]'
+                    } ${!active ? 'bg-[#F9FAFB]' : ''}`}
                   >
                     {/* Background decoration */}
                     <div className={`absolute top-0 right-0 w-32 h-32 rounded-bl-full pointer-events-none transition-all duration-500 opacity-20 ${
-                      !active ? 'bg-[#94A3B8]' : (plan.price > 500 ? 'bg-[#7C3AED]' : 'bg-[#2563EB]')
+                      !active ? 'bg-[#9CA3AF]' : (plan.price > 500 ? 'bg-[#7C3AED]' : 'bg-[#4F46E5]')
                     } group-hover:scale-125`} />
                     
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-6">
                         <div className="space-y-1">
-                          <h3 className={`text-xl font-black uppercase tracking-tighter ${!active ? 'text-[#64748B]' : 'text-[#1E293B]'}`}>{plan.name}</h3>
+                          <h3 className={`text-xl font-black uppercase tracking-tighter ${!active ? 'text-[#6B7280]' : 'text-[#111827]'}`}>{plan.name}</h3>
                           <div className="flex items-center gap-2">
                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${
                                 !active 
-                                ? 'text-[#94A3B8] bg-[#F1F5F9] border-[#E2E8F0]' 
-                                : (plan.price > 500 ? 'text-[#7C3AED] bg-[#F5F3FF] border-[#DDD6FE]' : 'text-[#2563EB] bg-[#EFF6FF] border-[#BFDBFE]')
+                                ? 'text-[#9CA3AF] bg-[#F3F4F6] border-[#E5E7EB]' 
+                                : (plan.price > 500 ? 'text-[#7C3AED] bg-[#F5F3FF] border-[#DDD6FE]' : 'text-[#4F46E5] bg-[#EEF2FF] border-[#C7D2FE]')
                               }`}>
                                 {plan.duration_days} Day Period
                               </span>
                               {!active && (
-                                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md border text-white bg-[#64748B] border-[#475569]">
+                                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md border text-white bg-[#6B7280] border-[#475569]">
                                   Disabled
                                 </span>
                               )}
@@ -291,7 +291,7 @@ const AdminPlans = () => {
                         <div className="flex gap-1">
                           <button
                             onClick={() => handleEditStart(plan)}
-                            className="p-2 text-[#94A3B8] hover:text-[#2563EB] hover:bg-[#EFF6FF] rounded-xl transition-all cursor-pointer"
+                            className="p-2 text-[#9CA3AF] hover:text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl transition-all cursor-pointer"
                             title="Edit"
                           >
                             <Edit2 size={15} />
@@ -312,17 +312,17 @@ const AdminPlans = () => {
                       </div>
 
                       <div className={`flex items-baseline gap-1 mb-5 ${!active ? 'opacity-50' : ''}`}>
-                        <IndianRupee size={24} className="text-[#1E293B] font-extrabold -mt-1" />
-                        <span className="text-5xl font-black text-[#1E293B] tracking-tight">{Math.round(plan.price)}</span>
-                        <span className="text-xs font-bold text-[#94A3B8] ml-1 uppercase letter-spacing-1">/ one-time</span>
+                        <IndianRupee size={24} className="text-[#111827] font-extrabold -mt-1" />
+                        <span className="text-5xl font-black text-[#111827] tracking-tight">{Math.round(plan.price)}</span>
+                        <span className="text-xs font-bold text-[#9CA3AF] ml-1 uppercase letter-spacing-1">/ one-time</span>
                       </div>
 
-                      <p className={`text-sm font-medium leading-relaxed mb-6 line-clamp-3 ${!active ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
+                      <p className={`text-sm font-medium leading-relaxed mb-6 line-clamp-3 ${!active ? 'text-[#9CA3AF]' : 'text-[#6B7280]'}`}>
                         {plan.description || "Unlock premium features for the duration of the plan including exact map locations."}
                       </p>
 
                       <div className={`flex items-center gap-1.5 font-bold text-[11px] uppercase tracking-wider group-hover:gap-2.5 transition-all ${
-                        !active ? 'text-[#94A3B8]' : 'text-[#2563EB]'
+                        !active ? 'text-[#9CA3AF]' : 'text-[#4F46E5]'
                       }`}>
                         {active ? 'Plan Available' : 'Plan Paused'} <ArrowRight size={12} />
                       </div>
@@ -336,10 +336,10 @@ const AdminPlans = () => {
       </div>
 
       {/* Visibility Tip */}
-      <div className="mt-8 p-4 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex gap-3">
-        <AlertCircle size={18} className="text-[#2563EB] shrink-0 mt-0.5" />
-        <div className="text-xs text-[#64748B] leading-relaxed">
-          <p className="font-bold text-[#1E293B] mb-0.5">Note on Plan Visibility:</p>
+      <div className="mt-8 p-4 rounded-2xl bg-[#F9FAFB] border border-[#E5E7EB] flex gap-3">
+        <AlertCircle size={18} className="text-[#4F46E5] shrink-0 mt-0.5" />
+        <div className="text-xs text-[#6B7280] leading-relaxed">
+          <p className="font-bold text-[#111827] mb-0.5">Note on Plan Visibility:</p>
           Disabling a plan hides it from new tenants immediately. 
           Existing subscriptions linked to this plan will remain active until their expiry date. 
           This is a safer way to manage membership tiers than permanent deletion.

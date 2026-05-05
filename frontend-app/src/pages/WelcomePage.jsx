@@ -81,7 +81,7 @@ const WelcomePage = () => {
           ══════════════════════════════════ */}
       <section id="home" className="relative overflow-hidden min-h-screen flex items-center"
         style={{
-          background: 'linear-gradient(155deg, #0F172A 0%, #1E293B 45%, #1e3a6e 100%)'
+          background: 'linear-gradient(155deg, #0F172A 0%, #111827 45%, #1e3a6e 100%)'
         }}
       >
         {/* Animated background orbs */}
@@ -92,16 +92,8 @@ const WelcomePage = () => {
         <div className="absolute top-[40%] right-[10%] w-[300px] h-[300px] rounded-full opacity-10 animate-pulse"
           style={{ background: 'radial-gradient(circle, #8B5CF6 0%, transparent 60%)', animationDelay: '2s' }} />
 
-
-
-
-
-
-
         <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32 z-10 w-full">
           <div className="max-w-4xl mx-auto text-center">
-
-            {/* Animated Headline */}
 
             {/* Animated Headline */}
             <motion.div
@@ -140,7 +132,7 @@ const WelcomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-[#94A3B8] text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
+              className="text-[#9CA3AF] text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               Search rooms based on your needs with ease. No brokerage, verified owners,
               and <span className="text-white font-semibold">instant booking</span> across India.
@@ -162,26 +154,25 @@ const WelcomePage = () => {
                     value={locationSearch}
                     onChange={e => setLocationSearch(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                    className="bg-transparent outline-none text-base text-white placeholder-[#64748B] font-medium w-full"
+                    className="bg-transparent outline-none text-base text-white placeholder-[#6B7280] font-medium w-full"
                   />
                 </div>
                 <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">
-                  <span className="text-[#64748B] text-sm font-medium shrink-0">₹</span>
+                  <span className="text-[#6B7280] text-sm font-medium shrink-0">₹</span>
                   <input
                     type="number"
                     placeholder="Max price/mo"
                     value={priceSearch}
                     onChange={e => setPriceSearch(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                    className="bg-transparent outline-none text-sm text-white placeholder-[#64748B] font-medium w-full"
+                    className="bg-transparent outline-none text-sm text-white placeholder-[#6B7280] font-medium w-full"
                   />
                 </div>
                 <button
                   onClick={handleSearch}
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white cursor-pointer transition-all active:scale-[0.97] whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white cursor-pointer transition-all active:scale-[0.97] whitespace-nowrap shadow-blue hover:shadow-card-hover"
                   style={{
-                    background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-                    boxShadow: '0 8px 24px rgba(37,99,235,0.4)'
+                    background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
                   }}
                 >
                   <Search size={16} />
@@ -195,7 +186,7 @@ const WelcomePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#94A3B8]"
+              className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#9CA3AF]"
             >
               {[
                 { icon: <CheckCircle size={15} className="text-[#22C55E]" />, text: 'Verified Listings' },
@@ -209,7 +200,6 @@ const WelcomePage = () => {
               ))}
             </motion.div>
 
-
           </div>
         </div>
       </section>
@@ -217,22 +207,21 @@ const WelcomePage = () => {
       {/* ══════════════════════════════════
           CATEGORY TABS
           ══════════════════════════════════ */}
-      <section className="relative bg-white border-b border-[#E2E8F0] py-5 shadow-soft">
+      <section className="relative bg-white border-b border-[#E5E7EB] py-5 shadow-soft">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
-            <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-widest shrink-0">Browse:</span>
+            <span className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-widest shrink-0">Browse:</span>
             {['All', ...CATEGORIES.map(c => c.label)].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer border ${
                   activeCategory === cat
-                    ? 'text-white border-transparent'
-                    : 'bg-[#F8FAFC] text-[#64748B] border-[#E2E8F0] hover:border-[#2563EB] hover:text-[#2563EB]'
+                    ? 'text-white border-transparent shadow-blue'
+                    : 'bg-[#F9FAFB] text-[#6B7280] border-[#E5E7EB] hover:border-[#4F46E5] hover:text-[#4F46E5]'
                 }`}
                 style={activeCategory === cat ? {
-                  background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-                  boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                  background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
                 } : {}}
               >
                 {cat}
@@ -251,12 +240,12 @@ const WelcomePage = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E293B]">Featured Properties</h2>
-              <p className="text-[#64748B] text-sm mt-1">Verified listings from trusted owners across India</p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111827]">Featured Properties</h2>
+              <p className="text-[#6B7280] text-sm mt-1">Verified listings from trusted owners across India</p>
             </div>
             <button
               onClick={() => navigate(user ? '/user-dashboard' : '/register')}
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white border border-[#E2E8F0] text-[#1E293B] rounded-xl text-sm font-semibold hover:border-[#2563EB] hover:text-[#2563EB] transition-all shadow-soft"
+              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white border border-[#E5E7EB] text-[#111827] rounded-xl text-sm font-semibold hover:border-[#4F46E5] hover:text-[#4F46E5] transition-all shadow-soft"
             >
               View All <ChevronRight size={15} />
             </button>
@@ -265,7 +254,7 @@ const WelcomePage = () => {
           {roomsLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[1,2,3,4].map(i => (
-                <div key={i} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-soft">
+                <div key={i} className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-soft">
                   <div className="skeleton h-52 w-full" />
                   <div className="p-4 space-y-3">
                     <div className="skeleton h-4 w-3/4 rounded-lg" />
@@ -276,10 +265,10 @@ const WelcomePage = () => {
               ))}
             </div>
           ) : displayRooms.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#E2E8F0]">
+            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#E5E7EB]">
               <Home size={48} className="mx-auto text-[#CBD5E1] mb-4" />
-              <h3 className="text-lg font-semibold text-[#1E293B] mb-2">No rooms listed yet</h3>
-              <p className="text-[#64748B] text-sm">Check back soon!</p>
+              <h3 className="text-lg font-semibold text-[#111827] mb-2">No rooms listed yet</h3>
+              <p className="text-[#6B7280] text-sm">Check back soon!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -303,7 +292,7 @@ const WelcomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="mt-14 rounded-3xl p-10 text-center relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1E293B 0%, #1e3a6e 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #111827 0%, #1e3a6e 100%)' }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10"
                 style={{ background: 'radial-gradient(circle, #60A5FA, transparent)', transform: 'translate(30%, -30%)' }} />
@@ -312,17 +301,17 @@ const WelcomePage = () => {
               <div className="relative z-10">
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-                  Browse Listings Free. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
+                  Browse Listings. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
                 </h3>
-                <p className="text-[#94A3B8] mb-8 text-sm max-w-md mx-auto leading-relaxed">
-                  Create a free account to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
+                <p className="text-[#9CA3AF] mb-8 text-sm max-w-md mx-auto leading-relaxed">
+                  Join our community to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
                 </p>
 
                 {/* Two CTAs */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button
                     onClick={() => navigate('/register')}
-                    className="inline-flex items-center gap-2 bg-white text-[#1E293B] font-bold px-8 py-3.5 rounded-xl hover:bg-[#F1F5F9] transition-all cursor-pointer active:scale-[0.97] text-sm"
+                    className="inline-flex items-center gap-2 bg-white text-[#111827] font-bold px-8 py-3.5 rounded-xl hover:bg-[#F3F4F6] transition-all cursor-pointer active:scale-[0.97] text-sm"
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}
                   >
                     Create Account <ArrowRight size={16} />
@@ -345,18 +334,18 @@ const WelcomePage = () => {
           ══════════════════════════════════ */}
       <section id="about" className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #2563EB, transparent)', transform: 'translate(30%, -30%)' }} />
+          style={{ background: 'radial-gradient(circle, #4F46E5, transparent)', transform: 'translate(30%, -30%)' }} />
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E293B] mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] mb-6 leading-tight">
                 The Smartest Way<br />to Find Your<br />
-                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #2563EB, #22C55E)' }}>
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #4F46E5, #22C55E)' }}>
                   Next Home.
                 </span>
               </h2>
-              <p className="text-[#64748B] text-base leading-relaxed mb-8">
+              <p className="text-[#6B7280] text-base leading-relaxed mb-8">
                 Smart Room Finder bridges the gap between room seekers and property owners.
                 We've eliminated the middleman — providing a transparent, fast, and secure
                 platform for all your housing needs.
@@ -368,9 +357,9 @@ const WelcomePage = () => {
                   'Flexible booking — Daily, Weekly, Monthly',
                   'Zero platform brokerage fees, ever',
                 ].map((item, i) => (
-                  <li key={item} className="flex items-center gap-3 text-sm text-[#1E293B] font-medium">
+                  <li key={item} className="flex items-center gap-3 text-sm text-[#111827] font-medium">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #2563EB, #22C55E)' }}>
+                      style={{ background: 'linear-gradient(135deg, #4F46E5, #22C55E)' }}>
                       <CheckCircle size={13} className="text-white" />
                     </div>
                     {item}
@@ -382,7 +371,7 @@ const WelcomePage = () => {
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-5">
               {[
-                { icon: <Users size={24} />, value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants',       bg: 'from-[#EFF6FF] to-[#DBEAFE]', iconBg: '#2563EB', textColor: '#1D4ED8' },
+                { icon: <Users size={24} />, value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants',       bg: 'from-[#EEF2FF] to-[#DBEAFE]', iconBg: '#4F46E5', textColor: '#4338CA' },
                 { icon: <Home size={24} />,  value: `${stats.liveListings || '50'}+`, label: 'Live Listings', bg: 'from-[#F0FDF4] to-[#DCFCE7]', iconBg: '#16A34A', textColor: '#15803D' },
                 { icon: <MapPin size={24} />, value: '50+', label: 'Cities Covered',     bg: 'from-[#FFFBEB] to-[#FEF3C7]', iconBg: '#D97706', textColor: '#B45309' },
                 { icon: <Star size={24} className="fill-current" />, value: `${stats.avgRating}/5`, label: 'Avg. Rating', bg: 'from-[#FAF5FF] to-[#EDE9FE]', iconBg: '#7C3AED', textColor: '#6D28D9' },
@@ -400,7 +389,7 @@ const WelcomePage = () => {
                     {s.icon}
                   </div>
                   <p className="text-3xl font-extrabold" style={{ color: s.textColor }}>{s.value}</p>
-                  <p className="text-sm text-[#64748B] font-medium mt-1">{s.label}</p>
+                  <p className="text-sm text-[#6B7280] font-medium mt-1">{s.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -412,19 +401,19 @@ const WelcomePage = () => {
           FEATURES SECTION
           ══════════════════════════════════ */}
       <section id="features" className="py-24 relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #EFF6FF 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #EEF2FF 100%)' }}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E293B] mb-4">Everything You Need.</h2>
-            <p className="text-[#64748B] max-w-xl mx-auto text-base">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] mb-4">Everything You Need.</h2>
+            <p className="text-[#6B7280] max-w-xl mx-auto text-base">
               Powerful tools designed to make your room finding experience seamless and professional.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { emoji: '🔍', icon: <Search size={22} />, iconBg: '#2563EB', bg: '#EFF6FF', title: 'Smart Filters', desc: 'Filter by room type, rent range, and area to find your perfect match instantly.' },
+              { emoji: '🔍', icon: <Search size={22} />, iconBg: '#4F46E5', bg: '#EEF2FF', title: 'Smart Filters', desc: 'Filter by room type, rent range, and area to find your perfect match instantly.' },
               { emoji: '📸', icon: <Home size={22} />, iconBg: '#16A34A', bg: '#F0FDF4', title: 'Real Photos Only', desc: 'Every listing features actual photos uploaded directly by the property owner.' },
               { emoji: '🚫', icon: <Shield size={22} />, iconBg: '#DC2626', bg: '#FFF1F2', title: 'Zero Brokerage', desc: 'Connect directly with owners. Save thousands on brokerage with every move.' },
               { 
@@ -448,16 +437,16 @@ const WelcomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-white rounded-2xl border border-[#E2E8F0] p-7 shadow-soft hover:-translate-y-2 hover:border-transparent group transition-all duration-300"
+                className="bg-white rounded-2xl border border-[#E5E7EB] p-7 shadow-soft hover:-translate-y-2 hover:border-transparent group transition-all duration-300"
               >
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 shadow-soft"
                     style={{ background: `linear-gradient(135deg, ${f.iconBg}ee, ${f.iconBg}bb)`, boxShadow: `0 6px 16px ${f.iconBg}30` }}>
                     {f.icon}
                   </div>
-                  <h3 className="text-base font-bold text-[#1E293B]">{f.title}</h3>
+                  <h3 className="text-base font-bold text-[#111827]">{f.title}</h3>
                 </div>
-                <p className="text-[#64748B] text-sm leading-relaxed">{f.desc}</p>
+                <p className="text-[#6B7280] text-sm leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -470,16 +459,16 @@ const WelcomePage = () => {
       <section className="py-24 bg-white">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E293B]">Get Settled in 3 Steps</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827]">Get Settled in 3 Steps</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 relative">
             {/* Connector line on desktop */}
             <div className="hidden md:block absolute top-[50px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 z-0"
-              style={{ background: 'linear-gradient(90deg, #2563EB, #22C55E)' }} />
+              style={{ background: 'linear-gradient(90deg, #4F46E5, #22C55E)' }} />
 
             {[
-              { step: '01', title: 'Register Free', desc: 'Create your account in under 30 seconds. Completely free, no credit card needed.', color: '#2563EB' },
+              { step: '01', title: 'Register', desc: 'Create your account in under 30 seconds. Completely free, no credit card needed.', color: '#4F46E5' },
               { step: '02', title: 'Search & Filter', desc: 'Use smart filters to browse verified room listings by location, type, and budget.', color: '#7C3AED' },
               { step: '03', title: 'Book & Move In', desc: 'Contact the owner directly, negotiate, and finalize your booking seamlessly.', color: '#22C55E' },
             ].map((item, i) => (
@@ -500,8 +489,8 @@ const WelcomePage = () => {
                 >
                   {item.step}
                 </div>
-                <h3 className="text-lg font-bold text-[#1E293B] mb-3">{item.title}</h3>
-                <p className="text-[#64748B] text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+                <h3 className="text-lg font-bold text-[#111827] mb-3">{item.title}</h3>
+                <p className="text-[#6B7280] text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -510,13 +499,12 @@ const WelcomePage = () => {
             <div className="text-center mt-16">
               <button
                 onClick={() => navigate('/register')}
-                className="inline-flex items-center gap-2 text-white font-bold px-10 py-4 rounded-xl text-sm cursor-pointer transition-all active:scale-[0.97]"
+                className="inline-flex items-center gap-2 text-white font-bold px-10 py-4 rounded-xl text-sm cursor-pointer transition-all active:scale-[0.97] shadow-blue hover:shadow-card-hover"
                 style={{
-                  background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-                  boxShadow: '0 12px 30px rgba(37,99,235,0.35)'
+                  background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
                 }}
               >
-                Start Finding Rooms Free <ArrowRight size={16} />
+                Start Finding Rooms <ArrowRight size={16} />
               </button>
             </div>
           )}
@@ -559,7 +547,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
       whileTap={{ scale: 0.98 }}
       onClick={onAction}
       className="bg-white rounded-2xl overflow-hidden cursor-pointer group shadow-soft transition-all duration-300"
-      style={{ border: '1px solid #E2E8F0' }}
+      style={{ border: '1px solid #E5E7EB' }}
     >
       {/* Image */}
       <div className="relative h-52 overflow-hidden">
@@ -582,7 +570,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
           onClick={e => { e.stopPropagation(); setIsLiked(v => !v); }}
           className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow-soft hover:scale-110"
         >
-          <Heart size={14} className={isLiked ? 'text-[#DC2626] fill-current' : 'text-[#94A3B8]'} />
+          <Heart size={14} className={isLiked ? 'text-[#DC2626] fill-current' : 'text-[#9CA3AF]'} />
         </button>
 
         {/* Price overlay at bottom */}
@@ -596,20 +584,20 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-[#1E293B] text-base leading-tight truncate mb-2">{displayLocation}</h3>
+        <h3 className="font-semibold text-[#111827] text-base leading-tight truncate mb-2">{displayLocation}</h3>
 
-        <div className="flex items-center gap-1.5 text-[#64748B] text-xs mb-4">
-          <MapPin size={12} className="text-[#2563EB] shrink-0" />
+        <div className="flex items-center gap-1.5 text-[#6B7280] text-xs mb-4">
+          <MapPin size={12} className="text-[#4F46E5] shrink-0" />
           <span className="truncate">{room.location || 'Location not specified'}</span>
         </div>
 
         <button
-          className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 text-[#64748B] border border-[#E2E8F0] bg-[#F8FAFC] group-hover:text-white group-hover:border-transparent"
+          className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 text-[#6B7280] border border-[#E5E7EB] bg-[#F9FAFB] group-hover:text-white group-hover:border-transparent"
           style={{}}
         >
           <span className="group-hover:hidden">View Details</span>
           <span className="hidden group-hover:flex items-center justify-center gap-2 w-full"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}
+            style={{ background: 'linear-gradient(135deg, #4F46E5, #4338CA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}
           >
             View Details →
           </span>

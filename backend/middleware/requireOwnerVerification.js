@@ -1,12 +1,11 @@
-const db = require('../config/db');
+const pool = require('../config/db');
 
 const requireOwnerVerification = async (req, res, next) => {
     try {
-        // Authenticated user ID should be in req.user.id from auth middleware
         const userId = req.user?.id;
         if (!userId) return res.status(401).json({ message: 'Authentication required' });
 
-        const [users] = await db.execute('SELECT role, is_verified FROM users WHERE id = ?', [userId]);
+        const { rows: users } = await pool.query('SELECT role, is_verified FROM users WHERE id = $1', [userId]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found' });
 
         const user = users[0];

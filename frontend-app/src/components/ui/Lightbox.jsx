@@ -42,7 +42,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
         className="absolute top-0 inset-x-0 z-10 p-6 flex items-center justify-between pointer-events-none"
       >
         <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl pointer-events-auto">
-          <Camera size={14} className="text-[#2563eb]" />
+          <Camera size={14} className="text-[#4F46E5]" />
           <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/90">
             Gallery {index + 1} <span className="mx-1 opacity-20">/</span> {images.length}
           </span>
@@ -113,7 +113,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
               onClick={() => setIndex(i)}
               className={`w-14 h-14 rounded-xl overflow-hidden border-2 shrink-0 transition-all duration-500 cursor-pointer ${
                 i === index 
-                ? 'border-[#2563eb] scale-110 shadow-[0_0_20px_rgba(37,99,235,0.4)] rotate-0' 
+                ? 'border-[#4F46E5] scale-110 shadow-[0_0_20px_rgba(37,99,235,0.4)] rotate-0' 
                 : 'border-white/5 opacity-30 hover:opacity-100 hover:scale-105 active:scale-90 -rotate-2 hover:rotate-0'
               }`}
             >

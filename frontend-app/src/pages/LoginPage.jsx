@@ -87,7 +87,7 @@ const LoginPage = () => {
         />
 
         <div className="flex justify-end mt-[-8px]">
-          <Link to="/forgot-password" size="sm" className="text-[#2563EB] text-[13px] font-semibold hover:underline">
+          <Link to="/forgot-password" size="sm" className="text-[#4F46E5] text-[13px] font-semibold hover:underline">
             Forgot Password?
           </Link>
         </div>
@@ -99,9 +99,9 @@ const LoginPage = () => {
 
       {/* Divider */}
       <div className="flex items-center gap-4 my-5">
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#E2E8F0]" />
-        <span className="text-[11px] text-[#94A3B8] font-bold uppercase tracking-widest">or continue with</span>
-        <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#E2E8F0]" />
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#E5E7EB]" />
+        <span className="text-[11px] text-[#9CA3AF] font-bold uppercase tracking-widest">or continue with</span>
+        <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#E5E7EB]" />
       </div>
 
       {/* Google Sign In */}
@@ -110,16 +110,16 @@ const LoginPage = () => {
         onClick={() => {
           window.top.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/google`;
         }}
-        className="w-full py-3.5 bg-white border border-[#E2E8F0] shadow-sm rounded-xl font-bold text-[#1E293B] flex items-center justify-center gap-3 hover:bg-[#F8FAFC] hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
+        className="w-full py-3.5 bg-white border border-[#E5E7EB] shadow-sm rounded-xl font-bold text-[#111827] flex items-center justify-center gap-3 hover:bg-[#F9FAFB] hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
       >
         <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
         Continue with Google
       </button>
 
-      <p className="text-center text-sm text-[#64748B] mt-5">
+      <p className="text-center text-sm text-[#6B7280] mt-5">
         Don't have an account?{' '}
-        <Link to="/register" className="text-[#2563EB] font-semibold hover:underline">
-          Create one free
+        <Link to="/register" className="text-[#4F46E5] font-semibold hover:underline">
+          Create your account
         </Link>
       </p>
     </AuthLayout>

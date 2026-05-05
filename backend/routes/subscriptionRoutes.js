@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../config/db');
+const pool = require('../config/db');
 const jwt = require('jsonwebtoken');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
@@ -28,7 +28,7 @@ const auth = (req, res, next) => {
 // ─── GET AVAILABLE PLANS ───
 router.get('/plans', async (req, res) => {
     try {
-        const [plans] = await db.execute('SELECT * FROM subscription_plans WHERE is_active = 1 ORDER BY price ASC');
+        const { rows: plans } = await pool.query('SELECT * FROM subscription_plans WHERE is_active = true ORDER BY price ASC');
         res.json(plans);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch plans' });
@@ -51,7 +51,7 @@ router.post('/create-order', auth, async (req, res) => {
         if (!planId) return res.status(400).json({ message: 'Plan ID is required' });
 
         // 1. Fetch Plan Details
-        const [plans] = await db.execute('SELECT * FROM subscription_plans WHERE id = ?', [planId]);
+        const { rows: plans } = await pool.query('SELECT * FROM subscription_plans WHERE id = $1::INT', [planId]);
         if (plans.length === 0) return res.status(404).json({ message: 'Plan not found' });
         const plan = plans[0];
 
@@ -65,9 +65,9 @@ router.post('/create-order', auth, async (req, res) => {
         const order = await razorpay.orders.create(options);
 
         // 3. Store pending subscription in DB
-        await db.execute(
+        await pool.query(
             `INSERT INTO subscriptions (user_id, plan_id, price, razorpay_order_id, payment_status, is_active) 
-             VALUES (?, ?, ?, ?, 'PENDING', false)`,
+             VALUES ($1::INT, $2::INT, $3::DECIMAL, $4, 'PENDING', false)`,
             [req.user.id, planId, plan.price, order.id]
         );
 
@@ -100,8 +100,8 @@ router.post('/verify-payment', auth, async (req, res) => {
         }
 
         // 2. Fetch the pending subscription
-        const [subs] = await db.execute(
-            'SELECT * FROM subscriptions WHERE razorpay_order_id = ? AND user_id = ?',
+        const { rows: subs } = await pool.query(
+            'SELECT * FROM subscriptions WHERE razorpay_order_id = $1 AND user_id = $2::INT',
             [razorpay_order_id, req.user.id]
         );
 
@@ -109,7 +109,8 @@ router.post('/verify-payment', auth, async (req, res) => {
         const sub = subs[0];
 
         // 3. Fetch plan to calculate duration
-        const [plans] = await db.execute('SELECT duration_days FROM subscription_plans WHERE id = ?', [sub.plan_id]);
+        const { rows: plans } = await pool.query('SELECT duration_days FROM subscription_plans WHERE id = $1::INT', [sub.plan_id]);
+        if (plans.length === 0) return res.status(404).json({ message: 'Plan details not found' });
         const duration = plans[0].duration_days;
 
         // 4. Activate Subscription
@@ -117,25 +118,29 @@ router.post('/verify-payment', auth, async (req, res) => {
         const endDate = new Date();
         endDate.setDate(endDate.getDate() + duration);
 
-        await db.execute(
+        await pool.query(
             `UPDATE subscriptions 
              SET payment_status = 'SUCCESS', is_active = true, 
-                 razorpay_payment_id = ?, start_date = ?, end_date = ? 
-             WHERE razorpay_order_id = ?`,
+                 razorpay_payment_id = $1, start_date = $2, end_date = $3 
+             WHERE razorpay_order_id = $4`,
             [razorpay_payment_id, startDate, endDate, razorpay_order_id]
         );
 
         // Fetch user and plan details for email notification
-        const [[user]] = await db.execute('SELECT id, name, email FROM users WHERE id = ?', [req.user.id]);
-        const [[plan]] = await db.execute('SELECT name FROM subscription_plans WHERE id = ?', [sub.plan_id]);
+        const { rows: usersRows } = await pool.query('SELECT id, name, email FROM users WHERE id = $1::INT', [req.user.id]);
+        const { rows: plansRows } = await pool.query('SELECT name FROM subscription_plans WHERE id = $1::INT', [sub.plan_id]);
+        
+        const user = usersRows[0];
+        const plan = plansRows[0];
 
         if (user && plan) {
-            notificationService.sendSubscriptionConfirmation(user, plan.name, endDate).catch(err => console.error('Subscription email error:', err));
+            notificationService.sendSubscriptionConfirmation(user, plan.name, endDate)
+                .catch(err => console.error('Subscription email notification failed:', err.message));
         }
 
         res.json({ message: 'Subscription activated successfully!', endDate });
     } catch (error) {
-        console.error('Payment Verification Error:', error);
+        console.error('[RAZORPAY VERIFICATION ERROR]', error);
         res.status(500).json({ message: 'Internal server error during verification' });
     }
 });
@@ -143,11 +148,11 @@ router.post('/verify-payment', auth, async (req, res) => {
 // ─── STATUS CHECK ───
 router.get('/status', auth, async (req, res) => {
     try {
-        const [subs] = await db.execute(
+        const { rows: subs } = await pool.query(
             `SELECT s.*, p.name as plan_name 
              FROM subscriptions s 
              JOIN subscription_plans p ON s.plan_id = p.id
-             WHERE s.user_id = ? AND s.is_active = true AND s.end_date >= NOW() 
+             WHERE s.user_id = $1::INT AND s.is_active = true AND s.end_date >= NOW() 
              ORDER BY s.end_date DESC LIMIT 1`,
             [req.user.id]
         );

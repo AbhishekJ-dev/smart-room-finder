@@ -178,7 +178,7 @@ const OwnerDashboard = () => {
   };
 
   const stats = [
-    { label: 'Total Listings', value: rooms.length,                                     bg: '#EFF6FF', color: '#2563EB' },
+    { label: 'Total Listings', value: rooms.length,                                     bg: '#EEF2FF', color: '#4F46E5' },
     { label: 'Available',      value: rooms.filter(r => !r.is_booked).length,           bg: '#F0FDF4', color: '#16A34A' },
     { label: 'Total Bookings', value: bookings.length,                                  bg: '#FFFBEB', color: '#D97706' },
   ];
@@ -188,7 +188,7 @@ const OwnerDashboard = () => {
       title: `Welcome, ${user?.name}`, 
       subtitle: (
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-[#64748B]">Manage your properties and track bookings.</span>
+          <span className="text-[#6B7280]">Manage your properties and track bookings.</span>
           {isVerified ? (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100">
               <CheckCircle size={10} /> Verified Owner
@@ -224,9 +224,9 @@ const OwnerDashboard = () => {
         {activeView !== 'profile' && (
           <div className="grid grid-cols-3 gap-4 mb-7">
             {stats.map(s => (
-              <div key={s.label} className="bg-white border border-[#E2E8F0] rounded-2xl p-4 shadow-soft text-center">
+              <div key={s.label} className="bg-white border border-[#E5E7EB] rounded-2xl p-4 shadow-soft text-center">
                 <p className="text-2xl font-extrabold" style={{ color: s.color }}>{s.value}</p>
-                <p className="text-xs text-[#64748B] font-medium mt-0.5">{s.label}</p>
+                <p className="text-xs text-[#6B7280] font-medium mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
@@ -237,14 +237,14 @@ const OwnerDashboard = () => {
           {activeView === 'listings' && (
             <motion.div key="listings" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-base font-bold text-[#1E293B]">Your Properties</h3>
+                <h3 className="text-base font-bold text-[#111827]">Your Properties</h3>
                 <span className="badge badge-neutral text-xs">{rooms.length} listed</span>
               </div>
 
               {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                   {[1,2,3].map(i => (
-                    <div key={i} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-soft">
+                    <div key={i} className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-soft">
                       <div className="skeleton h-52 w-full" />
                       <div className="p-4 space-y-3">
                         <div className="skeleton h-4 w-3/4 rounded" />
@@ -300,12 +300,12 @@ const OwnerDashboard = () => {
           {activeView === 'bookings' && (
             <motion.div key="bookings" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-base font-bold text-[#1E293B]">Booking Requests</h3>
+                <h3 className="text-base font-bold text-[#111827]">Booking Requests</h3>
                 <span className="badge badge-neutral text-xs">{bookings.length} total</span>
               </div>
 
               {loading ? (
-                <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 shadow-soft space-y-3">
+                <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-soft space-y-3">
                   {[1,2,3].map(i => <div key={i} className="skeleton h-12 rounded-xl w-full" />)}
                 </div>
               ) : bookings.length === 0 ? (
@@ -340,7 +340,7 @@ const OwnerDashboard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#1E293B]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#111827]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
             onClick={e => { if (e.target === e.currentTarget) setShowAddModal(false); }}
           >
             <motion.div
@@ -384,43 +384,43 @@ const OwnerDashboard = () => {
 
 /* ── Bookings Table ── */
 const BookingsTable = ({ bookings, onStatusUpdate }) => (
-  <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-soft overflow-hidden">
+  <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden">
     <div className="overflow-x-auto">
       <table className="w-full text-left min-w-[700px]">
         <thead>
-          <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
+          <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
             {['Guest', 'Property', 'Duration & Price', 'Status', 'Actions'].map(h => (
-              <th key={h} className="px-5 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">{h}</th>
+              <th key={h} className="px-5 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">{h}</th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-[#F1F5F9]">
+        <tbody className="divide-y divide-[#F3F4F6]">
           {bookings.map((b, idx) => (
             <motion.tr
               key={b.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.04 }}
-              className="hover:bg-[#F8FAFC] transition-colors group"
+              className="hover:bg-[#F9FAFB] transition-colors group"
             >
               <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#EFF6FF] rounded-xl flex items-center justify-center text-[#2563EB] font-bold text-sm shrink-0">
+                  <div className="w-8 h-8 bg-[#EEF2FF] rounded-xl flex items-center justify-center text-[#4F46E5] font-bold text-sm shrink-0">
                     {b.user_name?.[0]?.toUpperCase() || <User size={14} />}
                   </div>
-                  <span className="text-sm font-semibold text-[#1E293B]">{b.user_name}</span>
+                  <span className="text-sm font-semibold text-[#111827]">{b.user_name}</span>
                 </div>
               </td>
               <td className="px-5 py-4">
-                <p className="text-sm font-semibold text-[#1E293B] truncate max-w-[160px]">{b.room_area}</p>
-                <p className="text-xs text-[#94A3B8] mt-0.5">{b.room_type}</p>
+                <p className="text-sm font-semibold text-[#111827] truncate max-w-[160px]">{b.room_area}</p>
+                <p className="text-xs text-[#9CA3AF] mt-0.5">{b.room_type}</p>
               </td>
               <td className="px-5 py-4">
-                <div className="flex items-center gap-1.5 text-sm text-[#64748B]">
-                  <Calendar size={13} className="text-[#2563EB]" />
+                <div className="flex items-center gap-1.5 text-sm text-[#6B7280]">
+                  <Calendar size={13} className="text-[#4F46E5]" />
                   <span className="font-medium">{b.duration}</span>
                 </div>
-                <div className="flex items-center gap-1 text-sm font-bold text-[#2563EB] mt-0.5">
+                <div className="flex items-center gap-1 text-sm font-bold text-[#4F46E5] mt-0.5">
                   <IndianRupee size={12} />{parseFloat(b.total_price).toLocaleString()}
                 </div>
               </td>
@@ -448,7 +448,7 @@ const BookingsTable = ({ bookings, onStatusUpdate }) => (
                   {b.status === 'confirmed' && (
                     <button
                       onClick={() => onStatusUpdate(b.id, 'completed')}
-                      className="px-3 py-1.5 bg-[#EFF6FF] border border-[#BFDBFE] text-[#2563EB] text-xs font-semibold rounded-lg hover:bg-[#BFDBFE] transition-all cursor-pointer whitespace-nowrap"
+                      className="px-3 py-1.5 bg-[#EEF2FF] border border-[#C7D2FE] text-[#4F46E5] text-xs font-semibold rounded-lg hover:bg-[#C7D2FE] transition-all cursor-pointer whitespace-nowrap"
                     >Mark Done</button>
                   )}
                   {(b.status === 'completed' || b.status === 'rejected') && (
@@ -492,10 +492,10 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#BFDBFE] transition-all duration-300 cursor-pointer"
+      className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer"
     >
       {/* Image carousel */}
-      <div className="relative h-52 overflow-hidden bg-[#F1F5F9]">
+      <div className="relative h-52 overflow-hidden bg-[#F3F4F6]">
         <img
           src={imgSrc}
           alt={room.area}
@@ -508,11 +508,11 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
         {photos.length > 1 && (
           <>
             <button onClick={e => { e.stopPropagation(); setCurrentImg(i => i === 0 ? photos.length-1 : i-1); }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#1E293B] opacity-0 group-hover:opacity-100 transition-all hover:bg-white shadow-soft cursor-pointer z-10">
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#111827] opacity-0 group-hover:opacity-100 transition-all hover:bg-white shadow-soft cursor-pointer z-10">
               <ChevronLeft size={14} />
             </button>
             <button onClick={e => { e.stopPropagation(); setCurrentImg(i => i === photos.length-1 ? 0 : i+1); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#1E293B] opacity-0 group-hover:opacity-100 transition-all hover:bg-white shadow-soft cursor-pointer z-10">
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#111827] opacity-0 group-hover:opacity-100 transition-all hover:bg-white shadow-soft cursor-pointer z-10">
               <ChevronRight size={14} />
             </button>
           </>
@@ -539,39 +539,39 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
 
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col">
-        <h3 className="font-semibold text-[#1E293B] text-base mb-3 truncate">
+        <h3 className="font-semibold text-[#111827] text-base mb-3 truncate">
           {displayLocation}
         </h3>
 
         <div className="space-y-2 mb-4 text-sm">
           {room.location && (
-            <div className="flex items-start gap-2 text-[#64748B]">
-              <MapPin size={13} className="text-[#2563EB] mt-0.5 shrink-0" />
+            <div className="flex items-start gap-2 text-[#6B7280]">
+              <MapPin size={13} className="text-[#4F46E5] mt-0.5 shrink-0" />
               <span className="truncate font-medium">{room.location}</span>
             </div>
           )}
           {room.contact && (
-            <div className="flex items-center gap-2 text-[#64748B]">
-              <Phone size={13} className="text-[#2563EB] shrink-0" />
+            <div className="flex items-center gap-2 text-[#6B7280]">
+              <Phone size={13} className="text-[#4F46E5] shrink-0" />
               <span className="font-medium">{room.contact}</span>
             </div>
           )}
         </div>
 
         {/* Price */}
-        <div className="flex items-center gap-3 mb-5 pt-3 border-t border-[#F1F5F9]">
+        <div className="flex items-center gap-3 mb-5 pt-3 border-t border-[#F3F4F6]">
           <div>
-            <div className="flex items-center gap-1 text-[#2563EB] font-bold text-lg">
+            <div className="flex items-center gap-1 text-[#4F46E5] font-bold text-lg">
               <IndianRupee size={14} />{room.price_monthly?.toLocaleString()}
             </div>
-            <p className="text-[10px] text-[#94A3B8] font-medium">/month</p>
+            <p className="text-[10px] text-[#9CA3AF] font-medium">/month</p>
           </div>
           {(room.annual_rent > 0) && (
             <div>
               <div className="flex items-center gap-1 text-[#22C55E] font-semibold text-sm">
                 <IndianRupee size={12} />{room.annual_rent?.toLocaleString()}
               </div>
-              <p className="text-[10px] text-[#94A3B8] font-medium">/year</p>
+              <p className="text-[10px] text-[#9CA3AF] font-medium">/year</p>
             </div>
           )}
         </div>
@@ -582,7 +582,7 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
             onClick={() => onToggle(room.id, room.is_booked)}
             className={`flex-1 py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               room.is_booked
-                ? 'bg-[#EFF6FF] border-[#BFDBFE] text-[#2563EB] hover:bg-[#BFDBFE]'
+                ? 'bg-[#EEF2FF] border-[#C7D2FE] text-[#4F46E5] hover:bg-[#C7D2FE]'
                 : 'bg-[#F0FDF4] border-[#BBF7D0] text-[#16A34A] hover:bg-[#BBF7D0]'
             }`}
           >
@@ -602,12 +602,12 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
 
 /* ── Empty State ── */
 const EmptyState = ({ icon, message, subtitle, action }) => (
-  <div className="flex flex-col items-center justify-center py-20 text-center bg-white border border-[#E2E8F0] rounded-2xl shadow-soft">
-    <div className="w-16 h-16 bg-[#F1F5F9] rounded-2xl flex items-center justify-center text-[#CBD5E1] mb-5">
+  <div className="flex flex-col items-center justify-center py-20 text-center bg-white border border-[#E5E7EB] rounded-2xl shadow-soft">
+    <div className="w-16 h-16 bg-[#F3F4F6] rounded-2xl flex items-center justify-center text-[#CBD5E1] mb-5">
       {icon}
     </div>
-    <h3 className="text-lg font-semibold text-[#1E293B] mb-2">{message}</h3>
-    <p className="text-[#64748B] text-sm max-w-xs">{subtitle}</p>
+    <h3 className="text-lg font-semibold text-[#111827] mb-2">{message}</h3>
+    <p className="text-[#6B7280] text-sm max-w-xs">{subtitle}</p>
     {action}
   </div>
 );
@@ -682,18 +682,18 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-lg font-bold text-[#1E293B]">Add New Property</h3>
-          <p className="text-xs text-[#94A3B8] mt-0.5">Step {step} of 2</p>
+          <h3 className="text-lg font-bold text-[#111827]">Add New Property</h3>
+          <p className="text-xs text-[#9CA3AF] mt-0.5">Step {step} of 2</p>
         </div>
-        <button onClick={onClose} className="p-2 rounded-xl text-[#94A3B8] hover:bg-[#F1F5F9] hover:text-[#1E293B] transition-all cursor-pointer">
+        <button onClick={onClose} className="p-2 rounded-xl text-[#9CA3AF] hover:bg-[#F3F4F6] hover:text-[#111827] transition-all cursor-pointer">
           <X size={18} />
         </button>
       </div>
 
       {/* Progress */}
       <div className="flex gap-2 mb-6">
-        <div className={`h-1.5 flex-1 rounded-full transition-all ${step >= 1 ? 'bg-[#2563EB]' : 'bg-[#E2E8F0]'}`} />
-        <div className={`h-1.5 flex-1 rounded-full transition-all ${step >= 2 ? 'bg-[#2563EB]' : 'bg-[#E2E8F0]'}`} />
+        <div className={`h-1.5 flex-1 rounded-full transition-all ${step >= 1 ? 'bg-[#4F46E5]' : 'bg-[#E5E7EB]'}`} />
+        <div className={`h-1.5 flex-1 rounded-full transition-all ${step >= 2 ? 'bg-[#4F46E5]' : 'bg-[#E5E7EB]'}`} />
       </div>
 
       {/* Error */}
@@ -708,16 +708,16 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] mb-1.5">Room Type</label>
+                <label className="block text-xs font-semibold text-[#6B7280] mb-1.5">Room Type</label>
                 <select value={formData.type} onChange={e => fd('type', e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-3 text-sm text-[#1E293B] font-medium outline-none focus:border-[#2563EB] transition-colors">
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-3 text-sm text-[#111827] font-medium outline-none focus:border-[#4F46E5] transition-colors">
                   {['1BHK','2BHK','Room'].map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] mb-1.5">Suitable For</label>
+                <label className="block text-xs font-semibold text-[#6B7280] mb-1.5">Suitable For</label>
                 <select value={formData.tenant_type} onChange={e => fd('tenant_type', e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-3 text-sm text-[#1E293B] font-medium outline-none focus:border-[#2563EB] transition-colors">
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-3 text-sm text-[#111827] font-medium outline-none focus:border-[#4F46E5] transition-colors">
                   <option value="Anyone">Anyone</option>
                   <option value="Boys">Boys Only</option>
                   <option value="Girls">Girls Only</option>
@@ -732,11 +732,11 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
               { label: 'Contact Number *', key: 'contact', placeholder: '10-digit mobile number' },
             ].map(f => (
               <div key={f.key}>
-                <label className="block text-xs font-semibold text-[#64748B] mb-1.5">{f.label}</label>
+                <label className="block text-xs font-semibold text-[#6B7280] mb-1.5">{f.label}</label>
                 <input
                   type="text" placeholder={f.placeholder} value={formData[f.key]}
                   onChange={e => fd(f.key, e.target.value)}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-3 text-sm text-[#1E293B] font-medium outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition-all placeholder-[#94A3B8]"
+                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-3 text-sm text-[#111827] font-medium outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all placeholder-[#9CA3AF]"
                 />
               </div>
             ))}
@@ -748,11 +748,11 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                 { label: 'Yearly Rent (₹)', key: 'price_yearly' },
               ].map(f => (
                 <div key={f.key}>
-                  <label className="block text-xs font-semibold text-[#64748B] mb-1.5">{f.label}</label>
+                  <label className="block text-xs font-semibold text-[#6B7280] mb-1.5">{f.label}</label>
                   <input
                     type="number" placeholder="0" value={formData[f.key]}
                     onChange={e => fd(f.key, e.target.value)}
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-3 text-sm text-[#1E293B] font-medium outline-none focus:border-[#2563EB] transition-all"
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-3 text-sm text-[#111827] font-medium outline-none focus:border-[#4F46E5] transition-all"
                   />
                 </div>
               ))}
@@ -761,7 +761,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
             <button
               type="button"
               onClick={() => validateStep1() && setStep(2)}
-              className="w-full py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-sm font-semibold transition-all shadow-blue cursor-pointer mt-2"
+              className="w-full py-3 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-xl text-sm font-semibold transition-all shadow-blue cursor-pointer mt-2"
             >
               Next: Upload Photos →
             </button>
@@ -771,12 +771,12 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
       {step === 2 && (
           <div className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-[#64748B] mb-3">
+              <label className="block text-xs font-semibold text-[#6B7280] mb-3">
                 Property Photos <span className="text-[#DC2626]">(minimum 5 required)</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {previews.map((p, i) => (
-                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-[#E2E8F0] group">
+                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-[#E5E7EB] group">
                     <img src={p} alt="" className="w-full h-full object-cover" />
                     <button
                       type="button"
@@ -787,23 +787,23 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                     </button>
                   </div>
                 ))}
-                <label className="aspect-square border-2 border-dashed border-[#E2E8F0] rounded-xl flex flex-col items-center justify-center text-[#2563EB] gap-1.5 cursor-pointer hover:bg-[#EFF6FF] hover:border-[#2563EB] transition-all">
+                <label className="aspect-square border-2 border-dashed border-[#E5E7EB] rounded-xl flex flex-col items-center justify-center text-[#4F46E5] gap-1.5 cursor-pointer hover:bg-[#EEF2FF] hover:border-[#4F46E5] transition-all">
                   <ImagePlus size={22} />
                   <span className="text-[11px] font-semibold">Add Photo</span>
                   <input type="file" accept="image/*" multiple onChange={handlePhotoSelect} className="hidden" />
                 </label>
               </div>
-              <p className="text-xs text-[#94A3B8] mt-2">{previews.length}/5+ photos added</p>
+              <p className="text-xs text-[#9CA3AF] mt-2">{previews.length}/5+ photos added</p>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#64748B] mb-1.5">Description (optional)</label>
+              <label className="block text-xs font-semibold text-[#6B7280] mb-1.5">Description (optional)</label>
               <textarea
                 value={formData.description}
                 onChange={e => fd('description', e.target.value)}
                 placeholder="Describe amenities, rules, nearby landmarks..."
                 rows={3}
-                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl py-2.5 px-3 text-sm text-[#1E293B] font-medium outline-none focus:border-[#2563EB] transition-all resize-none placeholder-[#94A3B8]"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl py-2.5 px-3 text-sm text-[#111827] font-medium outline-none focus:border-[#4F46E5] transition-all resize-none placeholder-[#9CA3AF]"
               />
             </div>
 
@@ -811,7 +811,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="flex-1 py-3 border border-[#E2E8F0] text-[#64748B] rounded-xl text-sm font-semibold hover:bg-[#F1F5F9] transition-all cursor-pointer"
+                className="flex-1 py-3 border border-[#E5E7EB] text-[#6B7280] rounded-xl text-sm font-semibold hover:bg-[#F3F4F6] transition-all cursor-pointer"
               >
                 ← Back
               </button>
