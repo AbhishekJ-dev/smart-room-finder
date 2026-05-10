@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, Menu, X, Building2, ChevronRight, User, Settings } from 'lucide-react';
+import { LogOut, Menu, X, Building2, ChevronRight, User, Settings, Globe } from 'lucide-react';
 import { Linkedin, Github } from '../ui/SocialIcons';
 import logo from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
@@ -197,7 +197,13 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
               <span>GitHub</span>
             </a>
           </div>
-          <span className="text-[10px] text-[#9CA3AF]">© 2026 <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="hover:text-[#4F46E5] hover:underline transition-all font-medium">Abhishek J</a></span>
+          <div className="flex items-center gap-1.5 text-[10px] text-[#9CA3AF]">
+            © 2026 
+            <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="hover:text-[#4F46E5] hover:underline transition-all font-medium flex items-center gap-1" title="Portfolio">
+              <Globe size={10} />
+              <span>Abhishek J</span>
+            </a>
+          </div>
         </footer>
       </div>
 

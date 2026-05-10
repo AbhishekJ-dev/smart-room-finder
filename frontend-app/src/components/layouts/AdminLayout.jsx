@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import {
   BarChart3, Users, ShieldCheck, Home, CalendarCheck,
-  LogOut, User as UserIcon, Search, Menu, X, Building2, ChevronRight
+  LogOut, User as UserIcon, Search, Menu, X, Building2, ChevronRight, Globe
 } from 'lucide-react';
 import { Linkedin, Github } from '../ui/SocialIcons';
 import logo from '../../assets/logo.png';
@@ -149,7 +149,13 @@ export const AdminLayout = ({ children, title, subtitle }) => {
               <span>GitHub</span>
             </a>
           </div>
-          <span className="text-[10px] text-[#9CA3AF]">© 2026 <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="hover:text-[#4F46E5] hover:underline transition-all font-medium">Abhishek J</a></span>
+          <div className="flex items-center gap-1.5 text-[10px] text-[#9CA3AF]">
+            © 2026 
+            <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="hover:text-[#4F46E5] hover:underline transition-all font-medium flex items-center gap-1" title="Portfolio">
+              <Globe size={10} />
+              <span>Abhishek J</span>
+            </a>
+          </div>
         </footer>
       </main>
     </div>
