@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Home, Search, CalendarCheck, UserCircle, LogOut, Menu, X, ChevronRight, Building2, Globe } from 'lucide-react';
+import { Home, Search, CalendarCheck, UserCircle, LogOut, Menu, X, ChevronRight, Building2 } from 'lucide-react';
 import { Linkedin, Github } from '../ui/SocialIcons';
 import logo from '../../assets/logo.png';
 
@@ -221,13 +221,7 @@ export function LandingLayout({ children }) {
                 <span>GitHub</span>
               </a>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-[#6B7280]">Designed & Built by</span>
-              <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium hover:text-[#3B82F6] transition-all flex items-center gap-1.5" title="Portfolio">
-                <Globe size={14} />
-                <span>Abhishek J</span>
-              </a>
-            </div>
+            <p className="text-[#6B7280] text-sm">Designed & Built by <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium hover:underline">Abhishek J</a></p>
           </div>
         </div>
       </footer>
