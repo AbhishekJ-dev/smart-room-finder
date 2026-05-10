@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Menu, X, Building2, ChevronRight, User, Settings } from 'lucide-react';
+import { Linkedin, Github } from '../ui/SocialIcons';
 import logo from '../../assets/logo.png';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -184,8 +185,18 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         </motion.main>
 
         {/* Footer */}
-        <footer className="border-t border-[#E5E7EB] bg-white px-8 py-4 flex items-center justify-between shrink-0">
+        <footer className="border-t border-[#E5E7EB] bg-white px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
           <span className="text-xs font-semibold text-[#4F46E5]">SmartRoom Finder</span>
+          <div className="flex items-center gap-4">
+            <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-[#6B7280] hover:text-[#0A66C2] transition-colors flex items-center gap-1.5 text-[11px] font-medium">
+              <Linkedin size={14} />
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-[#6B7280] hover:text-[#111827] transition-colors flex items-center gap-1.5 text-[11px] font-medium">
+              <Github size={14} />
+              <span>GitHub</span>
+            </a>
+          </div>
           <span className="text-[10px] text-[#9CA3AF]">© 2026 Abhishek J</span>
         </footer>
       </div>

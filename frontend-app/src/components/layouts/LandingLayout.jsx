@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Home, Search, CalendarCheck, UserCircle, LogOut, Menu, X, ChevronRight, Building2 } from 'lucide-react';
+import { Linkedin, Github } from '../ui/SocialIcons';
 import logo from '../../assets/logo.png';
 
 export function LandingLayout({ children }) {
@@ -210,6 +211,16 @@ export function LandingLayout({ children }) {
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-[#6B7280] text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
+            <div className="flex items-center gap-6">
+              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-[#9CA3AF] hover:text-[#0A66C2] transition-colors flex items-center gap-2 text-sm font-medium">
+                <Linkedin size={18} />
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-[#9CA3AF] hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+                <Github size={18} />
+                <span>GitHub</span>
+              </a>
+            </div>
             <p className="text-[#6B7280] text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
           </div>
         </div>
