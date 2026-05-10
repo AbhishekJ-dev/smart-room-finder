@@ -221,7 +221,7 @@ export function LandingLayout({ children }) {
                 <span>GitHub</span>
               </a>
             </div>
-            <p className="text-[#6B7280] text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
+            <p className="text-[#6B7280] text-sm">Designed & Built by <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium hover:text-[#3B82F6] hover:underline transition-all">Abhishek J</a></p>
           </div>
         </div>
       </footer>

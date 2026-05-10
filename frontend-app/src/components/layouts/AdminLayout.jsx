@@ -149,7 +149,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
               <span>GitHub</span>
             </a>
           </div>
-          <span className="text-[10px] text-[#9CA3AF]">© 2026 Abhishek J</span>
+          <span className="text-[10px] text-[#9CA3AF]">© 2026 <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="hover:text-[#4F46E5] hover:underline transition-all font-medium">Abhishek J</a></span>
         </footer>
       </main>
     </div>
