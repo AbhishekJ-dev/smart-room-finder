@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthLayout } from '../components/layouts/AuthLayout';
 import { Input } from '../components/ui/Input';
+import { PasswordInput } from '../components/ui/PasswordInput';
 import { Button } from '../components/ui/Button';
+import { validatePassword } from '../utils/passwordValidation';
+
 import { Mail, Lock, ShieldCheck, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -70,8 +73,10 @@ const ForgotPassword = () => {
       toast.error('Passwords do not match');
       return;
     }
-    if (formData.newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+    
+    const { isValid, errors } = validatePassword(formData.newPassword);
+    if (!isValid) {
+      toast.error(errors[0]);
       return;
     }
 
@@ -182,15 +187,14 @@ const ForgotPassword = () => {
             onSubmit={handleResetPassword}
             className="space-y-4"
           >
-            <Input
+            <PasswordInput
               label="New Password"
-              type="password"
-              placeholder="••••••••"
               value={formData.newPassword}
               onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
               prefix={<Lock size={16} />}
               required
             />
+
             <Input
               label="Confirm New Password"
               type="password"

@@ -255,3 +255,41 @@ exports.getProfile = async (req, res) => {
     }
 };
 
+exports.changePassword = async (req, res) => {
+    try {
+        const { id } = req.user; // Assuming req.user is set by auth middleware
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: 'Current and new password are required' });
+        }
+
+        const { rows: users } = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        if (users.length === 0) return res.status(404).json({ message: 'User not found' });
+
+        const user = users[0];
+
+        // If the user registered via Google, they might not have a password set initially
+        // but if they try to change it, let's just make sure they provided the correct current password
+        // if they had one, or prevent changing if they don't have one and we enforce currentPassword
+        if (user.password) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) return res.status(400).json({ message: 'Incorrect current password' });
+        } else {
+            return res.status(400).json({ message: 'Google accounts cannot change password via this method.' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await pool.query(
+            'UPDATE users SET password = $1 WHERE id = $2',
+            [hashedPassword, id]
+        );
+
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+

@@ -3,7 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AuthLayout } from '../components/layouts/AuthLayout';
 import { Input } from '../components/ui/Input';
+import { PasswordInput } from '../components/ui/PasswordInput';
 import { Button } from '../components/ui/Button';
+import { validatePassword } from '../utils/passwordValidation';
+
 import { User, Shield, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const RegisterPage = () => {
@@ -22,6 +25,13 @@ const RegisterPage = () => {
       setError('Please fill in all details correctly.');
       return;
     }
+    
+    const { isValid, errors } = validatePassword(formData.password);
+    if (!isValid) {
+      setError(errors[0]);
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
@@ -93,16 +103,15 @@ const RegisterPage = () => {
           prefix={<Mail size={16} />}
           error={error === 'Please fill in all details correctly.' && !formData.email.trim() ? true : undefined}
         />
-        <Input
+        <PasswordInput
           label="Password"
-          type="password"
           value={formData.password}
           onChange={e => {
             setFormData({ ...formData, password: e.target.value });
-            if (error === 'Please fill in all details correctly.') setError('');
+            if (error) setError('');
           }}
           prefix={<Lock size={16} />}
-          error={error === 'Please fill in all details correctly.' && !formData.password.trim() ? true : undefined}
+          required
         />
 
         <Button type="submit" loading={loading} className="w-full py-3 rounded-xl mt-1">

@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Mail, ShieldCheck, ShieldAlert,
-  Pencil, Check, X, KeyRound, Loader2, ArrowRight, ArrowLeft, Send, Timer
+  Pencil, Check, X, KeyRound, Loader2, ArrowRight, ArrowLeft, Send, Timer, Lock
 } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import StatusModal from '../ui/StatusModal';
+import { PasswordInput } from '../ui/PasswordInput';
+import { validatePassword } from '../../utils/passwordValidation';
 
 const authHeaders = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
@@ -286,6 +288,113 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
   );
 };
 
+/* ── Change Password Modal ───────────────────────────────────────── */
+const ChangePasswordModal = ({ onClose, showAlert }) => {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { isValid: newPassValid } = newPassword ? validatePassword(newPassword) : { isValid: false };
+  const passwordsMatch = newPassword === confirmPassword && confirmPassword.length > 0;
+  const canSubmit = currentPassword.length > 0 && newPassValid && passwordsMatch;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!canSubmit) return;
+
+    if (!passwordsMatch) {
+      showAlert('Mismatch', 'New passwords do not match.', 'error');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post('/api/auth/change-password',
+        { currentPassword, newPassword },
+        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+      );
+      showAlert('Success', 'Your password has been changed successfully.', 'success');
+      setTimeout(onClose, 1500);
+    } catch (err) {
+      showAlert('Failed', err.response?.data?.message || 'Failed to change password.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <ModalShell
+      onClose={onClose}
+      icon={<Lock size={18} className="text-[#4F46E5]" />}
+      title="Change Password"
+      subtitle="Choose a new strong password for your account."
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Current Password */}
+        <div>
+          <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">Current Password</label>
+          <div className="flex items-center gap-3 px-4 py-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus-within:border-[#4F46E5] focus-within:ring-2 focus-within:ring-[#4F46E5]/10 transition-all">
+            <Lock size={14} className="text-[#9CA3AF] shrink-0" />
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={e => setCurrentPassword(e.target.value)}
+              placeholder="Enter current password"
+              className="flex-1 bg-transparent outline-none text-sm text-[#111827] placeholder-[#9CA3AF] font-medium"
+              required
+            />
+          </div>
+        </div>
+
+        {/* New Password with real-time feedback */}
+        <PasswordInput
+          label="New Password"
+          value={newPassword}
+          onChange={e => setNewPassword(e.target.value)}
+          prefix={<Lock size={14} />}
+          required
+        />
+
+        {/* Confirm Password */}
+        <div>
+          <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">Confirm New Password</label>
+          <div className={`flex items-center gap-3 px-4 py-3 bg-[#F9FAFB] border rounded-xl focus-within:border-[#4F46E5] focus-within:ring-2 focus-within:ring-[#4F46E5]/10 transition-all ${
+            confirmPassword.length > 0
+              ? passwordsMatch ? 'border-green-400' : 'border-red-400'
+              : 'border-[#E5E7EB]'
+          }`}>
+            <Lock size={14} className="text-[#9CA3AF] shrink-0" />
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="Re-enter new password"
+              className="flex-1 bg-transparent outline-none text-sm text-[#111827] placeholder-[#9CA3AF] font-medium"
+              required
+            />
+          </div>
+          {confirmPassword.length > 0 && !passwordsMatch && (
+            <p className="text-xs text-red-500 font-medium mt-1">Passwords do not match</p>
+          )}
+          {confirmPassword.length > 0 && passwordsMatch && (
+            <p className="text-xs text-green-600 font-medium mt-1">✓ Passwords match</p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={!canSubmit || loading}
+          className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]"
+        >
+          {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+          {loading ? 'Updating Password...' : 'Update Password'}
+        </button>
+      </form>
+    </ModalShell>
+  );
+};
+
 /* ── Profile Component ───────────────────────────────────────────── */
 const Profile = ({ userId: propsUserId }) => {
   const { refreshUser } = useAuth();
@@ -298,6 +407,7 @@ const Profile = ({ userId: propsUserId }) => {
 
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   const [modal, setModal] = useState({ show: false, title: '', message: '', type: 'info' });
   const showAlert = (title, message, type = 'info') => setModal({ show: true, title, message, type });
@@ -459,6 +569,25 @@ const Profile = ({ userId: propsUserId }) => {
                   )}
                 </div>
               </div>
+
+              {/* Change Password */}
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
+                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
+                  <Lock size={20} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black mb-1">Password</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-bold text-[#111827]">••••••••••••</p>
+                    <button
+                      onClick={() => setShowChangePasswordModal(true)}
+                      className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl border border-transparent hover:border-[#dbeafe] transition-all"
+                    >
+                      <Pencil size={11} /> Change
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -478,6 +607,12 @@ const Profile = ({ userId: propsUserId }) => {
             user={userData}
             onClose={() => setShowEmailModal(false)}
             onSuccess={(newEmail) => setUserData(prev => ({ ...prev, email: newEmail, is_verified: false }))}
+            showAlert={showAlert}
+          />
+        )}
+        {showChangePasswordModal && (
+          <ChangePasswordModal
+            onClose={() => setShowChangePasswordModal(false)}
             showAlert={showAlert}
           />
         )}
