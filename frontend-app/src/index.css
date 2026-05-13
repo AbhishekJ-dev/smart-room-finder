@@ -4,13 +4,17 @@
 @theme {
   --color-background: #F9FAFB;
   --color-card: #FFFFFF;
+  --color-section: #F3F4F6;
   --color-primary: #4F46E5;
   --color-primary-dark: #4338CA;
   --color-secondary: #06B6D4;
   --color-accent: #22C55E;
-  --color-text-main: #111827;
-  --color-text-sub: #6B7280;
+  --color-main-text: #111827;
+  --color-secondary-text: #6B7280;
   --color-border: #E5E7EB;
+  --color-error: #EF4444;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
 }
 
 :root {

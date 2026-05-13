@@ -179,7 +179,7 @@ export function LandingLayout({ children }) {
                   <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
                 </div>
               </div>
-              <p className="text-secondary-text text-sm leading-relaxed max-w-xs">
+              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
                 The smartest way to find your perfect room. Verified listings, zero brokerage.
               </p>
             </div>
@@ -190,7 +190,7 @@ export function LandingLayout({ children }) {
               <ul className="space-y-2.5">
                 {['Home', 'Browse Rooms', 'Register', 'Login'].map(item => (
                   <li key={item}>
-                    <a href="#" className="text-secondary-text text-sm hover:text-white transition-colors">{item}</a>
+                    <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">{item}</a>
                   </li>
                 ))}
               </ul>
@@ -202,7 +202,7 @@ export function LandingLayout({ children }) {
               <ul className="space-y-2.5">
                 {['For Tenants', 'For Owners', 'Admin Dashboard', 'Pricing'].map(item => (
                   <li key={item}>
-                    <span className="text-secondary-text text-sm">{item}</span>
+                    <span className="text-gray-400 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -210,18 +210,18 @@ export function LandingLayout({ children }) {
           </div>
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-secondary-text text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
             <div className="flex items-center gap-6">
-              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-[#0A66C2] transition-colors flex items-center gap-2 text-sm font-medium">
+              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#0A66C2] transition-colors flex items-center gap-2 text-sm font-medium">
                 <Linkedin size={18} />
                 <span>LinkedIn</span>
               </a>
-              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
                 <Github size={18} />
                 <span>GitHub</span>
               </a>
             </div>
-            <p className="text-secondary-text text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
+            <p className="text-gray-400 text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
           </div>
         </div>
       </footer>

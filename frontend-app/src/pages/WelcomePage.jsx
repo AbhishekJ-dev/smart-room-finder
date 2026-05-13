@@ -112,18 +112,13 @@ const WelcomePage = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4 }}
-                      className="inline-block text-transparent bg-clip-text"
-                      style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}
+                      className="inline-block"
                     >
                       {HERO_WORDS[heroWordIdx]}
                     </motion.span>
                   </AnimatePresence>
                 </span>
-              </h1>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mt-1 leading-[1.08] tracking-tight"
-                style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 300 }}
-              >
-                Smartly.
+                {' '}Smartly.
               </h1>
             </motion.div>
 
@@ -132,7 +127,7 @@ const WelcomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-secondary-text text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
+              className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               Search rooms based on your needs with ease. No brokerage, verified owners,
               and <span className="text-white font-semibold">instant booking</span> across India.
@@ -158,7 +153,7 @@ const WelcomePage = () => {
                   />
                 </div>
                 <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-card/5 border border-white/10 focus-within:bg-card/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">
-                  <span className="text-secondary-text text-sm font-medium shrink-0">₹</span>
+                  <span className="text-gray-400 text-sm font-medium shrink-0">₹</span>
                   <input
                     type="number"
                     placeholder="Max price/mo"
@@ -186,7 +181,7 @@ const WelcomePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-6 text-sm text-secondary-text"
+              className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400"
             >
               {[
                 { icon: <CheckCircle size={15} className="text-success" />, text: 'Verified Listings' },
@@ -303,7 +298,7 @@ const WelcomePage = () => {
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
                   Browse Listings. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
                 </h3>
-                <p className="text-secondary-text mb-8 text-sm max-w-md mx-auto leading-relaxed">
+                <p className="text-gray-300 mb-8 text-sm max-w-md mx-auto leading-relaxed">
                   Join our community to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
                 </p>
 

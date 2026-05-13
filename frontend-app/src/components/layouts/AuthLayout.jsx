@@ -45,7 +45,7 @@ export function AuthLayout({ children, title, subtitle }) {
           className="max-w-md w-full flex-1 flex flex-col justify-center mb-6"
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 lg:mb-6 leading-tight tracking-tight">
-            Find Your <span className="text-blue-400">Perfect Home</span> Smartly.
+            Find Your Perfect Home Smartly.
           </h2>
           <p className="text-slate-300 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">
             Browse thousands of verified rooms across India. No brokers, no hidden fees. Just seamless booking.
