@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Search, MapPin, Home, Shield, Star, Users, ArrowRight,
   Phone, CheckCircle, Building2, ChevronRight, Zap, Heart,
@@ -19,7 +19,7 @@ const CATEGORIES = [
 ];
 
 // rotating hero text
-const HERO_WORDS = ['Perfect Room', 'Dream Home', 'Ideal Room', 'Best Space'];
+// Removed HERO_WORDS as requested
 
 const WelcomePage = () => {
   const navigate = useNavigate();
@@ -29,7 +29,6 @@ const WelcomePage = () => {
   const [locationSearch, setLocationSearch] = useState('');
   const [priceSearch, setPriceSearch]       = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [heroWordIdx, setHeroWordIdx]       = useState(0);
   const [stats, setStats] = useState({
     happyTenants: 0,
     liveListings: 0,
@@ -60,8 +59,7 @@ const WelcomePage = () => {
   }, [user]);
 
   useEffect(() => {
-    const t = setInterval(() => setHeroWordIdx(i => (i + 1) % HERO_WORDS.length), 2800);
-    return () => clearInterval(t);
+    // Rotating hero word effect removed
   }, []);
 
   const handleSearch = () => {
@@ -103,22 +101,7 @@ const WelcomePage = () => {
               className="mb-6"
             >
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight">
-                Find Your{' '}
-                <span className="relative inline-block">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={heroWordIdx}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.4 }}
-                      className="inline-block"
-                    >
-                      {HERO_WORDS[heroWordIdx]}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-                {' '}Smartly.
+                Find your room smartly
               </h1>
             </motion.div>
 
