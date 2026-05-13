@@ -57,7 +57,7 @@ const LoginSuccess = () => {
   }, [searchParams, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-card relative overflow-hidden">
       <div className="ambient-orb-1" />
       <div className="ambient-orb-2" />
       <div className="w-12 h-12 border-[4px] border-[#4F46E5]/10 border-t-[#4F46E5] rounded-full animate-spin mb-6" />

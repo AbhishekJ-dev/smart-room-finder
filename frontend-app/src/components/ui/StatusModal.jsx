@@ -14,17 +14,17 @@ const StatusModal = ({
   const config = {
     success: {
       icon: <CheckCircle2 size={32} />,
-      color: 'text-emerald-500',
-      bgColor: 'bg-emerald-50',
-      borderColor: 'border-emerald-100',
-      barColor: 'bg-emerald-500'
+      color: 'text-success',
+      bgColor: 'bg-success/10',
+      borderColor: 'border-success/20',
+      barColor: 'bg-success/100'
     },
     error: {
       icon: <AlertCircle size={32} />,
-      color: 'text-rose-500',
-      bgColor: 'bg-rose-50',
-      borderColor: 'border-rose-100',
-      barColor: 'bg-rose-500'
+      color: 'text-error',
+      bgColor: 'bg-error/10',
+      borderColor: 'border-error/20',
+      barColor: 'bg-error/100'
     },
     info: {
       icon: <Info size={32} />,
@@ -55,7 +55,7 @@ const StatusModal = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-10"
+          className="relative w-full max-w-sm bg-card rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-10"
         >
           {/* Top Progress Bar Decoration */}
           <div className={`h-1.5 w-full ${barColor} opacity-80`} />
@@ -67,8 +67,8 @@ const StatusModal = ({
             </div>
 
             {/* Content */}
-            <h3 className="text-xl font-black text-gray-900 mb-2">{title}</h3>
-            <p className="text-sm text-gray-500 font-medium leading-relaxed mb-8">
+            <h3 className="text-xl font-black text-main-text mb-2">{title}</h3>
+            <p className="text-sm text-secondary-text font-medium leading-relaxed mb-8">
               {message}
             </p>
 
@@ -84,7 +84,7 @@ const StatusModal = ({
           {/* Close Button (Icon) */}
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all cursor-pointer"
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-main-text hover:bg-gray-100 rounded-xl transition-all cursor-pointer"
           >
             <X size={18} />
           </button>

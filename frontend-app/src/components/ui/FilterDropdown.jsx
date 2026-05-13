@@ -45,15 +45,15 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
   return (
     <div
       ref={ref}
-      className="absolute right-0 top-full mt-2 z-50 w-[300px] bg-white border border-[#E5E7EB] rounded-2xl shadow-card overflow-hidden animate-fade-in"
+      className="absolute right-0 top-full mt-2 z-50 w-[300px] bg-card border border-border rounded-2xl shadow-card overflow-hidden animate-fade-in"
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E7EB]">
-        <div className="flex items-center gap-2 text-sm font-semibold text-[#111827]">
-          <SlidersHorizontal size={15} className="text-[#4F46E5]" />
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-2 text-sm font-semibold text-main-text">
+          <SlidersHorizontal size={15} className="text-primary" />
           Filters
           {hasFilters && (
-            <span className="w-5 h-5 bg-[#4F46E5] text-white rounded-full text-[10px] flex items-center justify-center font-bold">
+            <span className="w-5 h-5 bg-primary text-white rounded-full text-[10px] flex items-center justify-center font-bold">
               !
             </span>
           )}
@@ -62,14 +62,14 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
           {hasFilters && (
             <button
               onClick={resetAll}
-              className="text-xs text-[#DC2626] hover:underline font-medium cursor-pointer"
+              className="text-xs text-error hover:underline font-medium cursor-pointer"
             >
               Reset
             </button>
           )}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#9CA3AF] hover:bg-[#F3F4F6] hover:text-[#111827] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-secondary-text hover:bg-section hover:text-main-text transition-colors cursor-pointer"
           >
             <X size={15} />
           </button>
@@ -79,7 +79,7 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
       <div className="p-4 space-y-5">
         {/* Room Type */}
         <div>
-          <label className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2.5">
+          <label className="block text-xs font-semibold text-secondary-text uppercase tracking-wider mb-2.5">
             Room Type
           </label>
           <div className="flex flex-wrap gap-2">
@@ -89,8 +89,8 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                 onClick={() => setTypeFilter(type)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   typeFilter === type
-                    ? 'bg-[#4F46E5] text-white border-[#4F46E5]'
-                    : 'bg-[#F9FAFB] text-[#6B7280] border-[#E5E7EB] hover:border-[#4F46E5] hover:text-[#4F46E5]'
+                    ? 'bg-primary text-white border-[#4F46E5]'
+                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
                 }`}
               >
                 {type}
@@ -101,7 +101,7 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
 
         {/* Tenant Type */}
         <div>
-          <label className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2.5">
+          <label className="block text-xs font-semibold text-secondary-text uppercase tracking-wider mb-2.5">
             Suitable For
           </label>
           <div className="flex flex-wrap gap-2">
@@ -111,8 +111,8 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                 onClick={() => setTenantFilter(type)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   tenantFilter === type
-                    ? 'bg-[#4F46E5] text-white border-[#4F46E5]'
-                    : 'bg-[#F9FAFB] text-[#6B7280] border-[#E5E7EB] hover:border-[#4F46E5] hover:text-[#4F46E5]'
+                    ? 'bg-primary text-white border-[#4F46E5]'
+                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
                 }`}
               >
                 {type}
@@ -123,14 +123,14 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
 
         {/* Price Range */}
         <div>
-          <label className="block text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-2.5">
+          <label className="block text-xs font-semibold text-secondary-text uppercase tracking-wider mb-2.5">
             Price Range (₹/month)
           </label>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] text-[#9CA3AF] font-medium mb-1.5">Min Price</label>
-              <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus-within:border-[#4F46E5] transition-colors">
-                <span className="text-[#9CA3AF] text-xs">₹</span>
+              <label className="block text-[10px] text-secondary-text font-medium mb-1.5">Min Price</label>
+              <div className="flex items-center gap-1.5 px-3 py-2 bg-background border border-border rounded-xl focus-within:border-primary transition-colors">
+                <span className="text-secondary-text text-xs">₹</span>
                 <input
                   type="number"
                   value={minInput}
@@ -141,15 +141,15 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                     setMinPrice(safe);
                     setMinInput(String(safe));
                   }}
-                  className="bg-transparent outline-none text-xs text-[#111827] w-full font-medium"
+                  className="bg-transparent outline-none text-xs text-main-text w-full font-medium"
                   placeholder="Min"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-[10px] text-[#9CA3AF] font-medium mb-1.5">Max Price</label>
-              <div className="flex items-center gap-1.5 px-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus-within:border-[#4F46E5] transition-colors">
-                <span className="text-[#9CA3AF] text-xs">₹</span>
+              <label className="block text-[10px] text-secondary-text font-medium mb-1.5">Max Price</label>
+              <div className="flex items-center gap-1.5 px-3 py-2 bg-background border border-border rounded-xl focus-within:border-primary transition-colors">
+                <span className="text-secondary-text text-xs">₹</span>
                 <input
                   type="number"
                   value={maxInput}
@@ -160,7 +160,7 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                     setMaxPrice(safe);
                     setMaxInput(String(safe));
                   }}
-                  className="bg-transparent outline-none text-xs text-[#111827] w-full font-medium"
+                  className="bg-transparent outline-none text-xs text-main-text w-full font-medium"
                   placeholder="Max"
                 />
               </div>
@@ -171,7 +171,7 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
         {/* Apply Button */}
         <button
           onClick={onClose}
-          className="w-full py-2.5 bg-[#4F46E5] text-white text-sm font-semibold rounded-xl hover:bg-[#4338CA] transition-colors cursor-pointer"
+          className="w-full py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-hover transition-colors cursor-pointer"
         >
           Apply Filters
         </button>

@@ -31,7 +31,7 @@ export default function SplashScreen() {
           <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover animate-float" />
         </div>
         
-        <p className="text-[#9CA3AF] text-sm sm:text-lg font-bold tracking-[0.3em] uppercase drop-shadow-sm opacity-80">
+        <p className="text-secondary-text text-sm sm:text-lg font-bold tracking-[0.3em] uppercase drop-shadow-sm opacity-80">
           Find your room smartly
         </p>
       </motion.div>

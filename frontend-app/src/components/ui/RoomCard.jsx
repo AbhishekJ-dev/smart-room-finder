@@ -39,10 +39,10 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
       transition={{ delay, duration: 0.4, ease: 'easeOut' }}
       whileHover={{ y: -6 }}
       onClick={onClick}
-      className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden cursor-pointer group shadow-soft hover:shadow-card-hover hover:border-[#C7D2FE] transition-all duration-300"
+      className="bg-card rounded-2xl border border-border overflow-hidden cursor-pointer group shadow-soft hover:shadow-card-hover hover:border-[#C7D2FE] transition-all duration-300"
     >
       {/* Image */}
-      <div className="relative h-52 overflow-hidden bg-[#F3F4F6]">
+      <div className="relative h-52 overflow-hidden bg-section">
         <img
           src={imgSrc}
           alt={room.area || 'Room'}
@@ -74,7 +74,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
         {/* Wishlist */}
         <button
           onClick={e => e.stopPropagation()}
-          className="absolute bottom-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-[#9CA3AF] hover:text-[#DC2626] hover:bg-white transition-all shadow-soft"
+          className="absolute bottom-3 right-3 w-8 h-8 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center text-secondary-text hover:text-error hover:bg-card transition-all shadow-soft"
         >
           <Heart size={14} />
         </button>
@@ -83,19 +83,19 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
       {/* Content */}
       <div className="p-4 flex flex-col gap-2.5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-[#111827] text-[15px] leading-snug flex-1 min-w-0 truncate">
+          <h3 className="font-semibold text-main-text text-[15px] leading-snug flex-1 min-w-0 truncate">
             {displayLocation}
           </h3>
           <div className="shrink-0 text-right">
-            <p className="text-[#4F46E5] font-bold text-base leading-tight">
+            <p className="text-primary font-bold text-base leading-tight">
               ₹{room.price_monthly?.toLocaleString()}
             </p>
-            <p className="text-[#9CA3AF] text-[10px] font-medium">/month</p>
+            <p className="text-secondary-text text-[10px] font-medium">/month</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 text-[#6B7280] text-xs">
-          <MapPin size={12} className="text-[#4F46E5] shrink-0" />
+        <div className="flex items-center gap-1.5 text-secondary-text text-xs">
+          <MapPin size={12} className="text-primary shrink-0" />
           <span className="truncate">{room.location || 'Location not specified'}</span>
         </div>
 
@@ -104,7 +104,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
         </div>
 
         {/* Action Button */}
-        <button className="mt-1 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] text-[#6B7280] group-hover:bg-[#4F46E5] group-hover:text-white group-hover:border-[#4F46E5]">
+        <button className="mt-1 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-background border border-border text-secondary-text group-hover:bg-primary group-hover:text-white group-hover:border-[#4F46E5]">
           <Eye size={14} />
           {actionLabel}
         </button>

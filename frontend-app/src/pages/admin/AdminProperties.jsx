@@ -131,22 +131,22 @@ const AdminProperties = () => {
           {view === 'detail' && (
             <button 
               onClick={() => { setView('owners'); setSearch(''); }}
-              className="p-2 bg-white border border-[#E5E7EB] rounded-xl text-[#6B7280] hover:text-[#4F46E5] hover:border-[#4F46E5] transition-all cursor-pointer shadow-soft"
+              className="p-2 bg-card border border-border rounded-xl text-secondary-text hover:text-primary hover:border-[#4F46E5] transition-all cursor-pointer shadow-soft"
             >
               <ArrowLeft size={18} />
             </button>
           )}
           <div className="relative w-full sm:w-[340px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" size={15} />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary-text" size={15} />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={view === 'owners' ? "Search by owner email..." : "Search by city, area or type..."}
-              className="w-full bg-white border border-[#E5E7EB] rounded-xl py-2.5 pl-9 pr-9 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
+              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#111827] cursor-pointer">
+              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-main-text cursor-pointer">
                 <X size={13} />
               </button>
             )}
@@ -154,16 +154,16 @@ const AdminProperties = () => {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-[#EEF2FF] border border-[#C7D2FE] rounded-xl">
-            <Building2 size={14} className="text-[#4F46E5]" />
-            <span className="text-xs font-bold text-[#4F46E5]">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-primary/10 border border-[#C7D2FE] rounded-xl">
+            <Building2 size={14} className="text-primary" />
+            <span className="text-xs font-bold text-primary">
               {view === 'owners' ? `${owners.length} Owners` : `${properties.length} Listings`}
             </span>
           </div>
           <button
             onClick={view === 'owners' ? fetchOwners : () => fetchOwnerProperties(selectedOwner)}
             disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#6B7280] hover:border-[#4F46E5] hover:text-[#4F46E5] transition-all shadow-soft cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
             Refresh
@@ -178,16 +178,16 @@ const AdminProperties = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden"
+            className="bg-card rounded-2xl border border-border shadow-soft overflow-hidden"
           >
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Owner</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Member ID</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Properties</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] text-right">Action</th>
+                  <tr className="bg-background border-b border-border">
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Owner</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Member ID</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Properties</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F3F4F6]">
@@ -201,27 +201,27 @@ const AdminProperties = () => {
                     ))
                   ) : filteredOwners.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="px-6 py-16 text-center text-[#9CA3AF] text-sm font-semibold">No owners found</td>
+                      <td colSpan="4" className="px-6 py-16 text-center text-secondary-text text-sm font-semibold">No owners found</td>
                     </tr>
                   ) : filteredOwners.map((owner) => (
                     <tr 
                       key={owner.owner_id} 
                       onClick={() => fetchOwnerProperties(owner)}
-                      className="hover:bg-[#F9FAFB] cursor-pointer group transition-colors"
+                      className="hover:bg-background cursor-pointer group transition-colors"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-[#EEF2FF] text-[#4F46E5] flex items-center justify-center font-bold">
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
                             <User size={18} />
                           </div>
                           <div>
-                            <p className="text-sm font-bold text-[#111827]">{owner.email}</p>
-                            <span className="text-[10px] text-[#9CA3AF] font-bold uppercase">System Owner</span>
+                            <p className="text-sm font-bold text-main-text">{owner.email}</p>
+                            <span className="text-[10px] text-secondary-text font-bold uppercase">System Owner</span>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-xs font-bold text-[#9CA3AF] font-mono">#{owner.owner_id}</span>
+                        <span className="text-xs font-bold text-secondary-text font-mono">#{owner.owner_id}</span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ const AdminProperties = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end text-[#4F46E5] font-bold text-xs gap-1 group-hover:translate-x-1 transition-transform">
+                        <div className="flex items-center justify-end text-primary font-bold text-xs gap-1 group-hover:translate-x-1 transition-transform">
                           View Properties <ChevronRight size={14} />
                         </div>
                       </td>
@@ -247,18 +247,18 @@ const AdminProperties = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden"
+            className="bg-card rounded-2xl border border-border shadow-soft overflow-hidden"
           >
             <div className="overflow-x-auto">
               <table className="w-full text-left min-w-[900px]">
                 <thead>
-                  <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">ID</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Property</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Location</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Price / mo</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">Status</th>
-                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] text-right">Actions</th>
+                  <tr className="bg-background border-b border-border">
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">ID</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Property</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Location</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Price / mo</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text">Status</th>
+                    <th className="px-6 py-4 text-[11px] font-semibold uppercase tracking-wider text-secondary-text text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F3F4F6]">
@@ -272,7 +272,7 @@ const AdminProperties = () => {
                     ))
                   ) : filteredProperties.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="px-6 py-16 text-center text-[#9CA3AF] text-sm font-semibold">No listings for this owner</td>
+                      <td colSpan="6" className="px-6 py-16 text-center text-secondary-text text-sm font-semibold">No listings for this owner</td>
                     </tr>
                   ) : filteredProperties.map((property, idx) => {
                     const imgSrc = getImageSrc(property);
@@ -283,12 +283,12 @@ const AdminProperties = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: idx * 0.05 }}
-                        className={`hover:bg-[#F9FAFB] transition-colors ${isDeleting ? 'opacity-40' : ''}`}
+                        className={`hover:bg-background transition-colors ${isDeleting ? 'opacity-40' : ''}`}
                       >
-                        <td className="px-6 py-4 text-xs font-bold text-[#9CA3AF] font-mono">#{property.id}</td>
+                        <td className="px-6 py-4 text-xs font-bold text-secondary-text font-mono">#{property.id}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-xl bg-[#F3F4F6] overflow-hidden shrink-0 border border-[#E5E7EB]">
+                            <div className="w-11 h-11 rounded-xl bg-section overflow-hidden shrink-0 border border-border">
                               {imgSrc ? (
                                 <img src={imgSrc} alt={property.area} className="w-full h-full object-cover" />
                               ) : (
@@ -298,22 +298,22 @@ const AdminProperties = () => {
                               )}
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-[#111827]">{property.type}</p>
-                              <span className="text-[10px] text-[#9CA3AF] font-bold uppercase">{property.tenant_type || 'Shared'}</span>
+                              <p className="text-sm font-bold text-main-text">{property.type}</p>
+                              <span className="text-[10px] text-secondary-text font-bold uppercase">{property.tenant_type || 'Shared'}</span>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-start gap-1.5 max-w-[180px]">
-                            <MapPin size={12} className="text-[#4F46E5] mt-0.5 shrink-0" />
+                            <MapPin size={12} className="text-primary mt-0.5 shrink-0" />
                             <div>
-                              <p className="text-xs font-bold text-[#111827]">{property.city || '—'}</p>
-                              <p className="text-[10px] text-[#6B7280] line-clamp-1">{property.area}</p>
+                              <p className="text-xs font-bold text-main-text">{property.city || '—'}</p>
+                              <p className="text-[10px] text-secondary-text line-clamp-1">{property.area}</p>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-0.5 text-sm font-bold text-[#111827]">
+                          <div className="flex items-center gap-0.5 text-sm font-bold text-main-text">
                             <IndianRupee size={12} className="text-[#16A34A]" />
                             {Number(property.price_monthly).toLocaleString('en-IN')}
                           </div>
@@ -330,7 +330,7 @@ const AdminProperties = () => {
                             <button
                               onClick={() => handleDelete(property.id, `${property.city}, ${property.area}`)}
                               disabled={isDeleting}
-                              className="p-2 text-[#DC2626] hover:bg-[#FFF1F2] rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                              className="p-2 text-error hover:bg-[#FFF1F2] rounded-xl transition-all cursor-pointer disabled:opacity-50"
                               title="Delete Listing"
                             >
                               <Trash2 size={15} />

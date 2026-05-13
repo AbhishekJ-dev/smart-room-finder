@@ -132,7 +132,7 @@ const WelcomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-[#9CA3AF] text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
+              className="text-secondary-text text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
             >
               Search rooms based on your needs with ease. No brokerage, verified owners,
               and <span className="text-white font-semibold">instant booking</span> across India.
@@ -145,8 +145,8 @@ const WelcomePage = () => {
               transition={{ duration: 0.5, delay: 0.35 }}
               className="max-w-2xl mx-auto mb-10"
             >
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-2.5 flex flex-col sm:flex-row gap-3 shadow-2xl">
-                <div className="flex items-center gap-3 flex-1 px-4 py-4 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all">
+              <div className="bg-card/10 backdrop-blur-md border border-white/20 rounded-2xl p-2.5 flex flex-col sm:flex-row gap-3 shadow-2xl">
+                <div className="flex items-center gap-3 flex-1 px-4 py-4 rounded-xl bg-card/5 border border-white/10 focus-within:bg-card/10 focus-within:border-[#60A5FA]/50 transition-all">
                   <MapPin size={18} className="text-[#60A5FA] shrink-0" />
                   <input
                     type="text"
@@ -157,8 +157,8 @@ const WelcomePage = () => {
                     className="bg-transparent outline-none text-base text-white placeholder-[#6B7280] font-medium w-full"
                   />
                 </div>
-                <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus-within:bg-white/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">
-                  <span className="text-[#6B7280] text-sm font-medium shrink-0">₹</span>
+                <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-card/5 border border-white/10 focus-within:bg-card/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">
+                  <span className="text-secondary-text text-sm font-medium shrink-0">₹</span>
                   <input
                     type="number"
                     placeholder="Max price/mo"
@@ -186,13 +186,13 @@ const WelcomePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#9CA3AF]"
+              className="flex flex-wrap items-center justify-center gap-6 text-sm text-secondary-text"
             >
               {[
-                { icon: <CheckCircle size={15} className="text-[#22C55E]" />, text: 'Verified Listings' },
+                { icon: <CheckCircle size={15} className="text-success" />, text: 'Verified Listings' },
                 { icon: <Shield size={15} className="text-[#60A5FA]" />, text: 'Zero Brokerage' },
                 { icon: <Clock size={15} className="text-[#FCD34D]" />, text: 'Instant Booking' },
-                { icon: <Star size={15} className="text-[#F59E0B] fill-current" />, text: `${stats.avgRating}/5 Rating` },
+                { icon: <Star size={15} className="text-warning fill-current" />, text: `${stats.avgRating}/5 Rating` },
               ].map(item => (
                 <div key={item.text} className="flex items-center gap-1.5 font-medium">
                   {item.icon} {item.text}
@@ -207,10 +207,10 @@ const WelcomePage = () => {
       {/* ══════════════════════════════════
           CATEGORY TABS
           ══════════════════════════════════ */}
-      <section className="relative bg-white border-b border-[#E5E7EB] py-5 shadow-soft">
+      <section className="relative bg-card border-b border-border py-5 shadow-soft">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
-            <span className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-widest shrink-0">Browse:</span>
+            <span className="text-xs font-semibold text-secondary-text uppercase tracking-widest shrink-0">Browse:</span>
             {['All', ...CATEGORIES.map(c => c.label)].map(cat => (
               <button
                 key={cat}
@@ -218,7 +218,7 @@ const WelcomePage = () => {
                 className={`shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer border ${
                   activeCategory === cat
                     ? 'text-white border-transparent shadow-blue'
-                    : 'bg-[#F9FAFB] text-[#6B7280] border-[#E5E7EB] hover:border-[#4F46E5] hover:text-[#4F46E5]'
+                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
                 }`}
                 style={activeCategory === cat ? {
                   background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
@@ -240,12 +240,12 @@ const WelcomePage = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111827]">Featured Properties</h2>
-              <p className="text-[#6B7280] text-sm mt-1">Verified listings from trusted owners across India</p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-main-text">Featured Properties</h2>
+              <p className="text-secondary-text text-sm mt-1">Verified listings from trusted owners across India</p>
             </div>
             <button
               onClick={() => navigate(user ? '/user-dashboard' : '/register')}
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white border border-[#E5E7EB] text-[#111827] rounded-xl text-sm font-semibold hover:border-[#4F46E5] hover:text-[#4F46E5] transition-all shadow-soft"
+              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-card border border-border text-main-text rounded-xl text-sm font-semibold hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft"
             >
               View All <ChevronRight size={15} />
             </button>
@@ -254,7 +254,7 @@ const WelcomePage = () => {
           {roomsLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[1,2,3,4].map(i => (
-                <div key={i} className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-soft">
+                <div key={i} className="bg-card rounded-2xl border border-border overflow-hidden shadow-soft">
                   <div className="skeleton h-52 w-full" />
                   <div className="p-4 space-y-3">
                     <div className="skeleton h-4 w-3/4 rounded-lg" />
@@ -265,10 +265,10 @@ const WelcomePage = () => {
               ))}
             </div>
           ) : displayRooms.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#E5E7EB]">
+            <div className="text-center py-20 bg-card rounded-2xl border border-dashed border-border">
               <Home size={48} className="mx-auto text-[#CBD5E1] mb-4" />
-              <h3 className="text-lg font-semibold text-[#111827] mb-2">No rooms listed yet</h3>
-              <p className="text-[#6B7280] text-sm">Check back soon!</p>
+              <h3 className="text-lg font-semibold text-main-text mb-2">No rooms listed yet</h3>
+              <p className="text-secondary-text text-sm">Check back soon!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -303,7 +303,7 @@ const WelcomePage = () => {
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
                   Browse Listings. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
                 </h3>
-                <p className="text-[#9CA3AF] mb-8 text-sm max-w-md mx-auto leading-relaxed">
+                <p className="text-secondary-text mb-8 text-sm max-w-md mx-auto leading-relaxed">
                   Join our community to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
                 </p>
 
@@ -311,14 +311,14 @@ const WelcomePage = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button
                     onClick={() => navigate('/register')}
-                    className="inline-flex items-center gap-2 bg-white text-[#111827] font-bold px-8 py-3.5 rounded-xl hover:bg-[#F3F4F6] transition-all cursor-pointer active:scale-[0.97] text-sm"
+                    className="inline-flex items-center gap-2 bg-card text-main-text font-bold px-8 py-3.5 rounded-xl hover:bg-section transition-all cursor-pointer active:scale-[0.97] text-sm"
                     style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.2)' }}
                   >
                     Create Account <ArrowRight size={16} />
                   </button>
                   <button
                     onClick={() => navigate('/register')}
-                    className="inline-flex items-center gap-2 font-semibold px-8 py-3.5 rounded-xl transition-all cursor-pointer active:scale-[0.97] text-sm border border-white/20 text-white/80 hover:bg-white/10"
+                    className="inline-flex items-center gap-2 font-semibold px-8 py-3.5 rounded-xl transition-all cursor-pointer active:scale-[0.97] text-sm border border-white/20 text-white/80 hover:bg-card/10"
                   >
                     See Plans →
                   </button>
@@ -332,20 +332,20 @@ const WelcomePage = () => {
       {/* ══════════════════════════════════
           ABOUT / STATS
           ══════════════════════════════════ */}
-      <section id="about" className="py-24 bg-white relative overflow-hidden">
+      <section id="about" className="py-24 bg-card relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
           style={{ background: 'radial-gradient(circle, #4F46E5, transparent)', transform: 'translate(30%, -30%)' }} />
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-main-text mb-6 leading-tight">
                 The Smartest Way<br />to Find Your<br />
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #4F46E5, #22C55E)' }}>
                   Next Home.
                 </span>
               </h2>
-              <p className="text-[#6B7280] text-base leading-relaxed mb-8">
+              <p className="text-secondary-text text-base leading-relaxed mb-8">
                 Smart Room Finder bridges the gap between room seekers and property owners.
                 We've eliminated the middleman — providing a transparent, fast, and secure
                 platform for all your housing needs.
@@ -357,7 +357,7 @@ const WelcomePage = () => {
                   'Flexible booking — Daily, Weekly, Monthly',
                   'Zero platform brokerage fees, ever',
                 ].map((item, i) => (
-                  <li key={item} className="flex items-center gap-3 text-sm text-[#111827] font-medium">
+                  <li key={item} className="flex items-center gap-3 text-sm text-main-text font-medium">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
                       style={{ background: 'linear-gradient(135deg, #4F46E5, #22C55E)' }}>
                       <CheckCircle size={13} className="text-white" />
@@ -389,7 +389,7 @@ const WelcomePage = () => {
                     {s.icon}
                   </div>
                   <p className="text-3xl font-extrabold" style={{ color: s.textColor }}>{s.value}</p>
-                  <p className="text-sm text-[#6B7280] font-medium mt-1">{s.label}</p>
+                  <p className="text-sm text-secondary-text font-medium mt-1">{s.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -405,8 +405,8 @@ const WelcomePage = () => {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] mb-4">Everything You Need.</h2>
-            <p className="text-[#6B7280] max-w-xl mx-auto text-base">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-main-text mb-4">Everything You Need.</h2>
+            <p className="text-secondary-text max-w-xl mx-auto text-base">
               Powerful tools designed to make your room finding experience seamless and professional.
             </p>
           </div>
@@ -437,16 +437,16 @@ const WelcomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="bg-white rounded-2xl border border-[#E5E7EB] p-7 shadow-soft hover:-translate-y-2 hover:border-transparent group transition-all duration-300"
+                className="bg-card rounded-2xl border border-border p-7 shadow-soft hover:-translate-y-2 hover:border-transparent group transition-all duration-300"
               >
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 shadow-soft"
                     style={{ background: `linear-gradient(135deg, ${f.iconBg}ee, ${f.iconBg}bb)`, boxShadow: `0 6px 16px ${f.iconBg}30` }}>
                     {f.icon}
                   </div>
-                  <h3 className="text-base font-bold text-[#111827]">{f.title}</h3>
+                  <h3 className="text-base font-bold text-main-text">{f.title}</h3>
                 </div>
-                <p className="text-[#6B7280] text-sm leading-relaxed">{f.desc}</p>
+                <p className="text-secondary-text text-sm leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -456,10 +456,10 @@ const WelcomePage = () => {
       {/* ══════════════════════════════════
           HOW IT WORKS
           ══════════════════════════════════ */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-card">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827]">Get Settled in 3 Steps</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-main-text">Get Settled in 3 Steps</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 relative">
@@ -489,8 +489,8 @@ const WelcomePage = () => {
                 >
                   {item.step}
                 </div>
-                <h3 className="text-lg font-bold text-[#111827] mb-3">{item.title}</h3>
-                <p className="text-[#6B7280] text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+                <h3 className="text-lg font-bold text-main-text mb-3">{item.title}</h3>
+                <p className="text-secondary-text text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -546,7 +546,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
       whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
       whileTap={{ scale: 0.98 }}
       onClick={onAction}
-      className="bg-white rounded-2xl overflow-hidden cursor-pointer group shadow-soft transition-all duration-300"
+      className="bg-card rounded-2xl overflow-hidden cursor-pointer group shadow-soft transition-all duration-300"
       style={{ border: '1px solid #E5E7EB' }}
     >
       {/* Image */}
@@ -568,9 +568,9 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
         )}
         <button
           onClick={e => { e.stopPropagation(); setIsLiked(v => !v); }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow-soft hover:scale-110"
+          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center transition-all shadow-soft hover:scale-110"
         >
-          <Heart size={14} className={isLiked ? 'text-[#DC2626] fill-current' : 'text-[#9CA3AF]'} />
+          <Heart size={14} className={isLiked ? 'text-error fill-current' : 'text-secondary-text'} />
         </button>
 
         {/* Price overlay at bottom */}
@@ -584,15 +584,15 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-[#111827] text-base leading-tight truncate mb-2">{displayLocation}</h3>
+        <h3 className="font-semibold text-main-text text-base leading-tight truncate mb-2">{displayLocation}</h3>
 
-        <div className="flex items-center gap-1.5 text-[#6B7280] text-xs mb-4">
-          <MapPin size={12} className="text-[#4F46E5] shrink-0" />
+        <div className="flex items-center gap-1.5 text-secondary-text text-xs mb-4">
+          <MapPin size={12} className="text-primary shrink-0" />
           <span className="truncate">{room.location || 'Location not specified'}</span>
         </div>
 
         <button
-          className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 text-[#6B7280] border border-[#E5E7EB] bg-[#F9FAFB] group-hover:text-white group-hover:border-transparent"
+          className="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 text-secondary-text border border-border bg-background group-hover:text-white group-hover:border-transparent"
           style={{}}
         >
           <span className="group-hover:hidden">View Details</span>

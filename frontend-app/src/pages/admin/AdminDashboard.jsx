@@ -86,7 +86,7 @@ const AdminDashboard = () => {
         <button
           onClick={() => fetchAll(true)}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-semibold text-[#6B7280] hover:border-[#4F46E5] hover:text-[#4F46E5] transition-all shadow-soft cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
         >
           <RefreshCw size={13} className={refreshing ? 'animate-spin' : ''} />
           Refresh
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
         {loading
           ? [1,2,3,4].map(i => (
-              <div key={i} className="bg-white rounded-2xl border border-[#E5E7EB] p-5 shadow-soft">
+              <div key={i} className="bg-card rounded-2xl border border-border p-5 shadow-soft">
                 <div className="skeleton h-10 w-10 rounded-xl mb-4" />
                 <div className="skeleton h-6 w-16 rounded-lg mb-2" />
                 <div className="skeleton h-3 w-24 rounded" />
@@ -110,17 +110,17 @@ const AdminDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.07 }}
                 onClick={() => navigate(card.path)}
-                className="bg-white rounded-2xl border border-[#E5E7EB] p-5 shadow-soft hover:shadow-card-hover hover:-translate-y-1 hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer group"
+                className="bg-card rounded-2xl border border-border p-5 shadow-soft hover:shadow-card-hover hover:-translate-y-1 hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer group"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: card.bg, color: card.iconColor }}>
                     {card.icon}
                   </div>
-                  <ArrowUpRight size={14} className="text-[#CBD5E1] group-hover:text-[#4F46E5] transition-colors mt-0.5" />
+                  <ArrowUpRight size={14} className="text-[#CBD5E1] group-hover:text-primary transition-colors mt-0.5" />
                 </div>
-                <p className="text-3xl font-extrabold text-[#111827] mb-0.5">{card.value}</p>
-                <p className="text-sm text-[#6B7280] font-medium">{card.label}</p>
-                <p className="text-[11px] text-[#9CA3AF] mt-1">{card.trend}{card.value} {card.unit}</p>
+                <p className="text-3xl font-extrabold text-main-text mb-0.5">{card.value}</p>
+                <p className="text-sm text-secondary-text font-medium">{card.label}</p>
+                <p className="text-[11px] text-secondary-text mt-1">{card.trend}{card.value} {card.unit}</p>
               </motion.div>
             ))
         }
@@ -134,16 +134,16 @@ const AdminDashboard = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="xl:col-span-2 bg-white rounded-2xl border border-[#E5E7EB] shadow-soft overflow-hidden"
+          className="xl:col-span-2 bg-card rounded-2xl border border-border shadow-soft overflow-hidden"
         >
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E7EB]">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border">
             <div>
-              <h3 className="text-sm font-bold text-[#111827]">Recent Activity</h3>
-              <p className="text-[11px] text-[#9CA3AF] font-medium mt-0.5">Live updates from users, properties, and bookings</p>
+              <h3 className="text-sm font-bold text-main-text">Recent Activity</h3>
+              <p className="text-[11px] text-secondary-text font-medium mt-0.5">Live updates from users, properties, and bookings</p>
             </div>
             <button
               onClick={() => navigate('/admin/bookings')}
-              className="text-xs font-semibold text-[#4F46E5] hover:underline cursor-pointer"
+              className="text-xs font-semibold text-primary hover:underline cursor-pointer"
             >
               View All
             </button>
@@ -152,7 +152,7 @@ const AdminDashboard = () => {
           <div className="p-4 space-y-2.5">
             {activityLoading
               ? [1,2,3,4].map(i => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-[#F9FAFB]">
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-background">
                     <div className="skeleton w-9 h-9 rounded-xl shrink-0" />
                     <div className="flex-1 space-y-1.5">
                       <div className="skeleton h-3 w-3/4 rounded" />
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
                 ))
               : activity.length === 0
                 ? (
-                    <div className="py-10 text-center text-[#9CA3AF] text-sm font-medium">
+                    <div className="py-10 text-center text-secondary-text text-sm font-medium">
                       No recent activity yet. Start adding users, properties and bookings.
                     </div>
                   )
@@ -174,14 +174,14 @@ const AdminDashboard = () => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.04 }}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-[#F9FAFB] border border-[#F3F4F6] hover:border-[#E5E7EB] transition-colors"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-background border border-border hover:border-border transition-colors"
                       >
                         <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: bg, color }}>
                           <Icon size={15} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-[#111827] truncate capitalize">{item.message}</p>
-                          <p className="text-[11px] text-[#9CA3AF] mt-0.5">{timeAgo(item.created_at)}</p>
+                          <p className="text-sm font-semibold text-main-text truncate capitalize">{item.message}</p>
+                          <p className="text-[11px] text-secondary-text mt-0.5">{timeAgo(item.created_at)}</p>
                         </div>
                         <span className={`badge ${badgeClass(item.color)} text-[10px] shrink-0 capitalize`}>
                           {item.badge}
@@ -200,11 +200,11 @@ const AdminDashboard = () => {
           transition={{ delay: 0.35 }}
           className="bg-[#111827] rounded-2xl text-white overflow-hidden relative p-6 flex flex-col"
         >
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#4F46E5]/10 rounded-full blur-[50px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 rounded-full blur-[50px] pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#7C3AED]/10 rounded-full blur-[40px] pointer-events-none" />
 
           <div className="relative z-10 flex-1">
-            <div className="w-10 h-10 bg-[#4F46E5] rounded-xl flex items-center justify-center mb-5">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mb-5">
               <IndianRupee size={18} className="text-white" />
             </div>
             <p className="text-[10px] font-bold text-[#475569] uppercase tracking-widest mb-1">Total Revenue</p>
@@ -233,7 +233,7 @@ const AdminDashboard = () => {
 
           <button
             onClick={() => navigate('/admin/subscriptions')}
-            className="mt-6 w-full py-3 bg-[#4F46E5] text-white rounded-xl text-sm font-semibold hover:bg-[#4338CA] transition-colors cursor-pointer relative z-10"
+            className="mt-6 w-full py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-hover transition-colors cursor-pointer relative z-10"
           >
             View Subscriptions →
           </button>

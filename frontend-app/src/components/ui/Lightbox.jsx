@@ -41,8 +41,8 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
         animate={{ y: 0, opacity: 1 }}
         className="absolute top-0 inset-x-0 z-10 p-6 flex items-center justify-between pointer-events-none"
       >
-        <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl pointer-events-auto">
-          <Camera size={14} className="text-[#4F46E5]" />
+        <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-card/5 backdrop-blur-md border border-white/10 shadow-2xl pointer-events-auto">
+          <Camera size={14} className="text-primary" />
           <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white/90">
             Gallery {index + 1} <span className="mx-1 opacity-20">/</span> {images.length}
           </span>
@@ -50,7 +50,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
 
         <button
           onClick={onClose}
-          className="p-3.5 rounded-2xl bg-white/5 hover:bg-rose-500/20 text-white/70 hover:text-rose-400 transition-all cursor-pointer border border-white/5 backdrop-blur-md pointer-events-auto group"
+          className="p-3.5 rounded-2xl bg-card/5 hover:bg-error/100/20 text-white/70 hover:text-rose-400 transition-all cursor-pointer border border-white/5 backdrop-blur-md pointer-events-auto group"
         >
           <X size={22} className="group-hover:rotate-90 transition-transform duration-300" />
         </button>
@@ -64,7 +64,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               onClick={goPrev}
-              className="absolute left-6 z-10 p-5 rounded-3xl bg-white/5 hover:bg-white/10 text-white transition-all cursor-pointer border border-white/10 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95 group"
+              className="absolute left-6 z-10 p-5 rounded-3xl bg-card/5 hover:bg-card/10 text-white transition-all cursor-pointer border border-white/10 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95 group"
             >
               <ChevronLeft size={32} className="group-hover:-translate-x-1 transition-transform" />
             </motion.button>
@@ -72,7 +72,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               onClick={goNext}
-              className="absolute right-6 z-10 p-5 rounded-3xl bg-white/5 hover:bg-white/10 text-white transition-all cursor-pointer border border-white/10 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95 group"
+              className="absolute right-6 z-10 p-5 rounded-3xl bg-card/5 hover:bg-card/10 text-white transition-all cursor-pointer border border-white/10 shadow-2xl backdrop-blur-md hover:scale-110 active:scale-95 group"
             >
               <ChevronRight size={32} className="group-hover:translate-x-1 transition-transform" />
             </motion.button>
@@ -105,7 +105,7 @@ export function Lightbox({ images = [], startIndex = 0, onClose }) {
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="absolute bottom-10 z-10 flex gap-4 px-6 py-4 rounded-3xl bg-white/5 backdrop-blur-2xl border border-white/10 max-w-[90vw] overflow-x-auto scrollbar-hide shadow-2xl shadow-black/50"
+          className="absolute bottom-10 z-10 flex gap-4 px-6 py-4 rounded-3xl bg-card/5 backdrop-blur-2xl border border-white/10 max-w-[90vw] overflow-x-auto scrollbar-hide shadow-2xl shadow-black/50"
         >
           {images.map((img, i) => (
             <button

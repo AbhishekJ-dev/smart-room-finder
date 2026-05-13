@@ -16,16 +16,16 @@ const ConfirmModal = ({
 
   const themes = {
     danger: {
-      icon: <Trash2 size={24} className="text-rose-500" />,
-      bg: "bg-rose-50",
-      btn: "bg-rose-500 hover:bg-rose-600 shadow-rose-200",
-      accent: "border-rose-100"
+      icon: <Trash2 size={24} className="text-error" />,
+      bg: "bg-error/10",
+      btn: "bg-error/100 hover:bg-rose-600 shadow-rose-200",
+      accent: "border-error/20"
     },
     warning: {
-      icon: <AlertTriangle size={24} className="text-amber-500" />,
-      bg: "bg-amber-50",
-      btn: "bg-amber-500 hover:bg-amber-600 shadow-amber-200",
-      accent: "border-amber-100"
+      icon: <AlertTriangle size={24} className="text-warning" />,
+      bg: "bg-warning/10",
+      btn: "bg-warning/100 hover:bg-amber-600 shadow-amber-200",
+      accent: "border-warning/20"
     },
     info: {
       icon: <Info size={24} className="text-blue-500" />,
@@ -55,10 +55,10 @@ const ConfirmModal = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="relative w-full max-w-sm bg-white rounded-[28px] shadow-2xl border border-[#E5E7EB] overflow-hidden z-10"
+          className="relative w-full max-w-sm bg-card rounded-[28px] shadow-2xl border border-border overflow-hidden z-10"
         >
           {/* Top accent bar */}
-          <div className={`h-1.5 w-full ${type === 'danger' ? 'bg-rose-500' : type === 'warning' ? 'bg-amber-500' : 'bg-blue-500'}`} />
+          <div className={`h-1.5 w-full ${type === 'danger' ? 'bg-error/100' : type === 'warning' ? 'bg-warning/100' : 'bg-blue-500'}`} />
 
           <div className="p-8">
             <div className="flex flex-col items-center text-center">
@@ -66,18 +66,18 @@ const ConfirmModal = ({
                 {theme.icon}
               </div>
               
-              <h3 className="text-xl font-black text-[#111827] mb-2 leading-tight">
+              <h3 className="text-xl font-black text-main-text mb-2 leading-tight">
                 {title}
               </h3>
               
-              <p className="text-sm text-[#6B7280] font-medium leading-relaxed mb-8">
+              <p className="text-sm text-secondary-text font-medium leading-relaxed mb-8">
                 {message}
               </p>
 
               <div className="flex gap-3 w-full">
                 <button
                   onClick={onClose}
-                  className="flex-1 py-3.5 px-4 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#6B7280] font-bold rounded-2xl transition-all active:scale-95 cursor-pointer"
+                  className="flex-1 py-3.5 px-4 bg-section hover:bg-[#E5E7EB] text-secondary-text font-bold rounded-2xl transition-all active:scale-95 cursor-pointer"
                 >
                   {cancelText}
                 </button>
@@ -96,7 +96,7 @@ const ConfirmModal = ({
 
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#F3F4F6] rounded-xl transition-all cursor-pointer"
+            className="absolute top-4 right-4 p-2 text-secondary-text hover:text-main-text hover:bg-section rounded-xl transition-all cursor-pointer"
           >
             <X size={18} />
           </button>

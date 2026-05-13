@@ -13,28 +13,28 @@ export function PasswordInput({ label, prefix, value, onChange, className = '', 
   return (
     <div className="space-y-1.5">
       {label && (
-        <label className="block text-sm font-semibold text-[#374151]">
+        <label className="block text-sm font-semibold text-secondary-text">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
-      <div className={`flex items-center gap-3 px-4 py-3 bg-[#F9FAFB] border rounded-xl transition-all focus-within:border-[#4F46E5] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#4F46E5]/10 min-h-[44px] ${
-        error ? 'border-[#FCA5A5] bg-[#FFF1F2]' : 'border-[#E5E7EB]'
+      <div className={`flex items-center gap-3 px-4 py-3 bg-background border rounded-xl transition-all focus-within:border-primary focus-within:bg-card focus-within:ring-2 focus-within:ring-primary/20 min-h-[44px] ${
+        error ? 'border-[#FCA5A5] bg-[#FFF1F2]' : 'border-border'
       } ${className}`}>
         {prefix && (
-          <span className="text-[#9CA3AF] shrink-0">{prefix}</span>
+          <span className="text-secondary-text shrink-0">{prefix}</span>
         )}
         <input
           type={showPassword ? 'text' : 'password'}
           value={value}
           onChange={onChange}
-          className="flex-1 bg-transparent outline-none text-sm text-[#111827] placeholder-[#9CA3AF] font-medium min-w-0"
+          className="flex-1 bg-transparent outline-none text-sm text-main-text placeholder-[#9CA3AF] font-medium min-w-0"
           required={required}
           {...props}
         />
         <button
           type="button"
           onClick={() => setShowPassword(v => !v)}
-          className="text-[#9CA3AF] hover:text-[#6B7280] transition-colors cursor-pointer shrink-0 p-0.5"
+          className="text-secondary-text hover:text-secondary-text transition-colors cursor-pointer shrink-0 p-0.5"
         >
           {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
@@ -55,18 +55,18 @@ export function PasswordInput({ label, prefix, value, onChange, className = '', 
                 />
               ))}
             </div>
-            <span className="text-xs font-semibold text-gray-500 w-12 text-right">
+            <span className="text-xs font-semibold text-secondary-text w-12 text-right">
               {strength > 0 ? strengthText[strength - 1] : ''}
             </span>
           </div>
           
           {/* Validation Requirements List */}
           <ul className="text-[11px] font-medium space-y-1">
-            <li className={`flex items-center gap-1.5 ${value.length >= 8 ? 'text-green-600' : 'text-gray-500'}`}>
+            <li className={`flex items-center gap-1.5 ${value.length >= 8 ? 'text-green-600' : 'text-secondary-text'}`}>
                {value.length >= 8 ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
                At least 8 characters
             </li>
-            <li className={`flex items-center gap-1.5 ${/[A-Z]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[!@#$%^&*(),.?":{}|<>]/.test(value) ? 'text-green-600' : 'text-gray-500'}`}>
+            <li className={`flex items-center gap-1.5 ${/[A-Z]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[!@#$%^&*(),.?":{}|<>]/.test(value) ? 'text-green-600' : 'text-secondary-text'}`}>
                {/[A-Z]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value) && /[!@#$%^&*(),.?":{}|<>]/.test(value) ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
                Uppercase, lowercase, number, & special character
             </li>
@@ -74,7 +74,7 @@ export function PasswordInput({ label, prefix, value, onChange, className = '', 
         </div>
       )}
 
-      {error && <p className="text-xs text-[#DC2626] font-medium">{error}</p>}
+      {error && <p className="text-xs text-error font-medium">{error}</p>}
     </div>
   );
 }

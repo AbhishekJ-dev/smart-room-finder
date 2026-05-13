@@ -129,7 +129,7 @@ const ForgotPassword = () => {
               Send Reset Code <ArrowRight size={16} />
             </Button>
             <div className="text-center mt-4">
-              <Link to="/login" className="text-sm font-medium text-[#6B7280] hover:text-[#4F46E5] flex items-center justify-center gap-2">
+              <Link to="/login" className="text-sm font-medium text-secondary-text hover:text-primary flex items-center justify-center gap-2">
                 <ArrowLeft size={14} /> Back to Login
               </Link>
             </div>
@@ -162,14 +162,14 @@ const ForgotPassword = () => {
               <button 
                 type="button"
                 onClick={() => setStep(1)}
-                className="text-sm font-medium text-[#6B7280] hover:text-[#4F46E5] flex items-center gap-1"
+                className="text-sm font-medium text-secondary-text hover:text-primary flex items-center gap-1"
               >
                 <ArrowLeft size={14} /> Edit Email
               </button>
               <button 
                 type="button"
                 onClick={handleSendOTP}
-                className="text-sm font-medium text-[#4F46E5] hover:underline"
+                className="text-sm font-medium text-primary hover:underline"
                 disabled={loading}
               >
                 Resend Code
@@ -218,10 +218,10 @@ const ForgotPassword = () => {
             className="flex flex-col items-center justify-center py-6 text-center"
           >
             <div className="w-20 h-20 bg-[#DCFCE7] rounded-full flex items-center justify-center mb-6 animate-bounce">
-              <CheckCircle2 size={40} className="text-[#22C55E]" />
+              <CheckCircle2 size={40} className="text-success" />
             </div>
             <h3 className="text-xl font-bold text-[#0F172A] mb-2">Success!</h3>
-            <p className="text-[#6B7280] mb-6">Your password has been reset successfully.</p>
+            <p className="text-secondary-text mb-6">Your password has been reset successfully.</p>
             <Button onClick={() => navigate('/login')} className="w-full">
               Go to Login
             </Button>

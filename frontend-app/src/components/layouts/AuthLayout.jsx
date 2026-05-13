@@ -20,7 +20,7 @@ export function AuthLayout({ children, title, subtitle }) {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-white">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-card">
       {/* 
         LEFT SECTION (BRANDING) 
         Mobile/Tablet: Top alignment
@@ -32,7 +32,7 @@ export function AuthLayout({ children, title, subtitle }) {
       >
         {/* Logo Container */}
         <Link to="/" className="mb-6 hover:scale-105 transition-transform duration-300">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center overflow-hidden rounded-[1.5rem] shadow-xl border border-white/10 bg-white/5">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center overflow-hidden rounded-[1.5rem] shadow-xl border border-white/10 bg-card/5">
             <img src={logo} alt="SmartRoom Finder Logo" className="w-full h-full object-cover" />
           </div>
         </Link>
@@ -59,7 +59,7 @@ export function AuthLayout({ children, title, subtitle }) {
               { value: stats.liveListings || '50+', label: 'Live Listings', color: 'text-emerald-400' },
               { value: `${stats.avgRating}★`, label: 'Avg Rating', color: 'text-amber-400' },
             ].map((stat, i) => (
-              <div key={i} className="flex flex-col items-center justify-center p-2 rounded-xl backdrop-blur bg-white/5 border border-white/10 shadow-sm">
+              <div key={i} className="flex flex-col items-center justify-center p-2 rounded-xl backdrop-blur bg-card/5 border border-white/10 shadow-sm">
                 <span className={`text-xl sm:text-2xl font-black ${stat.color} mb-1 drop-shadow-sm`}>{stat.value}</span>
                 <span className="text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-wider text-center">{stat.label}</span>
               </div>
@@ -72,17 +72,17 @@ export function AuthLayout({ children, title, subtitle }) {
         Mobile/Tablet: Bottom alignment 
         Desktop: 50% split alignment 
       */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 px-6 sm:p-10 lg:p-16 bg-slate-50 relative">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center py-10 px-6 sm:p-10 lg:p-16 bg-section relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-[480px] bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl border border-slate-200/60"
+          className="w-full max-w-[480px] bg-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl border border-border/60"
         >
           {/* Form Header */}
           <div className="text-center mb-8">
-            {title && <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mb-2 drop-shadow-sm">{title}</h1>}
-            {subtitle && <p className="text-slate-500 text-sm sm:text-base font-medium">{subtitle}</p>}
+            {title && <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-main-text tracking-tight mb-2 drop-shadow-sm">{title}</h1>}
+            {subtitle && <p className="text-secondary-text text-sm sm:text-base font-medium">{subtitle}</p>}
           </div>
 
           {/* Children Inject (Inputs and Buttons) */}

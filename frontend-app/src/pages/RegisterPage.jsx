@@ -51,32 +51,32 @@ const RegisterPage = () => {
     >
       {/* Error Banner */}
       {error && (
-        <div className="mb-5 p-3.5 bg-[#FFF1F2] border border-[#FECDD3] text-[#DC2626] text-sm rounded-xl font-medium flex items-center gap-2.5 animate-shake">
+        <div className="mb-5 p-3.5 bg-[#FFF1F2] border border-[#FECDD3] text-error text-sm rounded-xl font-medium flex items-center gap-2.5 animate-shake">
           <span className="shrink-0">⚠️</span> {error}
         </div>
       )}
 
       <form onSubmit={handleRegister} className="space-y-3" noValidate>
         {/* Role Selection */}
-        <div className="flex bg-[#F9FAFB] p-1.5 rounded-[14px] border border-[#E5E7EB] relative">
+        <div className="flex bg-background p-1.5 rounded-[14px] border border-border relative">
           <button
             type="button"
             onClick={() => { setRole('user'); setError(''); }}
             className={`flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer z-10 ${
-              role === 'user' ? 'text-[#4F46E5] shadow-sm bg-white border border-[#E5E7EB]' : 'text-[#6B7280] hover:text-[#111827] border border-transparent'
+              role === 'user' ? 'text-primary shadow-sm bg-card border border-border' : 'text-secondary-text hover:text-main-text border border-transparent'
             }`}
           >
-            <User size={16} className={role === 'user' ? 'text-[#4F46E5]' : 'text-[#9CA3AF]'} />
+            <User size={16} className={role === 'user' ? 'text-primary' : 'text-secondary-text'} />
             Tenant
           </button>
           <button
             type="button"
             onClick={() => { setRole('owner'); setError(''); }}
             className={`flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer z-10 ${
-              role === 'owner' ? 'text-[#4F46E5] shadow-sm bg-white border border-[#E5E7EB]' : 'text-[#6B7280] hover:text-[#111827] border border-transparent'
+              role === 'owner' ? 'text-primary shadow-sm bg-card border border-border' : 'text-secondary-text hover:text-main-text border border-transparent'
             }`}
           >
-            <Shield size={16} className={role === 'owner' ? 'text-[#4F46E5]' : 'text-[#9CA3AF]'} />
+            <Shield size={16} className={role === 'owner' ? 'text-primary' : 'text-secondary-text'} />
             Owner
           </button>
         </div>
@@ -122,7 +122,7 @@ const RegisterPage = () => {
       {/* Divider */}
       <div className="flex items-center gap-4 my-5">
         <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#E5E7EB]" />
-        <span className="text-[11px] text-[#9CA3AF] font-bold uppercase tracking-widest">or continue with</span>
+        <span className="text-[11px] text-secondary-text font-bold uppercase tracking-widest">or continue with</span>
         <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#E5E7EB]" />
       </div>
 
@@ -133,15 +133,15 @@ const RegisterPage = () => {
           if (!role) { setError('Please select your role first.'); return; }
           window.top.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/google?role=${role}`;
         }}
-        className="w-full py-3.5 bg-white border border-[#E5E7EB] shadow-sm rounded-xl font-bold text-[#111827] flex items-center justify-center gap-3 hover:bg-[#F9FAFB] hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
+        className="w-full py-3.5 bg-card border border-border shadow-sm rounded-xl font-bold text-main-text flex items-center justify-center gap-3 hover:bg-background hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
       >
         <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
         Continue with Google
       </button>
 
-      <p className="text-center text-sm text-[#6B7280] mt-5">
+      <p className="text-center text-sm text-secondary-text mt-5">
         Already have an account?{' '}
-        <Link to="/login" className="text-[#4F46E5] font-semibold hover:underline">
+        <Link to="/login" className="text-primary font-semibold hover:underline">
           Sign in
         </Link>
       </p>

@@ -30,7 +30,7 @@ export function LandingLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen w-full text-[#111827] bg-[#F9FAFB] relative overflow-x-hidden">
+    <div className="min-h-screen w-full text-main-text bg-background relative overflow-x-hidden">
       <div className="ambient-soft" />
 
       {/* ── NAVBAR ── */}
@@ -40,11 +40,11 @@ export function LandingLayout({ children }) {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl shadow-sm border border-[#E5E7EB]/30 group-hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl shadow-sm border border-border/30 group-hover:shadow-md transition-shadow">
                 <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
               </div>
-              <span className="text-xl font-black tracking-tight text-[#111827]">
-                Smart <span className="text-[#4F46E5]">Room</span>
+              <span className="text-xl font-black tracking-tight text-main-text">
+                Smart <span className="text-primary">Room</span>
               </span>
             </Link>
 
@@ -54,7 +54,7 @@ export function LandingLayout({ children }) {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-[#6B7280] hover:text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl transition-all duration-200"
+                  className="px-4 py-2 text-sm font-medium text-secondary-text hover:text-primary hover:bg-primary/10 rounded-xl transition-all duration-200"
                 >
                   {link.label}
                 </a>
@@ -67,13 +67,13 @@ export function LandingLayout({ children }) {
                 <>
                   <Link
                     to={getDashboardPath()}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl transition-all"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 rounded-xl transition-all"
                   >
                     Dashboard
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-[#DC2626] hover:bg-[#FFF1F2] rounded-xl transition-all cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-error hover:bg-[#FFF1F2] rounded-xl transition-all cursor-pointer"
                   >
                     <LogOut size={15} />
                     Logout
@@ -83,7 +83,7 @@ export function LandingLayout({ children }) {
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-sm font-semibold text-[#6B7280] hover:text-[#111827] hover:bg-[#F3F4F6] rounded-xl transition-all"
+                    className="px-4 py-2 text-sm font-semibold text-secondary-text hover:text-main-text hover:bg-section rounded-xl transition-all"
                   >
                     Log in
                   </Link>
@@ -101,7 +101,7 @@ export function LandingLayout({ children }) {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-xl text-[#6B7280] hover:bg-[#F3F4F6] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+              className="md:hidden p-2 rounded-xl text-secondary-text hover:bg-section transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -110,31 +110,31 @@ export function LandingLayout({ children }) {
 
         {/* Mobile Menu Dropdown */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-[#E5E7EB] bg-white animate-fade-in">
+          <div className="md:hidden border-t border-border bg-card animate-fade-in">
             <div className="px-4 py-4 space-y-1">
               {navLinks.map(link => (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-[#111827] hover:bg-[#F3F4F6] transition-all"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-main-text hover:bg-section transition-all"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="pt-2 border-t border-[#E5E7EB] mt-2 space-y-2">
+              <div className="pt-2 border-t border-border mt-2 space-y-2">
                 {user ? (
                   <>
                     <Link
                       to={getDashboardPath()}
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-[#4F46E5] hover:bg-[#EEF2FF] transition-all"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-primary hover:bg-primary/10 transition-all"
                     >
                       <UserCircle size={16} /> Dashboard
                     </Link>
                     <button
                       onClick={() => { handleLogout(); setMobileOpen(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-[#DC2626] hover:bg-[#FFF1F2] transition-all cursor-pointer"
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-error hover:bg-[#FFF1F2] transition-all cursor-pointer"
                     >
                       <LogOut size={15} /> Logout
                     </button>
@@ -144,14 +144,14 @@ export function LandingLayout({ children }) {
                     <Link
                       to="/login"
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center px-4 py-3 rounded-xl text-sm font-semibold text-[#6B7280] hover:bg-[#F3F4F6] transition-all"
+                      className="flex items-center px-4 py-3 rounded-xl text-sm font-semibold text-secondary-text hover:bg-section transition-all"
                     >
                       Log in
                     </Link>
                     <Link
                       to="/register"
                       onClick={() => setMobileOpen(false)}
-                      className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-[#4F46E5] text-white hover:bg-[#4338CA] transition-all"
+                      className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary-hover transition-all"
                     >
                       Get Started <ChevronRight size={15} />
                     </Link>
@@ -179,7 +179,7 @@ export function LandingLayout({ children }) {
                   <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
                 </div>
               </div>
-              <p className="text-[#9CA3AF] text-sm leading-relaxed max-w-xs">
+              <p className="text-secondary-text text-sm leading-relaxed max-w-xs">
                 The smartest way to find your perfect room. Verified listings, zero brokerage.
               </p>
             </div>
@@ -190,7 +190,7 @@ export function LandingLayout({ children }) {
               <ul className="space-y-2.5">
                 {['Home', 'Browse Rooms', 'Register', 'Login'].map(item => (
                   <li key={item}>
-                    <a href="#" className="text-[#9CA3AF] text-sm hover:text-white transition-colors">{item}</a>
+                    <a href="#" className="text-secondary-text text-sm hover:text-white transition-colors">{item}</a>
                   </li>
                 ))}
               </ul>
@@ -202,7 +202,7 @@ export function LandingLayout({ children }) {
               <ul className="space-y-2.5">
                 {['For Tenants', 'For Owners', 'Admin Dashboard', 'Pricing'].map(item => (
                   <li key={item}>
-                    <span className="text-[#9CA3AF] text-sm">{item}</span>
+                    <span className="text-secondary-text text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -210,18 +210,18 @@ export function LandingLayout({ children }) {
           </div>
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[#6B7280] text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
+            <p className="text-secondary-text text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
             <div className="flex items-center gap-6">
-              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-[#9CA3AF] hover:text-[#0A66C2] transition-colors flex items-center gap-2 text-sm font-medium">
+              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-[#0A66C2] transition-colors flex items-center gap-2 text-sm font-medium">
                 <Linkedin size={18} />
                 <span>LinkedIn</span>
               </a>
-              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-[#9CA3AF] hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
+              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-white transition-colors flex items-center gap-2 text-sm font-medium">
                 <Github size={18} />
                 <span>GitHub</span>
               </a>
             </div>
-            <p className="text-[#6B7280] text-sm">Designed & Built by <a href="https://github.com/AbhishekJ-dev/portfolio" target="_blank" rel="noopener noreferrer" className="text-[#60A5FA] font-medium hover:underline">Abhishek J</a></p>
+            <p className="text-secondary-text text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
           </div>
         </div>
       </footer>

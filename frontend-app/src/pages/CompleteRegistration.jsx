@@ -69,7 +69,7 @@ const CompleteRegistration = () => {
             subtitle="Finalize your account to start looking for rooms."
         >
             {error && (
-                <div className="mb-6 p-4 bg-rose-50 border border-rose-100 text-rose-600 text-sm rounded-2xl font-bold flex items-center gap-3 shadow-sm animate-shake">
+                <div className="mb-6 p-4 bg-error/10 border border-error/20 text-error text-sm rounded-2xl font-bold flex items-center gap-3 shadow-sm animate-shake">
                     <Mail size={16} className="shrink-0" /> {error}
                 </div>
             )}
@@ -100,7 +100,7 @@ const CompleteRegistration = () => {
                         }}
                         className={`p-5 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center gap-3 cursor-pointer shadow-sm active:scale-[0.98] ${
                             formData.role === 'user'
-                                ? 'bg-[#4F46E5]/5 text-[#4F46E5] border-[#4F46E5]/40 shadow-blue-500/5'
+                                ? 'bg-primary/5 text-primary border-[#4F46E5]/40 shadow-blue-500/5'
                                 : 'bg-[#f9fafb] border-[#e5e7eb] text-[#6b7280] hover:bg-[#f3f4f6]'
                         }`}
                     >
@@ -114,7 +114,7 @@ const CompleteRegistration = () => {
                         }}
                         className={`p-5 rounded-2xl border transition-all text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center gap-3 cursor-pointer shadow-sm active:scale-[0.98] ${
                             formData.role === 'owner'
-                                ? 'bg-[#4F46E5]/5 text-[#4F46E5] border-[#4F46E5]/40 shadow-blue-500/5'
+                                ? 'bg-primary/5 text-primary border-[#4F46E5]/40 shadow-blue-500/5'
                                 : 'bg-[#f9fafb] border-[#e5e7eb] text-[#6b7280] hover:bg-[#f3f4f6]'
                         }`}
                     >
@@ -149,7 +149,7 @@ const CompleteRegistration = () => {
 
             <div className="mt-8 text-center">
                 <p className="text-[#6b7280] text-[11px] font-black uppercase tracking-widest">
-                    Wrong account? <button onClick={() => navigate('/login')} className="text-[#4F46E5] font-black hover:underline ml-1">Go back</button>
+                    Wrong account? <button onClick={() => navigate('/login')} className="text-primary font-black hover:underline ml-1">Go back</button>
                 </p>
             </div>
         </AuthLayout>

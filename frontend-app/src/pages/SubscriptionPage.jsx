@@ -125,19 +125,19 @@ const SubscriptionPage = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-[#F9FAFB]">
-                <Loader2 className="w-10 h-10 text-[#4F46E5] animate-spin" />
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#F9FAFB] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto text-center mb-16">
                 <motion.h1 
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl font-black text-[#111827] mb-4"
+                    className="text-4xl font-black text-main-text mb-4"
                 >
                     Unlock Your Perfect Room
                 </motion.h1>
@@ -145,7 +145,7 @@ const SubscriptionPage = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-lg text-[#6B7280] max-w-2xl mx-auto"
+                    className="text-lg text-secondary-text max-w-2xl mx-auto"
                 >
                     Choose a plan to get instant access to owner contacts, exact locations, and priority booking features.
                 </motion.p>
@@ -161,21 +161,21 @@ const SubscriptionPage = () => {
                         whileTap={{ scale: 0.98 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => handleSubscribe(plan.id)}
-                        className={`bg-white rounded-3xl border ${idx === 1 ? 'border-[#4F46E5] shadow-xl ring-4 ring-[#4F46E5]/10' : 'border-[#E5E7EB] shadow-soft'} overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-2xl`}
+                        className={`bg-card rounded-3xl border ${idx === 1 ? 'border-[#4F46E5] shadow-xl ring-4 ring-[#4F46E5]/10' : 'border-border shadow-soft'} overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-2xl`}
                     >
                         {idx === 1 && (
-                            <div className="bg-[#4F46E5] text-white text-center py-2 text-xs font-black uppercase tracking-widest">
+                            <div className="bg-primary text-white text-center py-2 text-xs font-black uppercase tracking-widest">
                                 Most Popular
                             </div>
                         )}
                         <div className="p-8 flex-1">
                             <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-xl font-bold text-[#111827]">{plan.name}</h3>
-                                {idx === 1 ? <Zap className="text-[#4F46E5] fill-[#4F46E5]" /> : <Star className="text-[#9CA3AF]" />}
+                                <h3 className="text-xl font-bold text-main-text">{plan.name}</h3>
+                                {idx === 1 ? <Zap className="text-primary fill-[#4F46E5]" /> : <Star className="text-secondary-text" />}
                             </div>
                             <div className="flex items-baseline mb-8">
-                                <span className="text-5xl font-black text-[#111827]">₹{Math.round(plan.price)}</span>
-                                <span className="text-[#6B7280] ml-2 text-lg">/ {plan.duration_days} days</span>
+                                <span className="text-5xl font-black text-main-text">₹{Math.round(plan.price)}</span>
+                                <span className="text-secondary-text ml-2 text-lg">/ {plan.duration_days} days</span>
                             </div>
                             <ul className="space-y-4 mb-8">
                                 <FeatureItem text="Unlock exact room locations" />
@@ -191,8 +191,8 @@ const SubscriptionPage = () => {
                                 disabled={purchasing !== null}
                                 className={`w-full py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer ${
                                     idx === 1 
-                                    ? 'bg-[#4F46E5] text-white hover:bg-[#4338CA] shadow-blue' 
-                                    : 'bg-[#F3F4F6] text-[#111827] hover:bg-[#E5E7EB]'
+                                    ? 'bg-primary text-white hover:bg-primary-hover shadow-blue' 
+                                    : 'bg-section text-main-text hover:bg-[#E5E7EB]'
                                 } disabled:opacity-50`}
                             >
                                 {purchasing === plan.id ? (
@@ -206,13 +206,13 @@ const SubscriptionPage = () => {
                 ))}
             </div>
 
-            <div className="mt-16 max-w-2xl mx-auto bg-white rounded-2xl p-6 border border-[#E5E7EB] flex items-center gap-4">
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+            <div className="mt-16 max-w-2xl mx-auto bg-card rounded-2xl p-6 border border-border flex items-center gap-4">
+                <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center text-success shrink-0">
                     <ShieldCheck size={24} />
                 </div>
                 <div>
-                    <h4 className="font-bold text-[#111827]">Secure Payments by Razorpay</h4>
-                    <p className="text-sm text-[#6B7280]">Your transaction is protected with 128-bit SSL encryption. We don't store your card details.</p>
+                    <h4 className="font-bold text-main-text">Secure Payments by Razorpay</h4>
+                    <p className="text-sm text-secondary-text">Your transaction is protected with 128-bit SSL encryption. We don't store your card details.</p>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@ const SubscriptionPage = () => {
 
 const FeatureItem = ({ text }) => (
     <li className="flex items-center gap-3 text-sm text-[#475569] font-medium">
-        <div className="w-5 h-5 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 shrink-0">
+        <div className="w-5 h-5 bg-success/10 rounded-full flex items-center justify-center text-success shrink-0">
             <Check size={14} />
         </div>
         {text}

@@ -36,7 +36,7 @@ const OTPTimer = ({ initialMinutes = 5, onExpire }) => {
   }, [minutes, seconds, onExpire]);
 
   return (
-    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-500 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+    <div className="flex items-center gap-1.5 text-xs font-bold text-error bg-error/10 px-3 py-1 rounded-full border border-error/20">
       <Timer size={14} className="animate-pulse" />
       <span>OTP expires in {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</span>
     </div>
@@ -78,8 +78,8 @@ const OTPInput = ({ value, onChange, disabled }) => {
           disabled={disabled}
           value={digits[i] || ''} onChange={e => handleChange(e, i)}
           onKeyDown={e => handleKey(e, i)} onPaste={handlePaste}
-          className={`w-11 h-14 text-center text-xl font-black border-2 rounded-xl outline-none transition-all duration-200 bg-white text-[#111827]
-            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#4F46E5] bg-[#EEF2FF] shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#4F46E5] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
+          className={`w-11 h-14 text-center text-xl font-black border-2 rounded-xl outline-none transition-all duration-200 bg-card text-main-text
+            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#4F46E5] bg-primary/10 shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#4F46E5] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
         />
       ))}
     </div>
@@ -94,18 +94,18 @@ const ModalShell = ({ onClose, icon, title, subtitle, children }) => (
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
     <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#e5e7eb] overflow-hidden z-10">
+      className="relative w-full max-w-md bg-card rounded-3xl shadow-2xl border border-[#e5e7eb] overflow-hidden z-10">
       <div className="h-1.5 w-full bg-gradient-to-r from-[#4F46E5] via-[#3b82f6] to-[#60a5fa]" />
       <div className="p-8">
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="p-2 bg-[#EEF2FF] rounded-xl">{icon}</div>
-              <h3 className="text-lg font-black text-[#111827]">{title}</h3>
+              <div className="p-2 bg-primary/10 rounded-xl">{icon}</div>
+              <h3 className="text-lg font-black text-main-text">{title}</h3>
             </div>
             <p className="text-xs text-[#6b7280] font-medium ml-10">{subtitle}</p>
           </div>
-          <button onClick={onClose} className="p-2 text-[#6b7280] hover:text-[#111827] hover:bg-[#f3f4f6] rounded-xl transition-all cursor-pointer">
+          <button onClick={onClose} className="p-2 text-[#6b7280] hover:text-main-text hover:bg-[#f3f4f6] rounded-xl transition-all cursor-pointer">
             <X size={18} />
           </button>
         </div>
@@ -154,28 +154,28 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
 
   return (
     <ModalShell onClose={onClose}
-      icon={<ShieldCheck size={18} className="text-[#4F46E5]" />}
+      icon={<ShieldCheck size={18} className="text-primary" />}
       title="Verify Your Account"
       subtitle={step === 1 ? `An OTP will be sent to ${user?.email}` : 'Check your email for the OTP'}
     >
       <AnimatePresence mode="wait">
         {step === 1 ? (
           <motion.div key="v1" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-4">
-            <div className="p-4 bg-[#EEF2FF] rounded-2xl border border-[#dbeafe] flex items-center gap-3">
-              <Mail size={18} className="text-[#4F46E5] shrink-0" />
+            <div className="p-4 bg-primary/10 rounded-2xl border border-[#dbeafe] flex items-center gap-3">
+              <Mail size={18} className="text-primary shrink-0" />
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black">OTP will be sent to</p>
-                <p className="text-sm font-bold text-[#111827]">{user?.email}</p>
+                <p className="text-sm font-bold text-main-text">{user?.email}</p>
               </div>
             </div>
             {isOwner && (
-              <div className="p-3 bg-amber-50 rounded-xl border border-amber-100 flex items-start gap-2.5">
-                <ShieldAlert size={14} className="text-amber-500 mt-0.5 shrink-0" />
+              <div className="p-3 bg-warning/10 rounded-xl border border-warning/20 flex items-start gap-2.5">
+                <ShieldAlert size={14} className="text-warning mt-0.5 shrink-0" />
                 <p className="text-[11px] text-amber-700 font-medium">Verification is required to list properties.</p>
               </div>
             )}
             <button onClick={sendOTP} disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
               {loading ? 'Sending OTP...' : 'Send OTP to My Email'}
             </button>
@@ -184,7 +184,7 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
           <motion.div key="v2" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-6">
             <div className="flex flex-col items-center">
               <OTPTimer onExpire={() => setIsExpired(true)} />
-              <p className="text-xs text-[#9ca3af] mt-3">Check your <span className="font-bold text-[#4F46E5]">email</span> for the code</p>
+              <p className="text-xs text-[#9ca3af] mt-3">Check your <span className="font-bold text-primary">email</span> for the code</p>
             </div>
             <OTPInput value={otp} onChange={setOtp} disabled={isExpired || loading} />
             <div className="space-y-2.5">
@@ -194,7 +194,7 @@ const VerifyModal = ({ user, onClose, onSuccess, showAlert }) => {
                 {loading ? 'Verifying...' : 'Confirm & Verify Account'}
               </button>
               <button onClick={() => { setStep(1); setOtp(''); setIsExpired(false); }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 text-[#6b7280] hover:text-[#111827] text-sm font-bold rounded-2xl hover:bg-[#f3f4f6] transition-all cursor-pointer">
+                className="w-full flex items-center justify-center gap-2 py-2.5 text-[#6b7280] hover:text-main-text text-sm font-bold rounded-2xl hover:bg-[#f3f4f6] transition-all cursor-pointer">
                 <ArrowLeft size={14} />
                 {isExpired ? 'OTP Expired - Resend' : 'Resend OTP'}
               </button>
@@ -244,7 +244,7 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
 
   return (
     <ModalShell onClose={onClose}
-      icon={<Mail size={18} className="text-[#4F46E5]" />}
+      icon={<Mail size={18} className="text-primary" />}
       title="Change Email Address"
       subtitle={step === 1 ? 'Enter your new email address.' : `OTP sent for ${newEmail}`}
     >
@@ -254,10 +254,10 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">New Email Address</label>
               <input type="email" placeholder="name@example.com" value={newEmail} onChange={e => setNewEmail(e.target.value)}
-                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-[#111827] outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/20 bg-[#f9fafb] transition-all" />
+                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-main-text outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/20 bg-[#f9fafb] transition-all" />
             </div>
             <button onClick={sendOTP} disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
               {loading ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
               {loading ? 'Sending OTP...' : 'Generate OTP'}
             </button>
@@ -266,17 +266,17 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
           <motion.div key="e2" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-6">
             <div className="flex flex-col items-center">
               <OTPTimer onExpire={() => setIsExpired(true)} />
-              <p className="text-xs text-[#9ca3af] mt-3">Enter the code sent to your <span className="font-bold text-[#4F46E5]">new email</span></p>
+              <p className="text-xs text-[#9ca3af] mt-3">Enter the code sent to your <span className="font-bold text-primary">new email</span></p>
             </div>
             <OTPInput value={otp} onChange={setOtp} disabled={isExpired || loading} />
             <div className="space-y-2.5">
               <button onClick={verifyOTP} disabled={loading || otp.length < 6 || isExpired}
-                className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-50 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
+                className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-50 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
                 {loading ? <Loader2 size={16} className="animate-spin" /> : <ShieldCheck size={16} />}
                 {loading ? 'Verifying...' : 'Verify & Update Email'}
               </button>
               <button onClick={() => { setStep(1); setOtp(''); setIsExpired(false); }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 text-[#6b7280] hover:text-[#111827] text-sm font-bold rounded-2xl hover:bg-[#f3f4f6] transition-all cursor-pointer">
+                className="w-full flex items-center justify-center gap-2 py-2.5 text-[#6b7280] hover:text-main-text text-sm font-bold rounded-2xl hover:bg-[#f3f4f6] transition-all cursor-pointer">
                 <ArrowLeft size={14} />
                 {isExpired ? 'OTP Expired - Resend' : 'Back & Resend OTP'}
               </button>
@@ -326,7 +326,7 @@ const ChangePasswordModal = ({ onClose, showAlert }) => {
   return (
     <ModalShell
       onClose={onClose}
-      icon={<Lock size={18} className="text-[#4F46E5]" />}
+      icon={<Lock size={18} className="text-primary" />}
       title="Change Password"
       subtitle="Choose a new strong password for your account."
     >
@@ -334,14 +334,14 @@ const ChangePasswordModal = ({ onClose, showAlert }) => {
         {/* Current Password */}
         <div>
           <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">Current Password</label>
-          <div className="flex items-center gap-3 px-4 py-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl focus-within:border-[#4F46E5] focus-within:ring-2 focus-within:ring-[#4F46E5]/10 transition-all">
-            <Lock size={14} className="text-[#9CA3AF] shrink-0" />
+          <div className="flex items-center gap-3 px-4 py-3 bg-background border border-border rounded-xl focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+            <Lock size={14} className="text-secondary-text shrink-0" />
             <input
               type="password"
               value={currentPassword}
               onChange={e => setCurrentPassword(e.target.value)}
               placeholder="Enter current password"
-              className="flex-1 bg-transparent outline-none text-sm text-[#111827] placeholder-[#9CA3AF] font-medium"
+              className="flex-1 bg-transparent outline-none text-sm text-main-text placeholder-[#9CA3AF] font-medium"
               required
             />
           </div>
@@ -359,18 +359,18 @@ const ChangePasswordModal = ({ onClose, showAlert }) => {
         {/* Confirm Password */}
         <div>
           <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">Confirm New Password</label>
-          <div className={`flex items-center gap-3 px-4 py-3 bg-[#F9FAFB] border rounded-xl focus-within:border-[#4F46E5] focus-within:ring-2 focus-within:ring-[#4F46E5]/10 transition-all ${
+          <div className={`flex items-center gap-3 px-4 py-3 bg-background border rounded-xl focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all ${
             confirmPassword.length > 0
               ? passwordsMatch ? 'border-green-400' : 'border-red-400'
-              : 'border-[#E5E7EB]'
+              : 'border-border'
           }`}>
-            <Lock size={14} className="text-[#9CA3AF] shrink-0" />
+            <Lock size={14} className="text-secondary-text shrink-0" />
             <input
               type="password"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               placeholder="Re-enter new password"
-              className="flex-1 bg-transparent outline-none text-sm text-[#111827] placeholder-[#9CA3AF] font-medium"
+              className="flex-1 bg-transparent outline-none text-sm text-main-text placeholder-[#9CA3AF] font-medium"
               required
             />
           </div>
@@ -385,7 +385,7 @@ const ChangePasswordModal = ({ onClose, showAlert }) => {
         <button
           type="submit"
           disabled={!canSubmit || loading}
-          className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#4F46E5] hover:bg-[#4338CA] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]"
+          className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]"
         >
           {loading ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
           {loading ? 'Updating Password...' : 'Update Password'}
@@ -456,7 +456,7 @@ const Profile = ({ userId: propsUserId }) => {
   );
 
   if (!userData) return (
-    <div className="p-8 text-center bg-white rounded-3xl border border-[#e5e7eb]">
+    <div className="p-8 text-center bg-card rounded-3xl border border-[#e5e7eb]">
       <p className="text-[#6b7280]">Failed to load profile data.</p>
     </div>
   );
@@ -467,7 +467,7 @@ const Profile = ({ userId: propsUserId }) => {
   return (
     <>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-3xl border border-[#e5e7eb] shadow-sm overflow-hidden">
+        <div className="bg-card rounded-3xl border border-[#e5e7eb] shadow-sm overflow-hidden">
           {/* Hero gradient */}
           <div className="h-32 bg-gradient-to-br from-[#4338CA] via-[#4F46E5] to-[#3b82f6] relative overflow-hidden">
             <div className="absolute inset-0 opacity-20"
@@ -476,29 +476,29 @@ const Profile = ({ userId: propsUserId }) => {
 
           <div className="px-8 pb-8">
             <div className="relative -mt-12 mb-8 flex flex-col items-center text-center">
-              <div className="w-24 h-24 bg-white rounded-2xl shadow-lg border-4 border-white flex items-center justify-center shrink-0 z-10 transition-transform hover:scale-105">
-                <User size={48} className="text-[#4F46E5]" />
+              <div className="w-24 h-24 bg-card rounded-2xl shadow-lg border-4 border-white flex items-center justify-center shrink-0 z-10 transition-transform hover:scale-105">
+                <User size={48} className="text-primary" />
               </div>
               <div className="pt-3">
-                <h2 className="text-2xl font-black text-[#111827] leading-tight">{userData.name}</h2>
+                <h2 className="text-2xl font-black text-main-text leading-tight">{userData.name}</h2>
                 <div className="flex items-center justify-center gap-2 mt-0.5">
                   <p className="text-[#6b7280] text-sm font-medium">{userData.email}</p>
-                  {isVerified && <ShieldCheck size={14} className="text-emerald-500 fill-emerald-50" />}
+                  {isVerified && <ShieldCheck size={14} className="text-success fill-emerald-50" />}
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-3">
                {/* Role Badge Section */}
-               <div className="flex items-center justify-between p-3 px-4 rounded-2xl bg-slate-50 border border-slate-100 mb-2">
+               <div className="flex items-center justify-between p-3 px-4 rounded-2xl bg-section border border-border mb-2">
                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center border border-slate-200 shadow-sm">
-                       <KeyRound size={13} className="text-slate-500" />
+                    <div className="w-7 h-7 bg-card rounded-lg flex items-center justify-center border border-border shadow-sm">
+                       <KeyRound size={13} className="text-secondary-text" />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Account Type</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-secondary-text">Account Type</span>
                  </div>
                  <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                   isOwner ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-sky-50 text-sky-600 border-sky-100'
+                   isOwner ? 'bg-indigo-50 text-primary border-indigo-100' : 'bg-sky-50 text-sky-600 border-sky-100'
                  }`}>
                    {userData.role}
                  </span>
@@ -506,7 +506,7 @@ const Profile = ({ userId: propsUserId }) => {
 
               {/* Full Name */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
-                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
+                <div className="p-2.5 bg-card rounded-xl text-primary shadow-sm border border-[#e5e7eb] shrink-0">
                   <User size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -516,15 +516,15 @@ const Profile = ({ userId: propsUserId }) => {
                       <input autoFocus value={nameValue}
                         onChange={e => setNameValue(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setEditingName(false); }}
-                        className="flex-1 min-w-0 border border-[#4F46E5] rounded-xl px-3 py-1.5 text-sm text-[#111827] outline-none bg-white font-bold" />
-                      <button onClick={saveName} className="p-1.5 bg-[#4F46E5] text-white rounded-xl">
+                        className="flex-1 min-w-0 border border-[#4F46E5] rounded-xl px-3 py-1.5 text-sm text-main-text outline-none bg-card font-bold" />
+                      <button onClick={saveName} className="p-1.5 bg-primary text-white rounded-xl">
                         {nameLoading ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
                       </button>
                     </div>
                   ) : (
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-bold text-[#111827] truncate">{userData.name}</p>
-                      <button onClick={() => setEditingName(true)} className="opacity-0 group-hover:opacity-100 p-1.5 text-[#6b7280] hover:text-[#4F46E5] transition-all"><Pencil size={13} /></button>
+                      <p className="text-sm font-bold text-main-text truncate">{userData.name}</p>
+                      <button onClick={() => setEditingName(true)} className="opacity-0 group-hover:opacity-100 p-1.5 text-[#6b7280] hover:text-primary transition-all"><Pencil size={13} /></button>
                     </div>
                   )}
                 </div>
@@ -532,14 +532,14 @@ const Profile = ({ userId: propsUserId }) => {
 
               {/* Email Address */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
-                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
+                <div className="p-2.5 bg-card rounded-xl text-primary shadow-sm border border-[#e5e7eb] shrink-0">
                   <Mail size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black mb-1">Email Address</p>
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-bold text-[#111827] truncate">{userData.email}</p>
-                    <button onClick={() => setShowEmailModal(true)} className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl border border-transparent hover:border-[#dbeafe] transition-all">
+                    <p className="text-sm font-bold text-main-text truncate">{userData.email}</p>
+                    <button onClick={() => setShowEmailModal(true)} className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-xl border border-transparent hover:border-[#dbeafe] transition-all">
                       <Pencil size={11} /> Edit
                     </button>
                   </div>
@@ -547,41 +547,41 @@ const Profile = ({ userId: propsUserId }) => {
               </div>
 
               {/* Account Status */}
-              <div className={`flex items-center gap-4 p-4 rounded-2xl border ${isVerified ? 'bg-emerald-50 border-emerald-100' : 'bg-amber-50 border-amber-100'}`}>
-                <div className={`p-2.5 rounded-xl shadow-sm border shrink-0 ${isVerified ? 'bg-white text-emerald-500 border-emerald-100' : 'bg-white text-amber-500 border-amber-100'}`}>
+              <div className={`flex items-center gap-4 p-4 rounded-2xl border ${isVerified ? 'bg-success/10 border-success/20' : 'bg-warning/10 border-warning/20'}`}>
+                <div className={`p-2.5 rounded-xl shadow-sm border shrink-0 ${isVerified ? 'bg-card text-success border-success/20' : 'bg-card text-warning border-warning/20'}`}>
                   {isVerified ? <ShieldCheck size={20} /> : <ShieldAlert size={20} />}
                 </div>
                 <div className="flex-1">
                   <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black mb-1">Verification Status</p>
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className={`inline-flex items-center gap-1.5 text-sm font-black ${isVerified ? 'text-emerald-600' : 'text-amber-600'}`}>
+                    <span className={`inline-flex items-center gap-1.5 text-sm font-black ${isVerified ? 'text-success' : 'text-warning'}`}>
                       {isVerified ? 'Verified Account' : 'Action Required'}
                     </span>
                     {!isVerified && (
                       <button onClick={() => setShowVerifyModal(true)}
-                        className="text-[11px] font-black uppercase tracking-widest text-white bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm">
+                        className="text-[11px] font-black uppercase tracking-widest text-white bg-warning/100 hover:bg-amber-600 px-3 py-1 rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm">
                         Verify Now
                       </button>
                     )}
                   </div>
                   {!isVerified && isOwner && (
-                    <p className="text-[10px] text-amber-600 font-medium mt-1">Please verify to unlock property listing feature.</p>
+                    <p className="text-[10px] text-warning font-medium mt-1">Please verify to unlock property listing feature.</p>
                   )}
                 </div>
               </div>
 
               {/* Change Password */}
               <div className="flex items-center gap-4 p-4 rounded-2xl bg-[#f9fafb] border border-[#e5e7eb] group">
-                <div className="p-2.5 bg-white rounded-xl text-[#4F46E5] shadow-sm border border-[#e5e7eb] shrink-0">
+                <div className="p-2.5 bg-card rounded-xl text-primary shadow-sm border border-[#e5e7eb] shrink-0">
                   <Lock size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] uppercase tracking-widest text-[#6b7280] font-black mb-1">Password</p>
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-bold text-[#111827]">••••••••••••</p>
+                    <p className="text-sm font-bold text-main-text">••••••••••••</p>
                     <button
                       onClick={() => setShowChangePasswordModal(true)}
-                      className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-[#4F46E5] hover:bg-[#EEF2FF] rounded-xl border border-transparent hover:border-[#dbeafe] transition-all"
+                      className="opacity-0 group-hover:opacity-100 flex items-center gap-1 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-xl border border-transparent hover:border-[#dbeafe] transition-all"
                     >
                       <Pencil size={11} /> Change
                     </button>

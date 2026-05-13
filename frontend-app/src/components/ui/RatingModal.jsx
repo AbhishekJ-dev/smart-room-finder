@@ -39,11 +39,11 @@ const RatingModal = ({ isOpen, onClose, bookingId }) => {
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl relative overflow-hidden text-center"
+        className="bg-card rounded-3xl p-8 max-w-sm w-full shadow-2xl relative overflow-hidden text-center"
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-[#9CA3AF] hover:text-[#EF4444] transition-colors"
+          className="absolute top-4 right-4 p-2 text-secondary-text hover:text-error transition-colors"
         >
           <X size={20} />
         </button>
@@ -56,12 +56,12 @@ const RatingModal = ({ isOpen, onClose, bookingId }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="w-16 h-16 bg-[#EEF2FF] text-[#4F46E5] rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Star size={32} className="fill-current" />
               </div>
               
-              <h3 className="text-xl font-extrabold text-[#111827] mb-2">Rate Your Experience</h3>
-              <p className="text-[#6B7280] text-sm mb-8 leading-relaxed">
+              <h3 className="text-xl font-extrabold text-main-text mb-2">Rate Your Experience</h3>
+              <p className="text-secondary-text text-sm mb-8 leading-relaxed">
                 How would you rate your booking experience? Your feedback helps us improve.
               </p>
 
@@ -78,7 +78,7 @@ const RatingModal = ({ isOpen, onClose, bookingId }) => {
                       size={36}
                       className={`transition-colors ${
                         star <= (hover || rating)
-                          ? 'text-[#F59E0B] fill-[#F59E0B]'
+                          ? 'text-warning fill-[#F59E0B]'
                           : 'text-[#E5E7EB] fill-none'
                       }`}
                     />
@@ -91,8 +91,8 @@ const RatingModal = ({ isOpen, onClose, bookingId }) => {
                 disabled={rating === 0 || loading}
                 className={`w-full py-4 rounded-xl font-bold text-sm transition-all shadow-lg active:scale-95 ${
                   rating === 0 || loading
-                    ? 'bg-[#F3F4F6] text-[#9CA3AF] cursor-not-allowed shadow-none'
-                    : 'bg-[#4F46E5] text-white hover:bg-[#4338CA] shadow-blue/20'
+                    ? 'bg-section text-secondary-text cursor-not-allowed shadow-none'
+                    : 'bg-primary text-white hover:bg-primary-hover shadow-blue/20'
                 }`}
               >
                 {loading ? 'Submitting...' : 'Submit Review'}
@@ -108,8 +108,8 @@ const RatingModal = ({ isOpen, onClose, bookingId }) => {
               <div className="w-16 h-16 bg-[#DCFCE7] text-[#16A34A] rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 size={32} />
               </div>
-              <h3 className="text-xl font-extrabold text-[#111827] mb-2">Thank You!</h3>
-              <p className="text-[#6B7280] text-sm">Your feedback has been recorded.</p>
+              <h3 className="text-xl font-extrabold text-main-text mb-2">Thank You!</h3>
+              <p className="text-secondary-text text-sm">Your feedback has been recorded.</p>
             </motion.div>
           )}
         </AnimatePresence>

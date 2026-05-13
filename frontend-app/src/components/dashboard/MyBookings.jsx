@@ -41,7 +41,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2].map(i => (
-                    <div key={i} className="h-48 rounded-3xl bg-white border border-[#e5e7eb] animate-pulse shadow-sm" />
+                    <div key={i} className="h-48 rounded-3xl bg-card border border-[#e5e7eb] animate-pulse shadow-sm" />
                 ))}
             </div>
         );
@@ -52,18 +52,18 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
             <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }} 
                 animate={{ opacity: 1, scale: 1 }} 
-                className="flex flex-col items-center justify-center py-20 px-6 text-center bg-white border border-[#e5e7eb] rounded-3xl shadow-sm"
+                className="flex flex-col items-center justify-center py-20 px-6 text-center bg-card border border-[#e5e7eb] rounded-3xl shadow-sm"
             >
                 <div className="w-20 h-20 bg-[#f9fafb] rounded-full flex items-center justify-center mb-6 border border-[#e5e7eb]">
                     <CreditCard size={32} className="text-[#6b7280]/30" />
                 </div>
-                <h3 className="text-xl font-black mb-2 text-[#111827]">No bookings yet</h3>
+                <h3 className="text-xl font-black mb-2 text-main-text">No bookings yet</h3>
                 <p className="text-[#6b7280] text-sm mb-8 max-w-xs leading-relaxed">
                     You haven't made any room bookings yet. Find your perfect stay today!
                 </p>
                 <button
                     onClick={onExploreRooms}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#4F46E5] text-white text-sm font-black rounded-xl hover:bg-[#4338CA] transition-all shadow-lg shadow-[#4F46E5]/20 cursor-pointer"
+                    className="flex items-center gap-2 px-6 py-3 bg-primary text-white text-sm font-black rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-[#4F46E5]/20 cursor-pointer"
                 >
                     <Search size={16} />
                     Explore Rooms
@@ -80,7 +80,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className="bg-white rounded-3xl border border-[#e5e7eb] overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-md transition-all group"
+                    className="bg-card rounded-3xl border border-[#e5e7eb] overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-md transition-all group"
                 >
                     {/* Room Image */}
                     <div className="w-full sm:w-40 h-40 shrink-0 relative overflow-hidden">
@@ -105,8 +105,8 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                     <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
                             <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-extrabold text-[#111827] text-lg leading-tight tracking-tight">{booking.title}</h3>
-                                <p className="text-[#4F46E5] font-black text-sm">₹{booking.price}</p>
+                                <h3 className="font-extrabold text-main-text text-lg leading-tight tracking-tight">{booking.title}</h3>
+                                <p className="text-primary font-black text-sm">₹{booking.price}</p>
                             </div>
                             <p className="text-[#6b7280] text-xs font-medium flex items-center gap-1.5 mb-4">
                                 <MapPin size={12} className="text-[#6b7280]/60" /> {booking.area}
@@ -117,14 +117,14 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                            <div className="flex items-center gap-4">
                                 <div className="text-center">
                                     <p className="text-[9px] uppercase tracking-widest text-[#6b7280] font-black">Duration</p>
-                                    <p className="text-xs font-bold text-[#111827]">{booking.duration}</p>
+                                    <p className="text-xs font-bold text-main-text">{booking.duration}</p>
                                 </div>
                                 <div className="text-center">
                                     <p className="text-[9px] uppercase tracking-widest text-[#6b7280] font-black">Total</p>
-                                    <p className="text-xs font-bold text-[#111827]">₹{booking.total_price}</p>
+                                    <p className="text-xs font-bold text-main-text">₹{booking.total_price}</p>
                                 </div>
                            </div>
-                           <ChevronRight size={16} className="text-[#6b7280]/40 group-hover:text-[#4F46E5] transition-colors" />
+                           <ChevronRight size={16} className="text-[#6b7280]/40 group-hover:text-primary transition-colors" />
                         </div>
                     </div>
                 </motion.div>
