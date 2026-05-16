@@ -187,17 +187,19 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         {/* Footer */}
         <footer className="border-t border-border bg-card px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
           <span className="text-xs font-semibold text-primary">SmartRoom Finder</span>
-          <div className="flex items-center gap-4">
-            <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-[#0A66C2] transition-colors flex items-center gap-1.5 text-[11px] font-medium">
-              <Linkedin size={14} />
-              <span>LinkedIn</span>
-            </a>
-            <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-main-text transition-colors flex items-center gap-1.5 text-[11px] font-medium">
-              <Github size={14} />
-              <span>GitHub</span>
-            </a>
+          <div className="flex flex-col items-center sm:items-end gap-1.5">
+            <span className="text-[10px] text-secondary-text">© 2026 Abhishek J</span>
+            <div className="flex items-center gap-3">
+              <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-[#0A66C2] transition-colors flex items-center gap-1.5 text-[11px] font-medium">
+                <Linkedin size={14} />
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/AbhishekJ-dev" target="_blank" rel="noopener noreferrer" className="text-secondary-text hover:text-main-text transition-colors flex items-center gap-1.5 text-[11px] font-medium">
+                <Github size={14} />
+                <span>GitHub</span>
+              </a>
+            </div>
           </div>
-          <span className="text-[10px] text-secondary-text">© 2026 Abhishek J</span>
         </footer>
       </div>
 

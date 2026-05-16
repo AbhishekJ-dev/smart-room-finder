@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LandingLayout } from '../components/layouts/LandingLayout';
 import axios from 'axios';
+import logo from '../assets/logo.png';
 
 const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
 
@@ -82,15 +83,18 @@ const WelcomePage = () => {
           background: 'linear-gradient(155deg, #0F172A 0%, #111827 45%, #1e3a6e 100%)'
         }}
       >
-        {/* Animated background orbs */}
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full opacity-20 animate-pulse"
-          style={{ background: 'radial-gradient(circle, #3B82F6 0%, transparent 60%)', transform: 'translate(-30%, -30%)' }} />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, #22C55E 0%, transparent 60%)', transform: 'translate(30%, 30%)', animationDelay: '1s' }} />
-        <div className="absolute top-[40%] right-[10%] w-[300px] h-[300px] rounded-full opacity-10 animate-pulse"
-          style={{ background: 'radial-gradient(circle, #8B5CF6 0%, transparent 60%)', animationDelay: '2s' }} />
+        {/* Background Logo Overlay */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: `url(${logo})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: '100% 100%'
+          }}
+        />
 
-        <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32 z-10 w-full">
+        <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32 z-10 w-full relative">
           <div className="max-w-4xl mx-auto text-center">
 
             {/* Animated Headline */}
@@ -279,7 +283,7 @@ const WelcomePage = () => {
               <div className="relative z-10">
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-                  Browse Listings. <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #60A5FA, #34D399)' }}>Unlock with a Plan.</span>
+                  Browse Listings. <span className="text-[#60A5FA]">Unlock with a Plan.</span>
                 </h3>
                 <p className="text-gray-300 mb-8 text-sm max-w-md mx-auto leading-relaxed">
                   Join our community to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
