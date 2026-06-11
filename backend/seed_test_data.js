@@ -1,89 +1,97 @@
 /**
- * seed_test_data.js
+ * seed_test_data.js (PostgreSQL / Neon Version)
+ * Usage: node backend/seed_test_data.js
  * 
- * Seeds the database with test accounts and a booking for verification.
- * Run: node seed_test_data.js
+ * Creates:
+ * 1. Owner Account (owner@test.com / Password@123)
+ * 2. Tenant Account (tenant@test.com / Password@123)
+ * 3. 2 Room Listings with multiple images
  */
-
-const db = require('./config/db');
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+const pool = require('./config/db');
 const bcrypt = require('bcryptjs');
 
 async function seed() {
-    const connection = await db.getConnection();
-    console.log('🌱 Seeding test data...');
-
     try {
-        await connection.beginTransaction();
+        console.log('🌱 Starting Data Seeding...');
+        const hashedPassword = await bcrypt.hash('Password@123', 10);
 
-        // 1. Disable FK checks
-        await connection.execute('SET FOREIGN_KEY_CHECKS = 0');
-
-        // 2. Clear existing (just in case)
-        const tables = ['bookings', 'rooms', 'owners', 'users', 'commissions'];
-        for (const table of tables) await connection.execute(`DELETE FROM ${table}`);
-        for (const table of tables) await connection.execute(`ALTER TABLE ${table} AUTO_INCREMENT = 1`);
-
-        const hashedPassword = await bcrypt.hash('pass123', 10);
-
-        // 3. Create Owner
-        const [ownerResult] = await connection.execute(
-            'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-            ['Test Owner', 'owner@test.com', hashedPassword, 'owner']
+        // 1. Create Owner
+        console.log('👤 Creating Owner...');
+        const { rows: ownerResult } = await pool.query(
+            'INSERT INTO users (name, email, password, role, is_verified) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+            ['John Owner', 'owner@test.com', hashedPassword, 'owner', true]
         );
-        const ownerId = ownerResult.insertId;
-        await connection.execute('INSERT INTO owners (user_id) VALUES (?)', [ownerId]);
+        const ownerId = ownerResult[0].id;
+        await pool.query('INSERT INTO owners (user_id, kyc_status, contact_number) VALUES ($1, $2, $3)', [ownerId, 'verified', '9876543210']);
 
-        // 4. Create Guest
-        const [guestResult] = await connection.execute(
-            'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-            ['Guest User', 'guest@test.com', hashedPassword, 'user']
-        );
-        const guestId = guestResult.insertId;
-
-        // 5. Create Room
-        const photos = JSON.stringify(['/uploads/placeholder1.jpg', '/uploads/placeholder2.jpg', '/uploads/placeholder3.jpg', '/uploads/placeholder4.jpg', '/uploads/placeholder5.jpg']);
-        const [roomResult] = await connection.execute(
-            `INSERT INTO rooms (owner_id, type, area, location, contact, price_monthly, photos, description, is_booked) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [ownerId, '2BHK', 'Malviya Nagar', 'C-42, Jaipur', '9988776655', 15000, photos, 'Beautiful 2BHK room with all amenities.', 1]
-        );
-        const roomId = roomResult.insertId;
-
-        // 6. Create Booking
-        await connection.execute(
-            `INSERT INTO bookings (user_id, room_id, duration, total_price, status) 
-             VALUES (?, ?, ?, ?, ?)`,
-            [guestId, roomId, '1 Month', 15000, 'pending']
+        // 2. Create Tenant
+        console.log('👤 Creating Tenant...');
+        await pool.query(
+            'INSERT INTO users (name, email, password, role, is_verified) VALUES ($1, $2, $3, $4, $5)',
+            ['Alice Tenant', 'tenant@test.com', hashedPassword, 'tenant', true]
         );
 
-        // 7. Create Confirmed Booking (for revenue test)
-        const [roomResult2] = await connection.execute(
-            `INSERT INTO rooms (owner_id, type, area, location, contact, price_monthly, photos, description, is_booked) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [ownerId, '1BHK', 'Koramangala', 'Bangalore', '9988776655', 12000, photos, 'Compact 1BHK.', 1]
-        );
-        const roomId2 = roomResult2.insertId;
+        // 3. Create Sample Rooms
+        console.log('🏘️ Creating Rooms...');
+        const rooms = [
+            {
+                type: '1BHK',
+                price: 12000,
+                city: 'Bangalore',
+                area: 'Koramangala',
+                location: '7th Block, Koramangala, Bangalore',
+                desc: 'Modern 1BHK with balcony and park view. Fully furnished.',
+                images: [
+                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600',
+                    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600',
+                    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600',
+                    'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600',
+                    'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=600'
+                ]
+            },
+            {
+                type: '2BHK',
+                price: 25000,
+                city: 'Mumbai',
+                area: 'Andheri West',
+                location: 'Lokhandwala Complex, Mumbai',
+                desc: 'Luxury 2BHK in the heart of Mumbai. High floor, sea view.',
+                images: [
+                    'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600',
+                    'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=600',
+                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600',
+                    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600',
+                    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600'
+                ]
+            }
+        ];
 
-        await connection.execute(
-            `INSERT INTO bookings (user_id, room_id, duration, total_price, status) 
-             VALUES (?, ?, ?, ?, ?)`,
-            [guestId, roomId2, '1 Month', 12000, 'confirmed']
-        );
+        for (const room of rooms) {
+            const { rows: roomResult } = await pool.query(
+                `INSERT INTO rooms (
+                    owner_id, type, price_monthly, annual_rent, area, city, location, contact, description
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+                [ownerId, room.type, room.price, room.price * 12, room.area, room.city, room.location, '9876543210', room.desc]
+            );
+            const roomId = roomResult[0].id;
 
-        await connection.execute('SET FOREIGN_KEY_CHECKS = 1');
-        await connection.commit();
+            for (const img of room.images) {
+                await pool.query('INSERT INTO room_images (room_id, image_url) VALUES ($1, $2)', [roomId, img]);
+            }
+        }
 
-        console.log('\n✅ Database seeded successfully!');
-        console.log('   - Owner: owner@test.com / pass123');
-        console.log('   - Guest: guest@test.com / pass123');
-        console.log('   - 1 Pending Booking');
-        console.log('   - 1 Confirmed Booking (Revenue: ₹12,000)\n');
+        console.log('✅ Seeding Completed Successfully!');
+        console.log('---');
+        console.log('Test Accounts:');
+        console.log('Owner: owner@test.com / Password@123');
+        console.log('Tenant: tenant@test.com / Password@123');
+        console.log('Rooms Created: 2');
 
     } catch (err) {
-        await connection.rollback();
-        console.error('❌ Seeding failed:', err.message);
+        console.error('❌ Seeding Failed:', err.message);
     } finally {
-        connection.release();
+        await pool.end();
         process.exit(0);
     }
 }
