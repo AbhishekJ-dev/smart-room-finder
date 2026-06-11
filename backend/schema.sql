@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
     name          VARCHAR(255) NOT NULL,
     email         VARCHAR(255) NOT NULL UNIQUE,
     password      VARCHAR(255) NOT NULL DEFAULT '',
-    role          VARCHAR(20)  NOT NULL DEFAULT 'tenant'
-                  CHECK (role IN ('tenant','owner','admin','super_admin')),
+    role          VARCHAR(20)  NOT NULL DEFAULT 'user'
+                  CHECK (role IN ('user','tenant','owner','admin','super_admin')),
     is_verified   BOOLEAN      NOT NULL DEFAULT FALSE,
     google_id     VARCHAR(255) UNIQUE,
     otp_code      VARCHAR(10),   -- used for email verification & email-change OTP
