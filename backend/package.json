@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "smart-room-finder-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Smart Room Finder — Express + PostgreSQL (Neon) Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,9 +12,11 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^12.8.0",
     "cloudinary": "^1.41.3",
     "cors": "^2.8.6",
     "dotenv": "^16.4.5",

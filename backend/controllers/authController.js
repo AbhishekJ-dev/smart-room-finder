@@ -81,10 +81,12 @@ exports.register = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // Check if user exists
         const { rows: existing } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (existing.length > 0) {
             const existingUser = existing[0];
+            if (existingUser.is_deleted) {
+                return res.status(400).json({ message: 'This email is associated with a deleted account. Please contact support to restore it.' });
+            }
             if (existingUser.role !== role) {
                 return res.status(400).json({ message: `This email address is already registered as a ${existingUser.role}. Please log in with the correct role.` });
             } else {
@@ -141,6 +143,10 @@ exports.login = async (req, res) => {
         if (users.length === 0) return res.status(404).json({ message: 'User not found' });
 
         const user = users[0];
+
+        if (user.is_deleted) {
+            return res.status(403).json({ message: 'This account has been deleted. Please contact support to restore it.' });
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });

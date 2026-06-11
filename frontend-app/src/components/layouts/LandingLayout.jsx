@@ -188,11 +188,18 @@ export function LandingLayout({ children }) {
             <div>
               <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Navigation</h4>
               <ul className="space-y-2.5">
-                {['Home', 'Browse Rooms', 'Register', 'Login'].map(item => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 text-sm hover:text-white transition-colors">{item}</a>
-                  </li>
-                ))}
+                <li>
+                  <a href="#home" className="text-gray-400 text-sm hover:text-white transition-colors">Home</a>
+                </li>
+                <li>
+                  <a href="#rooms" className="text-gray-400 text-sm hover:text-white transition-colors">Browse Rooms</a>
+                </li>
+                <li>
+                  <Link to="/register" className="text-gray-400 text-sm hover:text-white transition-colors">Register</Link>
+                </li>
+                <li>
+                  <Link to="/login" className="text-gray-400 text-sm hover:text-white transition-colors">Login</Link>
+                </li>
               </ul>
             </div>
 
@@ -200,11 +207,18 @@ export function LandingLayout({ children }) {
             <div>
               <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Platform</h4>
               <ul className="space-y-2.5">
-                {['For Tenants', 'For Owners', 'Admin Dashboard', 'Pricing'].map(item => (
-                  <li key={item}>
-                    <span className="text-gray-400 text-sm">{item}</span>
-                  </li>
-                ))}
+                <li>
+                  <Link to="/register" className="text-gray-400 text-sm hover:text-white transition-colors">For Tenants</Link>
+                </li>
+                <li>
+                  <Link to="/register" className="text-gray-400 text-sm hover:text-white transition-colors">For Owners</Link>
+                </li>
+                <li>
+                  <Link to="/admin-dashboard" className="text-gray-400 text-sm hover:text-white transition-colors">Admin Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/subscribe" className="text-gray-400 text-sm hover:text-white transition-colors">Pricing</Link>
+                </li>
               </ul>
             </div>
           </div>

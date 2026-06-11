@@ -24,6 +24,11 @@ export const AdminLayout = ({ children, title, subtitle }) => {
     { id: 'plans',         label: 'Plans',         icon: <BarChart3 size={16} />,    path: '/admin/plans' },
   ];
 
+  if (user?.role === 'super_admin') {
+    menuItems.push({ id: 'admin_management', label: 'Admin Management', icon: <ShieldCheck size={16} />, path: '/admin/management' });
+  }
+
+
   const handleLogout = () => { logout(); navigate('/login'); };
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 

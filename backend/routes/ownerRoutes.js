@@ -4,7 +4,7 @@ const { generateOTP, sendOTP } = require('../utils/otpService');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// AuthMiddleware
+// ── Auth middleware ───────────────────────────────────────────────────────────
 const auth = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ message: 'No token, access denied' });
@@ -17,7 +17,7 @@ const auth = (req, res, next) => {
     }
 };
 
-// POST /api/owner/send-otp
+// ── POST /api/owner/send-otp ──────────────────────────────────────────────────
 router.post('/send-otp', auth, async (req, res) => {
     try {
         if (req.user.role !== 'owner') {
@@ -31,18 +31,23 @@ router.post('/send-otp', auth, async (req, res) => {
         const otp = generateOTP();
         const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
-        await pool.query('UPDATE users SET otp = $1, otp_expiry = $2 WHERE id = $3', [otp, expiry, req.user.id]);
+        // Use otp_code column (standardized)
+        await pool.query(
+            'UPDATE users SET otp_code = $1, otp_expiry = $2 WHERE id = $3',
+            [otp, expiry, req.user.id]
+        );
+
         const sent = await sendOTP(email, otp, 'verification');
         if (!sent) return res.status(500).json({ message: 'Failed to deliver verification email.' });
 
         res.json({ message: 'OTP sent to your email address.' });
     } catch (error) {
-        console.error('Owner Send OTP error [STK]:', error);
+        console.error('[owner/send-otp] Error:', error.message);
         res.status(500).json({ message: 'Server error while sending owner OTP.' });
     }
 });
 
-// POST /api/owner/verify-otp
+// ── POST /api/owner/verify-otp ────────────────────────────────────────────────
 router.post('/verify-otp', auth, async (req, res) => {
     const { otp } = req.body;
     if (!otp) return res.status(400).json({ message: 'OTP is required.' });
@@ -52,26 +57,33 @@ router.post('/verify-otp', auth, async (req, res) => {
             return res.status(403).json({ message: 'Only owners can verify their email via this endpoint.' });
         }
 
-        const { rows: users } = await pool.query('SELECT otp, otp_expiry FROM users WHERE id = $1', [req.user.id]);
+        // Use otp_code column (standardized)
+        const { rows: users } = await pool.query(
+            'SELECT otp_code, otp_expiry FROM users WHERE id = $1',
+            [req.user.id]
+        );
         if (users.length === 0) return res.status(404).json({ message: 'User not found.' });
 
         const user = users[0];
-        if (!user.otp) return res.status(400).json({ message: 'No OTP requested.' });
-        
+        if (!user.otp_code) return res.status(400).json({ message: 'No OTP requested.' });
+
         if (new Date() > new Date(user.otp_expiry)) {
-            await pool.query('UPDATE users SET otp = NULL, otp_expiry = NULL WHERE id = $1', [req.user.id]);
+            await pool.query('UPDATE users SET otp_code = NULL, otp_expiry = NULL WHERE id = $1', [req.user.id]);
             return res.status(400).json({ message: 'OTP has expired.' });
         }
 
-        if (user.otp !== String(otp)) {
+        if (user.otp_code !== String(otp)) {
             return res.status(400).json({ message: 'Invalid OTP.' });
         }
 
-        // Standardize: Set is_verified = TRUE and clear OTP fields
-        await pool.query('UPDATE users SET is_verified = TRUE, otp = NULL, otp_expiry = NULL WHERE id = $1', [req.user.id]);
+        // Verify and clear OTP
+        await pool.query(
+            'UPDATE users SET is_verified = TRUE, otp_code = NULL, otp_expiry = NULL WHERE id = $1',
+            [req.user.id]
+        );
         res.json({ message: 'Email verified successfully! You can now post properties.' });
     } catch (error) {
-        console.error('Owner Verify OTP error:', error);
+        console.error('[owner/verify-otp] Error:', error.message);
         res.status(500).json({ message: 'Verification failed.' });
     }
 });

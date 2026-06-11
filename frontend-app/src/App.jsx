@@ -15,6 +15,7 @@ import AdminProperties from './pages/admin/AdminProperties';
 import AdminBookings from './pages/admin/AdminBookings';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminPlans from './pages/admin/AdminPlans';
+import AdminManagement from './pages/admin/AdminManagement';
 import SubscriptionPage from './pages/SubscriptionPage';
 import NotificationsPage from './pages/NotificationsPage';
 import { useAuth } from './context/AuthContext';
@@ -53,13 +54,16 @@ function ProtectedRoute({ children, allowedRole }) {
 
   useEffect(() => {
     if (!loading && !user) navigate('/login', { replace: true });
-    if (!loading && user && allowedRole && user.role !== allowedRole) {
-      if (user.role === 'admin') {
-        navigate('/admin-dashboard', { replace: true });
-      } else if (user.role === 'owner') {
-        navigate('/owner-dashboard', { replace: true });
-      } else {
-        navigate('/user-dashboard', { replace: true });
+    if (!loading && user && allowedRole) {
+      const isAllowed = Array.isArray(allowedRole) ? allowedRole.includes(user.role) : user.role === allowedRole;
+      if (!isAllowed) {
+        if (user.role === 'admin' || user.role === 'super_admin') {
+          navigate('/admin-dashboard', { replace: true });
+        } else if (user.role === 'owner') {
+          navigate('/owner-dashboard', { replace: true });
+        } else {
+          navigate('/user-dashboard', { replace: true });
+        }
       }
     }
   }, [user, loading, navigate, allowedRole]);
@@ -82,7 +86,7 @@ function AuthRedirect({ children }) {
 
   useEffect(() => {
     if (!loading && user) {
-      if (user.role === 'admin') {
+      if (user.role === 'admin' || user.role === 'super_admin') {
         navigate('/admin-dashboard', { replace: true });
       } else if (user.role === 'owner') {
         navigate('/owner-dashboard', { replace: true });
@@ -129,12 +133,13 @@ function App() {
           <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
           
           {/* Admin Routes */}
-          <Route path="/admin-dashboard" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute allowedRole="admin"><AdminUsers /></ProtectedRoute>} />
-          <Route path="/admin/properties" element={<ProtectedRoute allowedRole="admin"><AdminProperties /></ProtectedRoute>} />
-          <Route path="/admin/bookings" element={<ProtectedRoute allowedRole="admin"><AdminBookings /></ProtectedRoute>} />
-          <Route path="/admin/subscriptions" element={<ProtectedRoute allowedRole="admin"><AdminSubscriptions /></ProtectedRoute>} />
-          <Route path="/admin/plans" element={<ProtectedRoute allowedRole="admin"><AdminPlans /></ProtectedRoute>} />
+          <Route path="/admin-dashboard" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminUsers /></ProtectedRoute>} />
+          <Route path="/admin/properties" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminProperties /></ProtectedRoute>} />
+          <Route path="/admin/bookings" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminBookings /></ProtectedRoute>} />
+          <Route path="/admin/subscriptions" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminSubscriptions /></ProtectedRoute>} />
+          <Route path="/admin/plans" element={<ProtectedRoute allowedRole={['admin', 'super_admin']}><AdminPlans /></ProtectedRoute>} />
+          <Route path="/admin/management" element={<ProtectedRoute allowedRole={['super_admin']}><AdminManagement /></ProtectedRoute>} />
           {/* Fallback for manually typed routes that do not exist */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

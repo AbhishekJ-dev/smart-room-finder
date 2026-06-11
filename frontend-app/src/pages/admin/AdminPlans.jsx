@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IndianRupee, Edit2, Check, X, Clock, Plus, ArrowRight, ShieldCheck, RefreshCw, AlertCircle, ToggleLeft, ToggleRight } from 'lucide-react';
+import { IndianRupee, Edit2, Check, X, Clock, Plus, ArrowRight, ShieldCheck, RefreshCw, AlertCircle, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
 import { AdminLayout } from '../../components/layouts/AdminLayout';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -114,6 +114,29 @@ const AdminPlans = () => {
         } catch (err) {
           console.error('Toggle error:', err);
           toast.error('Failed to update plan status');
+        } finally {
+          setActionLoading(false);
+        }
+      }
+    });
+  };
+
+  const handleDeletePlan = (id, name) => {
+    setModal({
+      isOpen: true,
+      title: 'Delete Plan?',
+      message: `Are you sure you want to permanently delete the "${name}" plan? This action cannot be undone.`,
+      type: 'danger',
+      confirmText: 'Yes, Delete',
+      onConfirm: async () => {
+        setActionLoading(true);
+        try {
+          const res = await axios.delete(`${API}/${id}`, { headers });
+          toast.success(res.data.message);
+          fetchPlans();
+        } catch (err) {
+          console.error('Delete error:', err);
+          toast.error(err.response?.data?.message || 'Failed to delete plan');
         } finally {
           setActionLoading(false);
         }
@@ -295,6 +318,14 @@ const AdminPlans = () => {
                             title="Edit"
                           >
                             <Edit2 size={15} />
+                          </button>
+                          <button
+                            onClick={() => handleDeletePlan(plan.id, plan.name)}
+                            disabled={actionLoading}
+                            className="p-2 text-secondary-text hover:text-error hover:bg-[#FFF1F2] rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                            title="Delete Plan"
+                          >
+                            <Trash2 size={15} />
                           </button>
                           <button
                             onClick={() => handleToggle(plan.id, plan.is_active, plan.name)}

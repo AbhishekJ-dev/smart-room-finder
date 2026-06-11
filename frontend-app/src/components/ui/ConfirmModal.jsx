@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle, Trash2, Info } from 'lucide-react';
 
@@ -37,7 +38,9 @@ const ConfirmModal = ({
 
   const theme = themes[type] || themes.info;
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
         {/* Overlay */}
@@ -102,7 +105,8 @@ const ConfirmModal = ({
           </button>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

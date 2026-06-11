@@ -1,24 +1,32 @@
-const db = require('../config/db');
+/**
+ * Migration: Add is_deleted and deleted_at columns to users and rooms tables
+ * PostgreSQL (Neon) compatible
+ */
+const pool = require('../config/db');
 
-async function migrate_is_deleted() {
+async function migrate() {
     try {
-        console.log('Migrating database: adding `is_deleted` to users table...');
-        
-        // Add is_deleted column if it doesn't exist
-        const [columns] = await db.execute("SHOW COLUMNS FROM users LIKE 'is_deleted'");
-        if (columns.length === 0) {
-            await db.execute("ALTER TABLE users ADD COLUMN is_deleted BOOLEAN DEFAULT 0");
-            console.log('✅ added `is_deleted` column to users table.');
-        } else {
-            console.log('⚡ `is_deleted` column already exists.');
-        }
+        console.log('[migration] Running: add_is_deleted...');
 
-        console.log('Migration successful.');
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+            ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP NULL
+        `);
+        console.log('[migration] ✅ users: is_deleted, deleted_at added (or already exists)');
+
+        await pool.query(`
+            ALTER TABLE rooms
+            ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT FALSE
+        `);
+        console.log('[migration] ✅ rooms: is_deleted added (or already exists)');
+
+        console.log('[migration] ✅ add_is_deleted completed.');
         process.exit(0);
     } catch (err) {
-        console.error('Migration failed:', err);
+        console.error('[migration] ❌ add_is_deleted failed:', err.message);
         process.exit(1);
     }
 }
 
-migrate_is_deleted();
+migrate();

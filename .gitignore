@@ -3,11 +3,22 @@ node_modules/
 backend/node_modules/
 frontend-app/node_modules/
 
+# Environment Variables
+.env
+.env.local
+.env.*
+!.env.example
+
 # IDE / Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# Logs
+*.log
+backend_log.txt
+frontend_log.txt
 
 # OS files
 .DS_Store

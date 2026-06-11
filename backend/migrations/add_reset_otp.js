@@ -1,25 +1,26 @@
-const db = require('../config/db');
+/**
+ * Migration: Add reset_otp and otp_code columns to users table
+ * PostgreSQL (Neon) compatible
+ */
+const pool = require('../config/db');
 
 async function migrate() {
     try {
-        console.log('🚀 Starting migration: Adding reset_otp to users table...');
-        
-        // Add reset_otp column
-        await db.execute(`
-            ALTER TABLE users 
-            ADD COLUMN reset_otp VARCHAR(10) NULL AFTER otp_code
+        console.log('[migration] Running: add_reset_otp...');
+
+        await pool.query(`
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS reset_otp  VARCHAR(10) NULL,
+            ADD COLUMN IF NOT EXISTS otp_code   VARCHAR(10) NULL,
+            ADD COLUMN IF NOT EXISTS otp_expiry TIMESTAMP  NULL
         `);
-        
-        console.log('✅ Migration successful: reset_otp added.');
+        console.log('[migration] ✅ users: reset_otp, otp_code, otp_expiry added (or already exist)');
+
+        console.log('[migration] ✅ add_reset_otp completed.');
         process.exit(0);
     } catch (error) {
-        if (error.code === 'ER_DUP_COLUMN_NAME') {
-            console.log('ℹ️ Column reset_otp already exists. Skipping.');
-            process.exit(0);
-        } else {
-            console.error('❌ Migration failed:', error);
-            process.exit(1);
-        }
+        console.error('[migration] ❌ add_reset_otp failed:', error.message);
+        process.exit(1);
     }
 }
 

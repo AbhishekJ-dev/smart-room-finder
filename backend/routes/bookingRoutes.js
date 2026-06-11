@@ -316,13 +316,13 @@ router.put('/:id/rate', auth, async (req, res) => {
             return res.status(400).json({ message: 'Rating must be between 1 and 5' });
         }
 
-        const { rows: result } = await pool.query(
-            'UPDATE bookings SET rating = $1 WHERE id = $2 AND user_id = $3',
-            [rating, req.params.id, req.user.id]
+        const result = await pool.query(
+            'UPDATE bookings SET rating = $1 WHERE id = $2 AND user_id = $3 AND status = $4',
+            [rating, req.params.id, req.user.id, 'confirmed']
         );
 
         if (result.rowCount === 0) {
-            return res.status(404).json({ message: 'Booking not found or already rated' });
+            return res.status(404).json({ message: 'Booking not found, not confirmed, or you are not authorized' });
         }
 
         res.json({ message: 'Thank you for your rating!' });

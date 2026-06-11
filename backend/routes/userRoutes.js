@@ -29,7 +29,7 @@ router.put('/:id/name', async (req, res) => {
         return res.status(400).json({ message: 'Name must be at least 2 characters.' });
     }
     try {
-        const { rows: result } = await pool.query(
+        const result = await pool.query(
             'UPDATE users SET name = $1 WHERE id = $2',
             [String(name).trim(), req.params.id]
         );
