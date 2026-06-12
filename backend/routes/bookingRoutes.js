@@ -317,8 +317,8 @@ router.put('/:id/rate', auth, async (req, res) => {
         }
 
         const result = await pool.query(
-            'UPDATE bookings SET rating = $1 WHERE id = $2 AND user_id = $3 AND status = $4',
-            [rating, req.params.id, req.user.id, 'confirmed']
+            'UPDATE bookings SET rating = $1 WHERE id = $2 AND user_id = $3 AND status IN ($4, $5)',
+            [rating, req.params.id, req.user.id, 'confirmed', 'pending']
         );
 
         if (result.rowCount === 0) {

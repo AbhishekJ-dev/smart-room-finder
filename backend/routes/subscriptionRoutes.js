@@ -39,8 +39,11 @@ router.get('/plans', async (req, res) => {
 router.get('/config', auth, (req, res) => {
     const keyId = process.env.RAZORPAY_KEY_ID;
     if (!keyId || keyId.includes('YOUR_KEY')) {
-        return res.status(500).json({ message: 'Razorpay is not configured on the server.' });
+        return res.status(500).json({ 
+            message: 'Razorpay keys are missing in production environment variables (Render).' 
+        });
     }
+
     res.json({ key: keyId });
 });
 
