@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, X, CheckCircle2 } from 'lucide-react';
 import axios from 'axios';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API = API_URL;
 
 const RatingModal = ({ isOpen, onClose, bookingId }) => {
   const [rating, setRating] = useState(0);

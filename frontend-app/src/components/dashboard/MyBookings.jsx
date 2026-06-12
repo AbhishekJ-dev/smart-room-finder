@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import { Home, MapPin, CreditCard, Search, Calendar, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 import { Badge } from '../ui/Badge';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
-axios.defaults.baseURL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`;
+axios.defaults.baseURL = `${API_BASE_URL}`;
 
 const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
     const [bookings, setBookings] = useState([]);
@@ -89,7 +90,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                                 const path = booking.image;
                                 if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=400';
                                 if (path.startsWith('http')) return path;
-                                return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+                                return `${API_BASE_URL}${path}`;
                             })()} 
                             alt={booking.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

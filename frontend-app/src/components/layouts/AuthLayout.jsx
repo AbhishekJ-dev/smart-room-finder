@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../../assets/logo.png';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API = API_URL;
 
 export function AuthLayout({ children, title, subtitle }) {
   const [stats, setStats] = useState({

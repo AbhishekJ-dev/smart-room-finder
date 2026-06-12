@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Heart, Camera, Eye } from 'lucide-react';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
 const TENANT_BADGE = {
   Boys:   { label: 'Boys Only', color: 'badge-blue' },
@@ -20,7 +21,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
     if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
     
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const baseUrl = API_BASE_URL;
     return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 

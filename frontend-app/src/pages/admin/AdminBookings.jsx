@@ -3,6 +3,7 @@ import { CalendarCheck, ChevronRight, Clock, CheckCircle2, XCircle, IndianRupee 
 import { AdminLayout } from '../../components/layouts/AdminLayout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -12,7 +13,7 @@ const AdminBookings = () => {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/bookings`, {
+      const res = await axios.get(`API_URL/admin/bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(res.data);
@@ -28,7 +29,7 @@ const AdminBookings = () => {
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/bookings/${id}/status`, { status }, {
+      await axios.patch(`API_URL/admin/bookings/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBookings();

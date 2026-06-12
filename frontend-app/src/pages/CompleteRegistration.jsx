@@ -5,6 +5,7 @@ import { AuthLayout } from '../components/layouts/AuthLayout';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { User, Shield, Mail, CheckCircle } from 'lucide-react';
+import { API_URL, API_BASE_URL } from '../utils/api';
 
 const CompleteRegistration = () => {
     const [searchParams] = useSearchParams();
@@ -38,7 +39,7 @@ const CompleteRegistration = () => {
         setError('');
 
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/complete-google-registration`, formData);
+            const res = await axios.post(`API_URL/auth/complete-google-registration`, formData);
             const { token, user } = res.data;
 
             // Store in localStorage

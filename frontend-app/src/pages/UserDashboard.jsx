@@ -15,8 +15,9 @@ import MyBookings from '../components/dashboard/MyBookings';
 import StatusModal from '../components/ui/StatusModal';
 import RatingModal from '../components/ui/RatingModal';
 import axios from 'axios';
+import { API_URL, API_BASE_URL } from '../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API = API_URL;
 
 const TENANT_BADGE = {
   Boys:   { label: 'Boys Only', color: 'badge-blue' },
@@ -105,7 +106,7 @@ const UserDashboard = () => {
   const getImgSrc = (path) => {
     if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+    return `${API_BASE_URL}${path}`;
   };
 
   const openLightbox = (photos, startIdx = 0) => {
@@ -311,7 +312,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
   const getImgSrc = (path) => {
     if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const baseUrl = API_BASE_URL;
     return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 

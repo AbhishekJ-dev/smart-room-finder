@@ -1,4 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../utils/api';
+
 import { useAuth } from '../context/AuthContext';
 import { AuthLayout } from '../components/layouts/AuthLayout';
 import { Input } from '../components/ui/Input';
@@ -108,7 +110,7 @@ const LoginPage = () => {
       <button
         type="button"
         onClick={() => {
-          window.top.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/auth/google`;
+          window.top.location.href = `${API_BASE_URL}/auth/google`;
         }}
         className="w-full py-3.5 bg-card border border-border shadow-sm rounded-xl font-bold text-main-text flex items-center justify-center gap-3 hover:bg-background hover:border-[#CBD5E1] hover:shadow-md transition-all cursor-pointer text-sm active:scale-[0.98]"
       >

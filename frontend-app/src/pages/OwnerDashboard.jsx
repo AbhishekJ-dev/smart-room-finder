@@ -15,8 +15,9 @@ import Profile from '../components/dashboard/Profile';
 import axios from 'axios';
 import ConfirmModal from '../components/ui/ConfirmModal';
 import StatusModal from '../components/ui/StatusModal';
+import { API_URL, API_BASE_URL } from '../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API = API_URL;
 
 const OwnerDashboard = () => {
   const { user, refreshUser } = useAuth();
@@ -121,7 +122,7 @@ const OwnerDashboard = () => {
   const getImgSrc = (path) => {
     if (!path) return 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+    return `${API_BASE_URL}${path}`;
   };
 
   const openLightbox = (photos, startIdx = 0) => {
@@ -477,7 +478,7 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
   const getImgSrc = (path) => {
     if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const baseUrl = API_BASE_URL;
     return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 

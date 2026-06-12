@@ -4,8 +4,9 @@ import { Bell, Clock, CheckCircle2, Trash2, MailOpen } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { DashboardLayout } from '../components/layouts/DashboardLayout';
+import { API_URL, API_BASE_URL } from '../utils/api';
 
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/notifications`;
+const API = `${API_URL}/notifications`;
 
 const NotificationsPage = () => {
     const { token } = useAuth();
@@ -14,7 +15,7 @@ const NotificationsPage = () => {
 
     const fetchNotifications = async () => {
         try {
-            const res = await axios.get(API_URL, {
+            const res = await axios.get(API, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setNotifications(res.data);
@@ -31,7 +32,7 @@ const NotificationsPage = () => {
 
     const markAsRead = async (id) => {
         try {
-            await axios.put(`${API_URL}/${id}/read`, {}, {
+            await axios.put(`${API}/${id}/read`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setNotifications(notifications.map(n => 
@@ -44,7 +45,7 @@ const NotificationsPage = () => {
 
     const markAllRead = async () => {
         try {
-            await axios.put(`${API_URL}/read-all`, {}, {
+            await axios.put(`${API}/read-all`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setNotifications(notifications.map(n => ({ ...n, is_read: true })));

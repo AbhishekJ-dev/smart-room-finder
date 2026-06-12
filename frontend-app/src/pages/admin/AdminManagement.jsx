@@ -8,8 +8,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmModal from '../../components/ui/ConfirmModal';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin`;
+const API = `${API_URL}/admin`;
 
 const AdminManagement = () => {
   const [admins, setAdmins] = useState([]);

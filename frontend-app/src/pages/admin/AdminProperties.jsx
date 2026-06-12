@@ -8,8 +8,9 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmModal from '../../components/ui/ConfirmModal';
+import { API_URL, API_BASE_URL } from '../../utils/api';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin`;
+const API = `${API_URL}/admin`;
 
 const AdminProperties = () => {
   const [view, setView] = useState('owners'); // 'owners' | 'detail'
@@ -95,7 +96,7 @@ const AdminProperties = () => {
       
       const path = filtered[0];
       if (path.startsWith('http')) return path;
-      return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${path}`;
+      return `${API_BASE_URL}${path}`;
     } catch { return null; }
   };
 

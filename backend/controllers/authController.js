@@ -9,18 +9,22 @@ exports.forgotPassword = async (req, res) => {
         const { email } = req.body;
         if (!email) return res.status(400).json({ message: 'Email is required' });
 
-        const { rows: users } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const { rows: users } = await pool.query('SELECT * FROM users WHERE email ILIKE $1', [email]);
         if (users.length === 0) return res.status(404).json({ message: 'User with this email does not exist' });
 
+        const user = users[0];
         const otp = generateOTP();
         const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
-
+        
         await pool.query(
-            'UPDATE users SET reset_otp = $1, otp_expiry = $2 WHERE email = $3',
-            [otp, expiry, email]
+            'UPDATE users SET reset_otp = $1, otp_expiry = $2 WHERE id = $3',
+            [otp, expiry, user.id]
         );
 
-        const emailSent = await sendOTP(email, otp, 'reset');
+
+        console.log(`📡 Attempting to send OTP to: ${user.email}`);
+        const emailSent = await sendOTP(user.email, otp, 'reset');
+
         if (!emailSent) return res.status(500).json({ message: 'Failed to send OTP email' });
 
         res.json({ message: 'OTP sent successfully' });
@@ -36,9 +40,10 @@ exports.verifyResetOTP = async (req, res) => {
         if (!email || !otp) return res.status(400).json({ message: 'Email and OTP are required' });
 
         const { rows: users } = await pool.query(
-            'SELECT * FROM users WHERE email = $1 AND reset_otp = $2',
+            'SELECT * FROM users WHERE email ILIKE $1 AND reset_otp = $2',
             [email, otp]
         );
+
 
         if (users.length === 0) return res.status(400).json({ message: 'Invalid OTP' });
 
@@ -139,7 +144,7 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
-        const { rows: users } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const { rows: users } = await pool.query('SELECT * FROM users WHERE email ILIKE $1', [email]);
         if (users.length === 0) return res.status(404).json({ message: 'User not found' });
 
         const user = users[0];

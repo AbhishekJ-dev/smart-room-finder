@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/login`, { email, password });
+    const res = await axios.post(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://smart-room-finder-backend.onrender.com')}/api/auth/login`, { email, password });
     const { token, user: userData } = res.data;
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password, role) => {
-    await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/register`, { name, email, password, role });
+    await axios.post(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://smart-room-finder-backend.onrender.com')}/api/auth/register`, { name, email, password, role });
   };
 
   const logout = () => {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       const userId = localStorage.getItem('userId');
       if (!token || !userId) return;
 
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/${userId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://smart-room-finder-backend.onrender.com')}/api/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

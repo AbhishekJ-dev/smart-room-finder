@@ -11,13 +11,14 @@ import { LandingLayout } from '../components/layouts/LandingLayout';
 import axios from 'axios';
 import logo from '../assets/logo.png';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+import { API_URL as API, API_BASE_URL } from '../utils/api';
 
 const CATEGORIES = [
   { label: '1 BHK', emoji: '🏠', desc: 'Perfect for singles' },
   { label: '2 BHK', emoji: '🏡', desc: 'Ideal for couples' },
   { label: 'Room',  emoji: '🛏️', desc: 'Private or shared rooms' },
 ];
+
 
 // rotating hero text
 // Removed HERO_WORDS as requested
@@ -508,8 +509,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
   const getImgSrc = (path) => {
     if (!path) return 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600';
     if (path.startsWith('http')) return path;
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    return `${baseUrl.replace(/\/$/, '')}${path.startsWith('/') ? '' : '/'}${path}`;
+    return `${API_BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
   const imgSrc = getImgSrc(photos[0]);
@@ -588,5 +588,6 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
     </motion.div>
   );
 };
+
 
 export default WelcomePage;

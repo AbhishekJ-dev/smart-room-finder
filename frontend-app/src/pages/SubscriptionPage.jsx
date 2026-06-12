@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const API = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API = `${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://smart-room-finder-backend.onrender.com')}/api`;
 
 const SubscriptionPage = () => {
     const { user } = useAuth();
@@ -43,15 +43,31 @@ const SubscriptionPage = () => {
     };
 
     // Securely fetch the Razorpay Key ID from backend (never hardcode it)
-    const fetchRazorpayKey = async () => {
+    const fetchRazorpayKey = async (silent = true) => {
         try {
             const token = localStorage.getItem('token');
+            if (!token) {
+                if (!silent) toast.error('Please login to continue.');
+                return null;
+            }
+
             const res = await axios.get(`${API}/subscriptions/config`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setRazorpayKey(res.data.key);
+            
+            if (res.data && res.data.key) {
+                setRazorpayKey(res.data.key);
+                return res.data.key;
+            } else {
+                throw new Error('Key not found in response');
+            }
         } catch (err) {
             console.error('Failed to fetch Razorpay key:', err);
+            const errorMessage = err.response?.data?.message || err.message;
+            if (!silent) {
+                toast.error(`Payment gateway error: ${errorMessage}`);
+            }
+            return null;
         }
     };
 
@@ -65,7 +81,19 @@ const SubscriptionPage = () => {
 
     const handleSubscribe = async (planId) => {
         if (!user) { navigate('/login'); return; }
-        if (!razorpayKey) { toast.error('Payment gateway not ready. Please refresh.'); return; }
+        
+        let currentKey = razorpayKey;
+        if (!currentKey) {
+            // Try fetching it again on-demand
+            toast.loading('Initializing payment gateway...', { id: 'init-gate' });
+            currentKey = await fetchRazorpayKey(false);
+            toast.dismiss('init-gate');
+        }
+
+        if (!currentKey) {
+            // If still no key, we can't proceed
+            return; 
+        }
 
         setPurchasing(planId);
         try {
@@ -77,7 +105,7 @@ const SubscriptionPage = () => {
 
             // Step 2: Open Razorpay Checkout with REAL key from backend
             const options = {
-                key: razorpayKey,
+                key: currentKey,
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: 'Smart Room Finder',
@@ -110,6 +138,10 @@ const SubscriptionPage = () => {
                     }
                 }
             };
+
+            if (typeof window.Razorpay === 'undefined') {
+                throw new Error('Razorpay SDK not loaded. Please refresh or check your internet connection.');
+            }
 
             const rzp = new window.Razorpay(options);
             rzp.on('payment.failed', (response) => {
