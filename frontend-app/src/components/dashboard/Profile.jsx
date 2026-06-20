@@ -79,7 +79,7 @@ const OTPInput = ({ value, onChange, disabled }) => {
           value={digits[i] || ''} onChange={e => handleChange(e, i)}
           onKeyDown={e => handleKey(e, i)} onPaste={handlePaste}
           className={`w-11 h-14 text-center text-xl font-black border-2 rounded-xl outline-none transition-all duration-200 bg-card text-main-text
-            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#4F46E5] bg-primary/10 shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#4F46E5] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
+            ${disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : digits[i] ? 'border-[#2A7E8C] bg-primary/10 shadow-[0_0_0_3px_rgba(37,99,235,0.15)]' : 'border-[#e5e7eb] focus:border-[#2A7E8C] focus:shadow-[0_0_0_3px_rgba(37,99,235,0.1)]'}`}
         />
       ))}
     </div>
@@ -95,7 +95,7 @@ const ModalShell = ({ onClose, icon, title, subtitle, children }) => (
     <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       className="relative w-full max-w-md bg-card rounded-3xl shadow-2xl border border-[#e5e7eb] overflow-hidden z-10">
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#4F46E5] via-[#3b82f6] to-[#60a5fa]" />
+      <div className="h-1.5 w-full bg-gradient-to-r from-[#2A7E8C] via-[#2A7E8C] to-[#8CB6BC]" />
       <div className="p-8">
         <div className="flex items-start justify-between mb-6">
           <div>
@@ -254,7 +254,7 @@ const EmailModal = ({ user, onClose, onSuccess, showAlert }) => {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest text-[#6b7280] mb-1.5">New Email Address</label>
               <input type="email" placeholder="name@example.com" value={newEmail} onChange={e => setNewEmail(e.target.value)}
-                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-main-text outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/20 bg-[#f9fafb] transition-all" />
+                className="w-full border border-[#e5e7eb] rounded-2xl px-4 py-3 text-sm text-main-text outline-none focus:border-[#2A7E8C] focus:ring-4 focus:ring-[#2A7E8C]/20 bg-[#f9fafb] transition-all" />
             </div>
             <button onClick={sendOTP} disabled={loading}
               className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-2xl text-sm font-black tracking-wide transition-all active:scale-95 cursor-pointer disabled:opacity-60 shadow-[0_6px_20px_-6px_rgba(37,99,235,0.5)]">
@@ -451,7 +451,7 @@ const Profile = ({ userId: propsUserId }) => {
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <div className="w-10 h-10 border-4 border-[#4F46E5] border-t-transparent rounded-full animate-spin" />
+      <div className="w-10 h-10 border-4 border-[#2A7E8C] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -469,7 +469,7 @@ const Profile = ({ userId: propsUserId }) => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto">
         <div className="bg-card rounded-3xl border border-[#e5e7eb] shadow-sm overflow-hidden">
           {/* Hero gradient */}
-          <div className="h-32 bg-gradient-to-br from-[#4338CA] via-[#4F46E5] to-[#3b82f6] relative overflow-hidden">
+          <div className="h-32 bg-gradient-to-br from-[#1F5E68] via-[#2A7E8C] to-[#2A7E8C] relative overflow-hidden">
             <div className="absolute inset-0 opacity-20"
               style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
           </div>
@@ -516,7 +516,7 @@ const Profile = ({ userId: propsUserId }) => {
                       <input autoFocus value={nameValue}
                         onChange={e => setNameValue(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setEditingName(false); }}
-                        className="flex-1 min-w-0 border border-[#4F46E5] rounded-xl px-3 py-1.5 text-sm text-main-text outline-none bg-card font-bold" />
+                        className="flex-1 min-w-0 border border-[#2A7E8C] rounded-xl px-3 py-1.5 text-sm text-main-text outline-none bg-card font-bold" />
                       <button onClick={saveName} className="p-1.5 bg-primary text-white rounded-xl">
                         {nameLoading ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
                       </button>

@@ -64,7 +64,7 @@ const MyBookings = ({ userId: propsUserId, onExploreRooms }) => {
                 </p>
                 <button
                     onClick={onExploreRooms}
-                    className="flex items-center gap-2 px-6 py-3 bg-primary text-white text-sm font-black rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-[#4F46E5]/20 cursor-pointer"
+                    className="flex items-center gap-2 px-6 py-3 bg-primary text-white text-sm font-black rounded-xl hover:bg-primary-hover transition-all shadow-lg shadow-[#2A7E8C]/20 cursor-pointer"
                 >
                     <Search size={16} />
                     Explore Rooms

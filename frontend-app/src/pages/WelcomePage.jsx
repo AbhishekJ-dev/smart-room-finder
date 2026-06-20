@@ -10,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import { LandingLayout } from '../components/layouts/LandingLayout';
 import axios from 'axios';
 import logo from '../assets/logo.png';
+import heroImg from '../assets/hero-illustration.png';
 
 import { API_URL as API, API_BASE_URL } from '../utils/api';
 
@@ -81,108 +82,115 @@ const WelcomePage = () => {
           ══════════════════════════════════ */}
       <section id="home" className="relative overflow-hidden min-h-screen flex items-center"
         style={{
-          background: 'linear-gradient(155deg, #0F172A 0%, #111827 45%, #1e3a6e 100%)'
+          background: 'linear-gradient(155deg, #02161A 0%, #051F24 45%, #0A4D56 100%)'
         }}
       >
-        {/* Background Logo Overlay */}
-        <div 
-          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `url(${logo})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: '100% 100%'
-          }}
-        />
-
         <div className="max-w-7xl mx-auto px-6 py-24 lg:py-32 z-10 w-full relative">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              {/* Animated Headline */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="mb-6"
+              >
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight">
+                  Find your room smartly
+                </h1>
+              </motion.div>
 
-            {/* Animated Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="mb-6"
-            >
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight">
-                Find your room smartly
-              </h1>
-            </motion.div>
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+              >
+                Search rooms based on your needs with ease. No brokerage, verified owners,
+                and <span className="text-white font-semibold">instant booking</span> across India.
+              </motion.p>
 
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
-            >
-              Search rooms based on your needs with ease. No brokerage, verified owners,
-              and <span className="text-white font-semibold">instant booking</span> across India.
-            </motion.p>
-
-            {/* ── SEARCH BAR ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="max-w-2xl mx-auto mb-10"
-            >
-              <div className="bg-card/10 backdrop-blur-md border border-white/20 rounded-2xl p-2.5 flex flex-col sm:flex-row gap-3 shadow-2xl">
-                <div className="flex items-center gap-3 flex-1 px-4 py-4 rounded-xl bg-card/5 border border-white/10 focus-within:bg-card/10 focus-within:border-[#60A5FA]/50 transition-all">
-                  <MapPin size={18} className="text-[#60A5FA] shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Location, area, city..."
-                    value={locationSearch}
-                    onChange={e => setLocationSearch(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                    className="bg-transparent outline-none text-base text-white placeholder-[#6B7280] font-medium w-full"
-                  />
+              {/* ── SEARCH BAR ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+                className="max-w-2xl mx-auto lg:mx-0 mb-10"
+              >
+                <div className="bg-[#1F2937]/50 backdrop-blur-xl p-2 rounded-2xl border border-white/10 shadow-2xl flex flex-col sm:flex-row gap-2">
+                  <div className="flex-1 flex items-center gap-3 px-4 py-3 bg-[#051F24]/40 rounded-xl border border-white/5 group focus-within:border-primary/50 transition-all">
+                    <MapPin className="text-gray-500 group-focus-within:text-primary transition-colors" size={18} />
+                    <input
+                      type="text"
+                      placeholder="Location, area, city..."
+                      value={locationSearch}
+                      onChange={e => setLocationSearch(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleSearch()}
+                      className="bg-transparent outline-none text-sm text-white placeholder-[#6B7280] font-medium w-full"
+                    />
+                  </div>
+                  <div className="w-full sm:w-[160px] flex items-center gap-3 px-4 py-3 bg-[#051F24]/40 rounded-xl border border-white/5 group focus-within:border-primary/50 transition-all">
+                    <span className="text-gray-500 font-bold">$</span>
+                    <input
+                      type="number"
+                      placeholder="Max price/mo"
+                      value={priceSearch}
+                      onChange={e => setPriceSearch(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleSearch()}
+                      className="bg-transparent outline-none text-sm text-white placeholder-[#6B7280] font-medium w-full"
+                    />
+                  </div>
+                  <button
+                    onClick={handleSearch}
+                    className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white cursor-pointer transition-all active:scale-[0.97] whitespace-nowrap shadow-blue hover:shadow-card-hover"
+                    style={{
+                      background: 'linear-gradient(135deg, #2A7E8C 0%, #1F5E68 100%)'
+                    }}
+                  >
+                    <Search size={16} />
+                    Search Rooms
+                  </button>
                 </div>
-                <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-card/5 border border-white/10 focus-within:bg-card/10 focus-within:border-[#60A5FA]/50 transition-all sm:w-[180px]">
-                  <span className="text-gray-400 text-sm font-medium shrink-0">₹</span>
-                  <input
-                    type="number"
-                    placeholder="Max price/mo"
-                    value={priceSearch}
-                    onChange={e => setPriceSearch(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleSearch()}
-                    className="bg-transparent outline-none text-sm text-white placeholder-[#6B7280] font-medium w-full"
-                  />
-                </div>
-                <button
-                  onClick={handleSearch}
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white cursor-pointer transition-all active:scale-[0.97] whitespace-nowrap shadow-blue hover:shadow-card-hover"
-                  style={{
-                    background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
-                  }}
-                >
-                  <Search size={16} />
-                  Search Rooms
-                </button>
+              </motion.div>
+
+              {/* Trust badges */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-400"
+              >
+                {[
+                  { icon: <CheckCircle size={15} className="text-success" />, text: 'Verified Listings' },
+                  { icon: <Shield size={15} className="text-[#8CB6BC]" />, text: 'Zero Brokerage' },
+                  { icon: <Clock size={15} className="text-[#FCD34D]" />, text: 'Instant Booking' },
+                  { icon: <Star size={15} className="text-warning fill-current" />, text: `${stats.avgRating}/5 Rating` },
+                ].map(item => (
+                  <div key={item.text} className="flex items-center gap-1.5 font-medium">
+                    {item.icon} {item.text}
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Right Side Illustration */}
+            <motion.div
+              initial={{ opacity: 0, x: 50, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="hidden lg:block relative"
+            >
+              <div className="relative z-10 w-full max-w-[550px] ml-auto">
+                <img 
+                  src={heroImg} 
+                  alt="House Illustration" 
+                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(42, 126, 140,0.3)] animate-float"
+                />
               </div>
+              {/* Decorative elements */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10 opacity-30" />
             </motion.div>
-
-            {/* Trust badges */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400"
-            >
-              {[
-                { icon: <CheckCircle size={15} className="text-success" />, text: 'Verified Listings' },
-                { icon: <Shield size={15} className="text-[#60A5FA]" />, text: 'Zero Brokerage' },
-                { icon: <Clock size={15} className="text-[#FCD34D]" />, text: 'Instant Booking' },
-                { icon: <Star size={15} className="text-warning fill-current" />, text: `${stats.avgRating}/5 Rating` },
-              ].map(item => (
-                <div key={item.text} className="flex items-center gap-1.5 font-medium">
-                  {item.icon} {item.text}
-                </div>
-              ))}
-            </motion.div>
-
           </div>
         </div>
       </section>
@@ -201,10 +209,10 @@ const WelcomePage = () => {
                 className={`shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer border ${
                   activeCategory === cat
                     ? 'text-white border-transparent shadow-blue'
-                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
+                    : 'bg-background text-secondary-text border-border hover:border-[#2A7E8C] hover:text-primary'
                 }`}
                 style={activeCategory === cat ? {
-                  background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
+                  background: 'linear-gradient(135deg, #2A7E8C 0%, #1F5E68 100%)'
                 } : {}}
               >
                 {cat}
@@ -218,7 +226,7 @@ const WelcomePage = () => {
           FEATURED ROOMS
           ══════════════════════════════════ */}
       <section id="rooms" className="py-20"
-        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #F0F9FF 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #F0F9FA 100%)' }}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between mb-10">
@@ -228,7 +236,7 @@ const WelcomePage = () => {
             </div>
             <button
               onClick={() => navigate(user ? '/user-dashboard' : '/register')}
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-card border border-border text-main-text rounded-xl text-sm font-semibold hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft"
+              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-card border border-border text-main-text rounded-xl text-sm font-semibold hover:border-[#2A7E8C] hover:text-primary transition-all shadow-soft"
             >
               View All <ChevronRight size={15} />
             </button>
@@ -275,17 +283,18 @@ const WelcomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="mt-14 rounded-3xl p-10 text-center relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #111827 0%, #1e3a6e 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #051F24 0%, #0A4D56 100%)' }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10"
-                style={{ background: 'radial-gradient(circle, #60A5FA, transparent)', transform: 'translate(30%, -30%)' }} />
+                style={{ background: 'radial-gradient(circle, #8CB6BC, transparent)', transform: 'translate(30%, -30%)' }} />
               <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10"
                 style={{ background: 'radial-gradient(circle, #34D399, transparent)', transform: 'translate(-30%, 30%)' }} />
               <div className="relative z-10">
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-                  Browse Listings. <span className="text-[#60A5FA]">Unlock with a Plan.</span>
+                  Browse Listings. Unlock with a Plan.
                 </h3>
+
                 <p className="text-gray-300 mb-8 text-sm max-w-md mx-auto leading-relaxed">
                   Join our community to explore all listings. Upgrade to a subscription plan to reveal owner contacts, exact addresses, and book instantly.
                 </p>
@@ -317,14 +326,14 @@ const WelcomePage = () => {
           ══════════════════════════════════ */}
       <section id="about" className="py-24 bg-card relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #4F46E5, transparent)', transform: 'translate(30%, -30%)' }} />
+          style={{ background: 'radial-gradient(circle, #2A7E8C, transparent)', transform: 'translate(30%, -30%)' }} />
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <h2 className="text-3xl md:text-4xl font-extrabold text-main-text mb-6 leading-tight">
                 The Smartest Way<br />to Find Your<br />
-                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #4F46E5, #22C55E)' }}>
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(90deg, #2A7E8C, #22C55E)' }}>
                   Next Home.
                 </span>
               </h2>
@@ -342,7 +351,7 @@ const WelcomePage = () => {
                 ].map((item, i) => (
                   <li key={item} className="flex items-center gap-3 text-sm text-main-text font-medium">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #4F46E5, #22C55E)' }}>
+                      style={{ background: 'linear-gradient(135deg, #2A7E8C, #22C55E)' }}>
                       <CheckCircle size={13} className="text-white" />
                     </div>
                     {item}
@@ -354,7 +363,7 @@ const WelcomePage = () => {
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-5">
               {[
-                { icon: <Users size={24} />, value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants',       bg: 'from-[#EEF2FF] to-[#DBEAFE]', iconBg: '#4F46E5', textColor: '#4338CA' },
+                { icon: <Users size={24} />, value: stats.happyTenants === 0 ? '10+' : `${stats.happyTenants}+`, label: 'Happy Tenants',       bg: 'from-[#F0F9FA] to-[#DBEAFE]', iconBg: '#2A7E8C', textColor: '#1F5E68' },
                 { icon: <Home size={24} />,  value: `${stats.liveListings || '50'}+`, label: 'Live Listings', bg: 'from-[#F0FDF4] to-[#DCFCE7]', iconBg: '#16A34A', textColor: '#15803D' },
                 { icon: <MapPin size={24} />, value: '50+', label: 'Cities Covered',     bg: 'from-[#FFFBEB] to-[#FEF3C7]', iconBg: '#D97706', textColor: '#B45309' },
                 { icon: <Star size={24} className="fill-current" />, value: `${stats.avgRating}/5`, label: 'Avg. Rating', bg: 'from-[#FAF5FF] to-[#EDE9FE]', iconBg: '#7C3AED', textColor: '#6D28D9' },
@@ -384,7 +393,7 @@ const WelcomePage = () => {
           FEATURES SECTION
           ══════════════════════════════════ */}
       <section id="features" className="py-24 relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #EEF2FF 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #F9FAFB 0%, #F0F9FA 100%)' }}
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -396,14 +405,14 @@ const WelcomePage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { emoji: '🔍', icon: <Search size={22} />, iconBg: '#4F46E5', bg: '#EEF2FF', title: 'Smart Filters', desc: 'Filter by room type, rent range, and area to find your perfect match instantly.' },
+              { emoji: '🔍', icon: <Search size={22} />, iconBg: '#2A7E8C', bg: '#F0F9FA', title: 'Smart Filters', desc: 'Filter by room type, rent range, and area to find your perfect match instantly.' },
               { emoji: '📸', icon: <Home size={22} />, iconBg: '#16A34A', bg: '#F0FDF4', title: 'Real Photos Only', desc: 'Every listing features actual photos uploaded directly by the property owner.' },
               { emoji: '🚫', icon: <Shield size={22} />, iconBg: '#DC2626', bg: '#FFF1F2', title: 'Zero Brokerage', desc: 'Connect directly with owners. Save thousands on brokerage with every move.' },
               { 
                 emoji: '📞', 
                 icon: <Phone size={22} />, 
                 iconBg: '#0EA5E9', 
-                bg: '#F0F9FF', 
+                bg: '#F0F9FA', 
                 title: 'Instant Access', 
                 desc: !user 
                   ? 'Join our community and choose a plan to unlock owner contacts and exact addresses immediately.' 
@@ -448,10 +457,10 @@ const WelcomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 relative">
             {/* Connector line on desktop */}
             <div className="hidden md:block absolute top-[50px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 z-0"
-              style={{ background: 'linear-gradient(90deg, #4F46E5, #22C55E)' }} />
+              style={{ background: 'linear-gradient(90deg, #2A7E8C, #22C55E)' }} />
 
             {[
-              { step: '01', title: 'Register', desc: 'Create your account in under 30 seconds. Completely free, no credit card needed.', color: '#4F46E5' },
+              { step: '01', title: 'Register', desc: 'Create your account in under 30 seconds. Completely free, no credit card needed.', color: '#2A7E8C' },
               { step: '02', title: 'Search & Filter', desc: 'Use smart filters to browse verified room listings by location, type, and budget.', color: '#7C3AED' },
               { step: '03', title: 'Book & Move In', desc: 'Contact the owner directly, negotiate, and finalize your booking seamlessly.', color: '#22C55E' },
             ].map((item, i) => (
@@ -484,7 +493,7 @@ const WelcomePage = () => {
                 onClick={() => navigate('/register')}
                 className="inline-flex items-center gap-2 text-white font-bold px-10 py-4 rounded-xl text-sm cursor-pointer transition-all active:scale-[0.97] shadow-blue hover:shadow-card-hover"
                 style={{
-                  background: 'linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)'
+                  background: 'linear-gradient(135deg, #2A7E8C 0%, #1F5E68 100%)'
                 }}
               >
                 Start Finding Rooms <ArrowRight size={16} />
@@ -579,7 +588,7 @@ const LandingRoomCard = ({ room, delay, onAction }) => {
         >
           <span className="group-hover:hidden">View Details</span>
           <span className="hidden group-hover:flex items-center justify-center gap-2 w-full"
-            style={{ background: 'linear-gradient(135deg, #4F46E5, #4338CA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}
+            style={{ background: 'linear-gradient(135deg, #2A7E8C, #1F5E68)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}
           >
             View Details →
           </span>

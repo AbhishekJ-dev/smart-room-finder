@@ -81,7 +81,7 @@ const NotificationsPage = () => {
                 <div className="space-y-3">
                     {loading ? (
                         <div className="p-12 text-center bg-card rounded-2xl border border-border">
-                            <div className="animate-spin w-8 h-8 border-4 border-[#4F46E5] border-t-transparent rounded-full mx-auto mb-4"></div>
+                            <div className="animate-spin w-8 h-8 border-4 border-[#2A7E8C] border-t-transparent rounded-full mx-auto mb-4"></div>
                             <p className="text-sm text-secondary-text">Loading notifications...</p>
                         </div>
                     ) : notifications.length > 0 ? (
@@ -92,7 +92,7 @@ const NotificationsPage = () => {
                                 transition={{ delay: index * 0.05 }}
                                 key={notification.id}
                                 className={`group p-5 bg-card rounded-2xl border transition-all hover:shadow-md flex items-center gap-5 relative ${
-                                    !notification.is_read ? 'border-[#4F46E5] bg-primary/10/10' : 'border-border'
+                                    !notification.is_read ? 'border-[#2A7E8C] bg-primary/10/10' : 'border-border'
                                 }`}
                             >
                                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${

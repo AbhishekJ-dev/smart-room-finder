@@ -123,7 +123,7 @@ const AdminManagement = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search admins by name or email..."
-              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
+              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all shadow-soft"
             />
             {search && (
               <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-main-text cursor-pointer">
@@ -136,7 +136,7 @@ const AdminManagement = () => {
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#4F46E5] text-white rounded-xl text-sm font-semibold hover:bg-[#4338CA] transition-colors shadow-soft cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#2A7E8C] text-white rounded-xl text-sm font-semibold hover:bg-[#1F5E68] transition-colors shadow-soft cursor-pointer"
           >
             <Plus size={16} />
             Add Admin
@@ -271,7 +271,7 @@ const AdminManagement = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setAddModalOpen(false)}
-                className="absolute inset-0 bg-[#111827]/40 backdrop-blur-sm"
+                className="absolute inset-0 bg-[#051F24]/40 backdrop-blur-sm"
               />
             
             <motion.div
@@ -366,7 +366,7 @@ const AdminManagement = () => {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-5 py-2 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#4338CA] transition-colors shadow-soft disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center min-w-[100px]"
+                    className="px-5 py-2 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-[#1F5E68] transition-colors shadow-soft disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center min-w-[100px]"
                   >
                     {submitting ? <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : 'Create Admin'}
                   </button>

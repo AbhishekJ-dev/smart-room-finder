@@ -110,7 +110,7 @@ const AdminSubscriptions = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search tenant, email or plan..."
-              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
+              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all shadow-soft"
             />
             {search && (
               <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-main-text cursor-pointer">
@@ -125,7 +125,7 @@ const AdminSubscriptions = () => {
             <select
               value={filterStatus}
               onChange={e => setFilterStatus(e.target.value)}
-              className="appearance-none bg-card border border-border rounded-xl py-2.5 pl-8 pr-8 text-xs font-bold text-secondary-text outline-none focus:border-[#4F46E5] transition-all cursor-pointer shadow-soft"
+              className="appearance-none bg-card border border-border rounded-xl py-2.5 pl-8 pr-8 text-xs font-bold text-secondary-text outline-none focus:border-[#2A7E8C] transition-all cursor-pointer shadow-soft"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -138,7 +138,7 @@ const AdminSubscriptions = () => {
         <button
           onClick={fetchSubscriptions}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#2A7E8C] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
         >
           <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
           Refresh

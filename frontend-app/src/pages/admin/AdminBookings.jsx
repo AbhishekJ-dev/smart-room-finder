@@ -147,7 +147,7 @@ const AdminBookings = () => {
                       {booking.status === 'confirmed' && (
                         <button
                           onClick={() => updateStatus(booking.id, 'completed')}
-                          className="px-3 py-1.5 bg-primary/10 text-primary text-xs font-semibold rounded-lg hover:bg-[#C7D2FE] border border-[#C7D2FE] transition-all cursor-pointer whitespace-nowrap"
+                          className="px-3 py-1.5 bg-primary/10 text-primary text-xs font-semibold rounded-lg hover:bg-[#B0DCE0] border border-[#B0DCE0] transition-all cursor-pointer whitespace-nowrap"
                         >
                           Mark Done
                         </button>

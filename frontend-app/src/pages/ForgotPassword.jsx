@@ -222,7 +222,7 @@ const ForgotPassword = () => {
             <div className="w-20 h-20 bg-[#DCFCE7] rounded-full flex items-center justify-center mb-6 animate-bounce">
               <CheckCircle2 size={40} className="text-success" />
             </div>
-            <h3 className="text-xl font-bold text-[#0F172A] mb-2">Success!</h3>
+            <h3 className="text-xl font-bold text-[#02161A] mb-2">Success!</h3>
             <p className="text-secondary-text mb-6">Your password has been reset successfully.</p>
             <Button onClick={() => navigate('/login')} className="w-full">
               Go to Login

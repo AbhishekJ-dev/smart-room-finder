@@ -40,7 +40,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
       transition={{ delay, duration: 0.4, ease: 'easeOut' }}
       whileHover={{ y: -6 }}
       onClick={onClick}
-      className="bg-card rounded-2xl border border-border overflow-hidden cursor-pointer group shadow-soft hover:shadow-card-hover hover:border-[#C7D2FE] transition-all duration-300"
+      className="bg-card rounded-2xl border border-border overflow-hidden cursor-pointer group shadow-soft hover:shadow-card-hover hover:border-[#B0DCE0] transition-all duration-300"
     >
       {/* Image */}
       <div className="relative h-52 overflow-hidden bg-section">
@@ -105,7 +105,7 @@ export function RoomCard({ room, onClick, actionLabel = 'View Details', delay = 
         </div>
 
         {/* Action Button */}
-        <button className="mt-1 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-background border border-border text-secondary-text group-hover:bg-primary group-hover:text-white group-hover:border-[#4F46E5]">
+        <button className="mt-1 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-background border border-border text-secondary-text group-hover:bg-primary group-hover:text-white group-hover:border-[#2A7E8C]">
           <Eye size={14} />
           {actionLabel}
         </button>

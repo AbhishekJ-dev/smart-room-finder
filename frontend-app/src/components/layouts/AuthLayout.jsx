@@ -29,7 +29,7 @@ export function AuthLayout({ children, title, subtitle }) {
       */}
       <div 
         className="w-full lg:w-1/2 flex flex-col justify-between items-center bg-slate-900 p-8 md:p-12 lg:p-16 text-center shadow-lg lg:shadow-2xl z-10"
-        style={{ background: 'linear-gradient(145deg, #0f172a 0%, #172554 40%, #1e3a8a 100%)' }}
+        style={{ background: 'linear-gradient(145deg, #02161A 0%, #06343B 40%, #0A4D56 100%)' }}
       >
         {/* Logo Container */}
         <Link to="/" className="mb-6 hover:scale-105 transition-transform duration-300">

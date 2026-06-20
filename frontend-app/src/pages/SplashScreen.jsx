@@ -17,7 +17,7 @@ export default function SplashScreen() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#4F46E5] to-[#111827] overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#2A7E8C] to-[#051F24] overflow-hidden">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}

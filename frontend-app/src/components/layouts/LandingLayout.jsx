@@ -44,7 +44,7 @@ export function LandingLayout({ children }) {
                 <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
               </div>
               <span className="text-xl font-black tracking-tight text-main-text">
-                Smart <span className="text-primary">Room</span>
+                Smart Room Finder
               </span>
             </Link>
 
@@ -169,7 +169,7 @@ export function LandingLayout({ children }) {
       </main>
 
       {/* ── FOOTER ── */}
-      <footer className="relative z-10 bg-[#111827] text-white">
+      <footer className="relative z-10 bg-[#051F24] text-white">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             {/* Brand */}
@@ -224,9 +224,9 @@ export function LandingLayout({ children }) {
           </div>
 
           <div className="border-t border-[#334155] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-gray-400 text-sm">© 2026 SmartRoom Finder. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">© 2026 Smart Room Finder. All rights reserved.</p>
             <div className="flex flex-col items-center sm:items-end gap-2">
-              <p className="text-gray-400 text-sm">Designed & Built by <span className="text-[#60A5FA] font-medium">Abhishek J</span></p>
+              <p className="text-gray-400 text-sm">Designed & Built by <span className="text-[#8CB6BC] font-medium">Abhishek J</span></p>
               <div className="flex items-center gap-4">
                 <a href="https://www.linkedin.com/in/abhishek-j-033094344" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#0A66C2] transition-colors flex items-center gap-1.5 text-sm font-medium">
                   <Linkedin size={16} />

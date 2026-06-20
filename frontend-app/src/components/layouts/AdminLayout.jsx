@@ -37,7 +37,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
       {/* Mobile overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-[#111827]/40 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-[#051F24]/40 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -92,7 +92,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
         {/* User + Logout */}
         <div className="p-4 border-t border-border space-y-3">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#3B82F6] flex items-center justify-center font-bold text-sm text-white shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2A7E8C] to-[#2A7E8C] flex items-center justify-center font-bold text-sm text-white shrink-0">
               {user?.name?.[0]?.toUpperCase() || 'A'}
             </div>
             <div className="min-w-0 flex-1">
@@ -130,7 +130,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
                 ref={searchInputRef}
                 type="text"
                 placeholder="Quick search…"
-                className="bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-xs font-medium text-main-text w-[200px] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all"
+                className="bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-xs font-medium text-main-text w-[200px] outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all"
               />
             </div>
           </div>
@@ -143,7 +143,7 @@ export const AdminLayout = ({ children, title, subtitle }) => {
 
         {/* Footer */}
         <footer className="border-t border-border bg-card px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 mt-auto">
-          <span className="text-xs font-semibold text-primary">SmartRoom Finder Admin</span>
+          <span className="text-xs font-semibold text-primary">Smart Room Finder Admin</span>
           <div className="flex flex-col items-center sm:items-end gap-1.5">
             <span className="text-[10px] text-secondary-text">© 2026 Abhishek J</span>
             <div className="flex items-center gap-3">

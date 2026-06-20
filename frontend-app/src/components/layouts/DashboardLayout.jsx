@@ -28,7 +28,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-[#111827]/40 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-[#051F24]/40 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -47,7 +47,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
               <img src={logo} alt="SmartRoom Logo" className="w-full h-full object-cover" />
             </div>
             <div className="text-center">
-              <h2 className="text-lg font-black tracking-tighter text-main-text">SMART<span className="text-primary">ROOM</span></h2>
+              <h2 className="text-lg font-black tracking-tighter text-main-text">SMART ROOM FINDER</h2>
               <p className="text-[9px] text-secondary-text font-bold uppercase tracking-widest leading-none mt-1">{panelLabel}</p>
             </div>
           </Link>
@@ -114,14 +114,14 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
                 >
                   <div className="mx-3 mt-1.5 p-3 rounded-xl bg-background border border-border space-y-3 shadow-inner">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4F46E5] to-[#60a5fa] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">{userInitial}</div>
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2A7E8C] to-[#8CB6BC] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">{userInitial}</div>
                         <div className="overflow-hidden flex-1">
                             <p className="text-xs font-bold text-main-text truncate">{user?.name}</p>
                             <p className="text-[10px] text-secondary-text truncate">{user?.email}</p>
                         </div>
                     </div>
                     
-                    <button onClick={() => { setShowProfileModal(true); setSidebarOpen(false); }} className="w-full py-2 bg-card border border-border hover:border-[#4F46E5] hover:text-primary text-secondary-text text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm">
+                    <button onClick={() => { setShowProfileModal(true); setSidebarOpen(false); }} className="w-full py-2 bg-card border border-border hover:border-[#2A7E8C] hover:text-primary text-secondary-text text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm">
                         <Settings size={13} /> Manage Account
                     </button>
                   </div>
@@ -134,7 +134,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
         {/* User Profile + Logout */}
         <div className="p-4 border-t border-border space-y-3">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#3B82F6] flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-blue">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2A7E8C] to-[#2A7E8C] flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-blue">
               {userInitial}
             </div>
             <div className="min-w-0 flex-1">
@@ -210,7 +210,7 @@ export function DashboardLayout({ children, title, subtitle, navItems = [], acti
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#111827]/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 bg-[#051F24]/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 overflow-y-auto"
             onClick={e => { if (e.target === e.currentTarget) setShowProfileModal(false); }}
           >
             <motion.div

@@ -166,7 +166,7 @@ const UserDashboard = () => {
                 placeholder="Search by area, city, or room type..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-card border border-border rounded-xl py-3 pl-11 pr-4 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
+                className="w-full bg-card border border-border rounded-xl py-3 pl-11 pr-4 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all shadow-soft"
               />
             </div>
 
@@ -175,7 +175,7 @@ const UserDashboard = () => {
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all border shadow-soft cursor-pointer ${
                   showFilters || hasFilters
-                    ? 'bg-primary/10 border-[#4F46E5] text-primary'
+                    ? 'bg-primary/10 border-[#2A7E8C] text-primary'
                     : 'bg-card border-border text-secondary-text hover:border-[#CBD5E1]'
                 }`}
               >
@@ -331,7 +331,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
       transition={{ delay, duration: 0.4 }}
       whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
       whileTap={{ scale: 0.98 }}
-      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer"
+      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#B0DCE0] transition-all duration-300 cursor-pointer"
     >
       {/* Image */}
       <div className="relative h-52 overflow-hidden bg-section">
@@ -433,7 +433,7 @@ const UserRoomCard = ({ room, delay, onBook, onViewPhotos, userBookings = [] }) 
           ) : room.is_locked ? (
             <button
               onClick={() => navigate('/subscribe')}
-              className="w-full py-3 bg-[#111827] hover:bg-[#0F172A] text-white rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] cursor-pointer"
+              className="w-full py-3 bg-[#051F24] hover:bg-[#02161A] text-white rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] cursor-pointer"
             >
               <Lock size={14} /> Subscribe to Unlock Details
             </button>

@@ -130,7 +130,7 @@ const SubscriptionPage = () => {
                     name: user?.name || '',
                     email: user?.email || '',
                 },
-                theme: { color: '#4F46E5' },
+                theme: { color: '#2A7E8C' },
                 modal: {
                     ondismiss: () => {
                         toast('Payment cancelled.', { icon: 'ℹ️' });
@@ -193,7 +193,7 @@ const SubscriptionPage = () => {
                         whileTap={{ scale: 0.98 }}
                         transition={{ delay: idx * 0.1 }}
                         onClick={() => handleSubscribe(plan.id)}
-                        className={`bg-card rounded-3xl border ${idx === 1 ? 'border-[#4F46E5] shadow-xl ring-4 ring-[#4F46E5]/10' : 'border-border shadow-soft'} overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-2xl`}
+                        className={`bg-card rounded-3xl border ${idx === 1 ? 'border-[#2A7E8C] shadow-xl ring-4 ring-[#2A7E8C]/10' : 'border-border shadow-soft'} overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-2xl`}
                     >
                         {idx === 1 && (
                             <div className="bg-primary text-white text-center py-2 text-xs font-black uppercase tracking-widest">
@@ -203,7 +203,7 @@ const SubscriptionPage = () => {
                         <div className="p-8 flex-1">
                             <div className="flex items-center justify-between mb-8">
                                 <h3 className="text-xl font-bold text-main-text">{plan.name}</h3>
-                                {idx === 1 ? <Zap className="text-primary fill-[#4F46E5]" /> : <Star className="text-secondary-text" />}
+                                {idx === 1 ? <Zap className="text-primary fill-[#2A7E8C]" /> : <Star className="text-secondary-text" />}
                             </div>
                             <div className="flex items-baseline mb-8">
                                 <span className="text-5xl font-black text-main-text">₹{Math.round(plan.price)}</span>

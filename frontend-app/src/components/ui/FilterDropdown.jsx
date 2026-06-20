@@ -89,8 +89,8 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                 onClick={() => setTypeFilter(type)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   typeFilter === type
-                    ? 'bg-primary text-white border-[#4F46E5]'
-                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
+                    ? 'bg-primary text-white border-[#2A7E8C]'
+                    : 'bg-background text-secondary-text border-border hover:border-[#2A7E8C] hover:text-primary'
                 }`}
               >
                 {type}
@@ -111,8 +111,8 @@ export function FilterDropdown({ isOpen, onClose, filters, setters }) {
                 onClick={() => setTenantFilter(type)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   tenantFilter === type
-                    ? 'bg-primary text-white border-[#4F46E5]'
-                    : 'bg-background text-secondary-text border-border hover:border-[#4F46E5] hover:text-primary'
+                    ? 'bg-primary text-white border-[#2A7E8C]'
+                    : 'bg-background text-secondary-text border-border hover:border-[#2A7E8C] hover:text-primary'
                 }`}
               >
                 {type}

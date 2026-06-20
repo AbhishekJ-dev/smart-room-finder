@@ -132,7 +132,7 @@ const AdminProperties = () => {
           {view === 'detail' && (
             <button 
               onClick={() => { setView('owners'); setSearch(''); }}
-              className="p-2 bg-card border border-border rounded-xl text-secondary-text hover:text-primary hover:border-[#4F46E5] transition-all cursor-pointer shadow-soft"
+              className="p-2 bg-card border border-border rounded-xl text-secondary-text hover:text-primary hover:border-[#2A7E8C] transition-all cursor-pointer shadow-soft"
             >
               <ArrowLeft size={18} />
             </button>
@@ -144,7 +144,7 @@ const AdminProperties = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={view === 'owners' ? "Search by owner email..." : "Search by city, area or type..."}
-              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all shadow-soft"
+              className="w-full bg-card border border-border rounded-xl py-2.5 pl-9 pr-9 text-sm text-main-text placeholder-[#9CA3AF] outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all shadow-soft"
             />
             {search && (
               <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-text hover:text-main-text cursor-pointer">
@@ -155,7 +155,7 @@ const AdminProperties = () => {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-primary/10 border border-[#C7D2FE] rounded-xl">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-primary/10 border border-[#B0DCE0] rounded-xl">
             <Building2 size={14} className="text-primary" />
             <span className="text-xs font-bold text-primary">
               {view === 'owners' ? `${owners.length} Owners` : `${properties.length} Listings`}
@@ -164,7 +164,7 @@ const AdminProperties = () => {
           <button
             onClick={view === 'owners' ? fetchOwners : () => fetchOwnerProperties(selectedOwner)}
             disabled={loading}
-            className="flex items-center gap-1.5 px-3 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#2A7E8C] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
             Refresh

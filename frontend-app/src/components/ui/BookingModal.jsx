@@ -87,7 +87,7 @@ export function BookingModal({ isOpen, onClose, room, onConfirm, loading, showAl
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-[#0f172a]/40 backdrop-blur-sm cursor-pointer"
+        className="absolute inset-0 bg-[#02161A]/40 backdrop-blur-sm cursor-pointer"
       />
       
       <motion.div
@@ -129,7 +129,7 @@ export function BookingModal({ isOpen, onClose, room, onConfirm, loading, showAl
                     onChange={(e) => setStartDate(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
                     required
-                    className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 pl-12 pr-4 text-sm text-main-text font-bold outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/10 transition-all cursor-pointer"
+                    className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 pl-12 pr-4 text-sm text-main-text font-bold outline-none focus:border-[#2A7E8C] focus:ring-4 focus:ring-[#2A7E8C]/10 transition-all cursor-pointer"
                   />
                 </div>
               </div>
@@ -153,14 +153,14 @@ export function BookingModal({ isOpen, onClose, room, onConfirm, loading, showAl
                       }}
                       autoFocus
                       required
-                      className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 pl-12 pr-4 text-sm text-main-text font-bold outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/10 transition-all cursor-pointer"
+                      className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 pl-12 pr-4 text-sm text-main-text font-bold outline-none focus:border-[#2A7E8C] focus:ring-4 focus:ring-[#2A7E8C]/10 transition-all cursor-pointer"
                     />
                   </div>
                   <div className="w-1/2">
                     <select
                       value={durationType}
                       onChange={(e) => setDurationType(e.target.value)}
-                      className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 px-4 text-sm text-main-text font-bold outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/10 transition-all cursor-pointer appearance-none"
+                      className="w-full bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl py-4 px-4 text-sm text-main-text font-bold outline-none focus:border-[#2A7E8C] focus:ring-4 focus:ring-[#2A7E8C]/10 transition-all cursor-pointer appearance-none"
                     >
                       {options.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>
@@ -172,7 +172,7 @@ export function BookingModal({ isOpen, onClose, room, onConfirm, loading, showAl
             </div>
 
             {/* Total Calculation */}
-            <div className="bg-gradient-to-br from-[#4F46E5]/5 to-[#4F46E5]/10 rounded-2xl p-5 border border-[#4F46E5]/20 flex justify-between items-center mt-2">
+            <div className="bg-gradient-to-br from-[#2A7E8C]/5 to-[#2A7E8C]/10 rounded-2xl p-5 border border-[#2A7E8C]/20 flex justify-between items-center mt-2">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] font-black text-primary">Total Price</p>
                 <p className="text-[11px] text-[#6b7280] font-bold mt-1">₹{getPricePerUnit()?.toLocaleString() || 0} / {durationType.slice(0, -1).toLowerCase()}</p>

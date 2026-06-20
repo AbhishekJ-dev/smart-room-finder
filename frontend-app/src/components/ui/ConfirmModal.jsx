@@ -49,7 +49,7 @@ const ConfirmModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-[#111827]/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-[#051F24]/60 backdrop-blur-sm"
         />
 
         {/* Modal content */}

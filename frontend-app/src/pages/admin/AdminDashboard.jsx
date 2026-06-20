@@ -24,7 +24,7 @@ const activityIcon = (type) => {
   const map = {
     property:     { Icon: Building2,  bg: '#F0FDF4', color: '#16A34A' },
     booking:      { Icon: CalendarCheck, bg: '#FFFBEB', color: '#D97706' },
-    user:         { Icon: UserPlus,   bg: '#EEF2FF', color: '#4F46E5' },
+    user:         { Icon: UserPlus,   bg: '#F0F9FA', color: '#2A7E8C' },
     subscription: { Icon: CreditCard, bg: '#FAF5FF', color: '#7C3AED' },
   };
   return map[type] || { Icon: TrendingUp, bg: '#F3F4F6', color: '#6B7280' };
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const cards = stats ? [
-    { label: 'Total Users',     value: stats.total_users,          icon: <Users size={20} />,        bg: '#EEF2FF', iconColor: '#4F46E5', path: '/admin/users',         trend: '+',  unit: 'registered' },
+    { label: 'Total Users',     value: stats.total_users,          icon: <Users size={20} />,        bg: '#F0F9FA', iconColor: '#2A7E8C', path: '/admin/users',         trend: '+',  unit: 'registered' },
     { label: 'Properties',      value: stats.total_properties,     icon: <Home size={20} />,         bg: '#F0FDF4', iconColor: '#16A34A', path: '/admin/properties',    trend: '+',  unit: 'listed' },
     { label: 'Total Bookings',  value: stats.total_bookings,       icon: <CalendarCheck size={20} />,bg: '#FFFBEB', iconColor: '#D97706', path: '/admin/bookings',      trend: '',   unit: 'requests' },
     { label: 'Active Subs',     value: stats.active_subscriptions, icon: <ShieldCheck size={20} />,  bg: '#FAF5FF', iconColor: '#7C3AED', path: '/admin/subscriptions', trend: '',   unit: 'active plans' },
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
         <button
           onClick={() => fetchAll(true)}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#4F46E5] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-xl text-xs font-semibold text-secondary-text hover:border-[#2A7E8C] hover:text-primary transition-all shadow-soft cursor-pointer disabled:opacity-50"
         >
           <RefreshCw size={13} className={refreshing ? 'animate-spin' : ''} />
           Refresh
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.07 }}
                 onClick={() => navigate(card.path)}
-                className="bg-card rounded-2xl border border-border p-5 shadow-soft hover:shadow-card-hover hover:-translate-y-1 hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer group"
+                className="bg-card rounded-2xl border border-border p-5 shadow-soft hover:shadow-card-hover hover:-translate-y-1 hover:border-[#B0DCE0] transition-all duration-300 cursor-pointer group"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: card.bg, color: card.iconColor }}>
@@ -199,7 +199,7 @@ const AdminDashboard = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-[#111827] rounded-2xl text-white overflow-hidden relative p-6 flex flex-col"
+          className="bg-[#051F24] rounded-2xl text-white overflow-hidden relative p-6 flex flex-col"
         >
           <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 rounded-full blur-[50px] pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#7C3AED]/10 rounded-full blur-[40px] pointer-events-none" />

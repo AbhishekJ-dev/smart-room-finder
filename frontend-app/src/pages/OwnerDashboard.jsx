@@ -179,7 +179,7 @@ const OwnerDashboard = () => {
   };
 
   const stats = [
-    { label: 'Total Listings', value: rooms.length,                                     bg: '#EEF2FF', color: '#4F46E5' },
+    { label: 'Total Listings', value: rooms.length,                                     bg: '#F0F9FA', color: '#2A7E8C' },
     { label: 'Available',      value: rooms.filter(r => !r.is_booked).length,           bg: '#F0FDF4', color: '#16A34A' },
     { label: 'Total Bookings', value: bookings.length,                                  bg: '#FFFBEB', color: '#D97706' },
   ];
@@ -341,7 +341,7 @@ const OwnerDashboard = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#111827]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#051F24]/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4"
             onClick={e => { if (e.target === e.currentTarget) setShowAddModal(false); }}
           >
             <motion.div
@@ -449,7 +449,7 @@ const BookingsTable = ({ bookings, onStatusUpdate }) => (
                   {b.status === 'confirmed' && (
                     <button
                       onClick={() => onStatusUpdate(b.id, 'completed')}
-                      className="px-3 py-1.5 bg-primary/10 border border-[#C7D2FE] text-primary text-xs font-semibold rounded-lg hover:bg-[#C7D2FE] transition-all cursor-pointer whitespace-nowrap"
+                      className="px-3 py-1.5 bg-primary/10 border border-[#B0DCE0] text-primary text-xs font-semibold rounded-lg hover:bg-[#B0DCE0] transition-all cursor-pointer whitespace-nowrap"
                     >Mark Done</button>
                   )}
                   {(b.status === 'completed' || b.status === 'rejected') && (
@@ -493,7 +493,7 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
       whileTap={{ scale: 0.98 }}
-      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#C7D2FE] transition-all duration-300 cursor-pointer"
+      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group shadow-soft hover:border-[#B0DCE0] transition-all duration-300 cursor-pointer"
     >
       {/* Image carousel */}
       <div className="relative h-52 overflow-hidden bg-section">
@@ -583,7 +583,7 @@ const ListingCard = ({ room, onDelete, onToggle, onViewPhotos }) => {
             onClick={() => onToggle(room.id, room.is_booked)}
             className={`flex-1 py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               room.is_booked
-                ? 'bg-primary/10 border-[#C7D2FE] text-primary hover:bg-[#C7D2FE]'
+                ? 'bg-primary/10 border-[#B0DCE0] text-primary hover:bg-[#B0DCE0]'
                 : 'bg-[#F0FDF4] border-[#BBF7D0] text-[#16A34A] hover:bg-[#BBF7D0]'
             }`}
           >
@@ -711,14 +711,14 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
               <div>
                 <label className="block text-xs font-semibold text-secondary-text mb-1.5">Room Type</label>
                 <select value={formData.type} onChange={e => fd('type', e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#4F46E5] transition-colors">
+                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#2A7E8C] transition-colors">
                   {['1BHK','2BHK','Room'].map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-secondary-text mb-1.5">Suitable For</label>
                 <select value={formData.tenant_type} onChange={e => fd('tenant_type', e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#4F46E5] transition-colors">
+                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#2A7E8C] transition-colors">
                   <option value="Anyone">Anyone</option>
                   <option value="Boys">Boys Only</option>
                   <option value="Girls">Girls Only</option>
@@ -737,7 +737,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                 <input
                   type="text" placeholder={f.placeholder} value={formData[f.key]}
                   onChange={e => fd(f.key, e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#4F46E5] focus:ring-2 focus:ring-[#4F46E5]/10 transition-all placeholder-[#9CA3AF]"
+                  className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#2A7E8C] focus:ring-2 focus:ring-[#2A7E8C]/10 transition-all placeholder-[#9CA3AF]"
                 />
               </div>
             ))}
@@ -753,7 +753,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                   <input
                     type="number" placeholder="0" value={formData[f.key]}
                     onChange={e => fd(f.key, e.target.value)}
-                    className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#4F46E5] transition-all"
+                    className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#2A7E8C] transition-all"
                   />
                 </div>
               ))}
@@ -788,7 +788,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                     </button>
                   </div>
                 ))}
-                <label className="aspect-square border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center text-primary gap-1.5 cursor-pointer hover:bg-primary/10 hover:border-[#4F46E5] transition-all">
+                <label className="aspect-square border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center text-primary gap-1.5 cursor-pointer hover:bg-primary/10 hover:border-[#2A7E8C] transition-all">
                   <ImagePlus size={22} />
                   <span className="text-[11px] font-semibold">Add Photo</span>
                   <input type="file" accept="image/*" multiple onChange={handlePhotoSelect} className="hidden" />
@@ -804,7 +804,7 @@ const AddPropertyForm = ({ onClose, onSuccess }) => {
                 onChange={e => fd('description', e.target.value)}
                 placeholder="Describe amenities, rules, nearby landmarks..."
                 rows={3}
-                className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#4F46E5] transition-all resize-none placeholder-[#9CA3AF]"
+                className="w-full bg-background border border-border rounded-xl py-2.5 px-3 text-sm text-main-text font-medium outline-none focus:border-[#2A7E8C] transition-all resize-none placeholder-[#9CA3AF]"
               />
             </div>
 

@@ -155,7 +155,7 @@ const AdminPlans = () => {
           <button
             onClick={fetchPlans}
             disabled={loading}
-            className="p-2 bg-card border border-border rounded-xl text-secondary-text hover:text-primary hover:border-[#4F46E5] transition-all shadow-soft cursor-pointer disabled:opacity-50"
+            className="p-2 bg-card border border-border rounded-xl text-secondary-text hover:text-primary hover:border-[#2A7E8C] transition-all shadow-soft cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
           </button>
@@ -178,7 +178,7 @@ const AdminPlans = () => {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-1"
           >
-            <div className="bg-card rounded-3xl border-2 border-[#4F46E5] p-6 shadow-xl sticky top-6">
+            <div className="bg-card rounded-3xl border-2 border-[#2A7E8C] p-6 shadow-xl sticky top-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold text-main-text">{isAdding ? 'Create New Plan' : 'Edit Plan'}</h3>
                 <button onClick={handleCancel} className="p-1.5 text-secondary-text hover:text-main-text hover:bg-section rounded-lg transition-all cursor-pointer">
@@ -194,7 +194,7 @@ const AdminPlans = () => {
                     value={form.name}
                     onChange={e => setForm({...form, name: e.target.value})}
                     placeholder="e.g. Premium Plus"
-                    className="w-full bg-background border border-border rounded-xl py-2.5 px-4 text-sm font-bold text-main-text focus:border-[#4F46E5] focus:ring-4 focus:ring-[#4F46E5]/5 outline-none transition-all placeholder-[#9CA3AF]"
+                    className="w-full bg-background border border-border rounded-xl py-2.5 px-4 text-sm font-bold text-main-text focus:border-[#2A7E8C] focus:ring-4 focus:ring-[#2A7E8C]/5 outline-none transition-all placeholder-[#9CA3AF]"
                   />
                 </div>
 
@@ -208,7 +208,7 @@ const AdminPlans = () => {
                         value={form.price}
                         onChange={e => setForm({...form, price: e.target.value})}
                         placeholder="0"
-                        className="w-full bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-main-text focus:border-[#4F46E5] outline-none transition-all"
+                        className="w-full bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-main-text focus:border-[#2A7E8C] outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -221,7 +221,7 @@ const AdminPlans = () => {
                         value={form.duration_days}
                         onChange={e => setForm({...form, duration_days: e.target.value})}
                         placeholder="30"
-                        className="w-full bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-main-text focus:border-[#4F46E5] outline-none transition-all"
+                        className="w-full bg-background border border-border rounded-xl py-2.5 pl-9 pr-4 text-sm font-bold text-main-text focus:border-[#2A7E8C] outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -234,7 +234,7 @@ const AdminPlans = () => {
                     onChange={e => setForm({...form, description: e.target.value})}
                     placeholder="Short summary of benefits..."
                     rows="3"
-                    className="w-full bg-background border border-border rounded-xl py-2.5 px-4 text-sm font-medium text-main-text focus:border-[#4F46E5] outline-none transition-all resize-none placeholder-[#9CA3AF]"
+                    className="w-full bg-background border border-border rounded-xl py-2.5 px-4 text-sm font-medium text-main-text focus:border-[#2A7E8C] outline-none transition-all resize-none placeholder-[#9CA3AF]"
                   />
                 </div>
 
@@ -285,7 +285,7 @@ const AdminPlans = () => {
                     animate={{ opacity: active ? 1 : 0.6, scale: 1 }}
                     transition={{ delay: idx * 0.05 }}
                     className={`bg-card rounded-3xl p-8 border-2 transition-all relative overflow-hidden group ${
-                      isEditing ? 'border-[#4F46E5] shadow-xl' : 'border-border hover:border-[#C7D2FE]'
+                      isEditing ? 'border-[#2A7E8C] shadow-xl' : 'border-border hover:border-[#B0DCE0]'
                     } ${!active ? 'bg-background' : ''}`}
                   >
                     {/* Background decoration */}
@@ -301,7 +301,7 @@ const AdminPlans = () => {
                              <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${
                                 !active 
                                 ? 'text-secondary-text bg-section border-border' 
-                                : (plan.price > 500 ? 'text-[#7C3AED] bg-[#F5F3FF] border-[#DDD6FE]' : 'text-primary bg-primary/10 border-[#C7D2FE]')
+                                : (plan.price > 500 ? 'text-[#7C3AED] bg-[#F5F3FF] border-[#DDD6FE]' : 'text-primary bg-primary/10 border-[#B0DCE0]')
                               }`}>
                                 {plan.duration_days} Day Period
                               </span>
