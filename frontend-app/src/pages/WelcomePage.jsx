@@ -174,14 +174,14 @@ const WelcomePage = () => {
               </motion.div>
             </div>
 
-            {/* Right Side Illustration */}
             <motion.div
-              initial={{ opacity: 0, x: 50, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="hidden lg:block relative"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative order-first lg:order-last mb-10 lg:mb-0"
             >
-              <div className="relative z-10 w-full max-w-[550px] ml-auto">
+
+              <div className="relative z-10 w-full max-w-[550px] mx-auto lg:ml-auto">
                 <img 
                   src={heroImg} 
                   alt="House Illustration" 
