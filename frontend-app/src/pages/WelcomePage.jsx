@@ -10,7 +10,6 @@ import { useAuth } from '../context/AuthContext';
 import { LandingLayout } from '../components/layouts/LandingLayout';
 import axios from 'axios';
 import logo from '../assets/logo.png';
-import heroImg from '../assets/hero-illustration.png';
 
 import { API_URL as API, API_BASE_URL } from '../utils/api';
 
@@ -181,11 +180,11 @@ const WelcomePage = () => {
               className="relative order-first lg:order-last mb-10 lg:mb-0"
             >
 
-              <div className="relative z-10 w-full max-w-[550px] mx-auto lg:ml-auto">
+              <div className="relative z-10 w-40 h-40 sm:w-56 sm:h-56 mx-auto lg:ml-auto bg-white/5 backdrop-blur-md rounded-[2.5rem] p-6 border border-white/10 shadow-2xl flex items-center justify-center">
                 <img 
-                  src={heroImg} 
-                  alt="House Illustration" 
-                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(42, 126, 140,0.3)] animate-float"
+                  src={logo} 
+                  alt="SmartRoom Finder Logo" 
+                  className="w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(42, 126, 140,0.4)] animate-float"
                 />
               </div>
               {/* Decorative elements */}
