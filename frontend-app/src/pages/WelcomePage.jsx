@@ -177,24 +177,37 @@ const WelcomePage = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.05, filter: "brightness(1.1) drop-shadow(0 0 30px rgba(255,255,255,0.3))" }}
-              whileTap={{ scale: 0.98, filter: "brightness(1.2)" }}
+              whileHover={{ 
+                scale: 1.05, 
+                rotate: 1,
+                transition: { duration: 0.3 } 
+              }}
+              whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative order-first lg:order-last mb-10 lg:mb-0 group cursor-pointer"
+              className="relative order-first lg:order-last mb-10 lg:mb-0 cursor-pointer group"
             >
-              <div className="relative z-10 w-full max-w-[550px] mx-auto lg:ml-auto">
+              <div className="relative z-10 w-full max-w-[550px] mx-auto lg:ml-auto transition-transform duration-500 ease-out">
                 <img 
                   src={heroImg} 
                   alt="House Illustration" 
-                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(42, 126, 140,0.3)] animate-float transition-all duration-500"
+                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(42,126,140,0.4)] transition-all duration-300 group-hover:drop-shadow-[0_30px_60px_rgba(42,126,140,0.6)]"
                 />
-                
-                {/* Shine effect overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine pointer-events-none" />
               </div>
-              {/* Decorative elements */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10 opacity-30 group-hover:opacity-50 transition-opacity" />
+              {/* Animated glow background */}
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.5, 0.3]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/20 blur-[120px] rounded-full -z-10" 
+              />
             </motion.div>
+
           </div>
         </div>
       </section>
