@@ -13,7 +13,7 @@ const AdminBookings = () => {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`API_URL/admin/bookings`, {
+      const res = await axios.get(`${API_URL}/admin/bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(res.data);
@@ -29,7 +29,7 @@ const AdminBookings = () => {
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`API_URL/admin/bookings/${id}/status`, { status }, {
+      await axios.patch(`${API_URL}/admin/bookings/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBookings();

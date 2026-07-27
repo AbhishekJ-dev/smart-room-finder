@@ -39,7 +39,7 @@ const CompleteRegistration = () => {
         setError('');
 
         try {
-            const res = await axios.post(`API_URL/auth/complete-google-registration`, formData);
+            const res = await axios.post(`${API_URL}/auth/complete-google-registration`, formData);
             const { token, user } = res.data;
 
             // Store in localStorage
